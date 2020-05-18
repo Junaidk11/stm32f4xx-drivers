@@ -35,15 +35,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  15 .debug_ranges 00000030  00000000  00000000  000103d8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_macro  00000a71  00000000  00000000  00010408  2**0
+ 16 .debug_macro  00000a7b  00000000  00000000  00010408  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   000000c6  00000000  00000000  00010e79  2**0
+ 17 .debug_line   0000010b  00000000  00000000  00010e83  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    00002cf9  00000000  00000000  00010f3f  2**0
+ 18 .debug_str    00002d0c  00000000  00000000  00010f8e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  00013c38  2**0
+ 19 .comment      0000007b  00000000  00000000  00013c9a  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00000054  00000000  00000000  00013cb4  2**2
+ 20 .debug_frame  00000054  00000000  00000000  00013d18  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -77,10 +77,10 @@ Disassembly of section .text:
  80001e4:	0800028c 	.word	0x0800028c
 
 080001e8 <main>:
-#if !defined(__SOFT_FP__) && defined(__ARM_FP)
-  #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
-#endif
+ ******************************************************************************
+ */
 
+#include "stm32f40xx.h"
 int main(void)
 {
  80001e8:	b480      	push	{r7}

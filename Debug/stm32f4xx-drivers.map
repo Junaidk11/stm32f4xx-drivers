@@ -587,17 +587,17 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000000       0x10 Src/main.o
  .debug_ranges  0x0000000000000010       0x20 Startup/startup_stm32f407vgtx.o
 
-.debug_macro    0x0000000000000000      0xa71
- .debug_macro   0x0000000000000000       0x11 Src/main.o
- .debug_macro   0x0000000000000011      0xa60 Src/main.o
+.debug_macro    0x0000000000000000      0xa7b
+ .debug_macro   0x0000000000000000       0x1b Src/main.o
+ .debug_macro   0x000000000000001b      0xa60 Src/main.o
 
-.debug_line     0x0000000000000000       0xc6
- .debug_line    0x0000000000000000       0x42 Src/main.o
- .debug_line    0x0000000000000042       0x84 Startup/startup_stm32f407vgtx.o
+.debug_line     0x0000000000000000      0x10b
+ .debug_line    0x0000000000000000       0x87 Src/main.o
+ .debug_line    0x0000000000000087       0x84 Startup/startup_stm32f407vgtx.o
 
-.debug_str      0x0000000000000000     0x2cf9
- .debug_str     0x0000000000000000     0x2cc8 Src/main.o
- .debug_str     0x0000000000002cc8       0x31 Startup/startup_stm32f407vgtx.o
+.debug_str      0x0000000000000000     0x2d0c
+ .debug_str     0x0000000000000000     0x2cdb Src/main.o
+ .debug_str     0x0000000000002cdb       0x31 Startup/startup_stm32f407vgtx.o
                                          0x60 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
