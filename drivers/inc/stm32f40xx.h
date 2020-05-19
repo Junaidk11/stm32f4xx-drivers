@@ -158,35 +158,45 @@ typedef struct{
 typedef struct{
 
 	__vo uint32_t RCC_CR; 				/* Clock control Register   					Address offset: 0x00 */
-	__vo uint32_t RCC_PLLCFGR; 			/* PLL  Configuration Register   				Address offset: 0x00 */
-	__vo uint32_t RCC_CFGR; 			/* RCC Clock configuration Register  			 Address offset: 0x00 */
-	__vo uint32_t RCC_CIR; 				/* RCC Clock interrupt Register   				Address offset: 0x00 */
+	__vo uint32_t RCC_PLLCFGR; 			/* PLL  Configuration Register   				Address offset: 0x04 */
+	__vo uint32_t RCC_CFGR; 			/* RCC Clock configuration Register  			Address offset: 0x08 */
+	__vo uint32_t RCC_CIR; 				/* RCC Clock interrupt Register   				Address offset: 0x0C */
 
-	__vo uint32_t RCC_AHB1RSTR; 		/* AHB1 Peripheral Reset Register   			Address offset: 0x00 */
-	__vo uint32_t RCC_AHB2RSTR; 		/* AHB2 Peripheral Reset Register  				Address offset: 0x00 */
-	__vo uint32_t RCC_AHB3RSTR; 		/* AHB3 Peripheral Reset Register  			    Address offset: 0x00 */
-	__vo uint32_t RCC_APB1RSTR; 		/* APB1 Peripheral Reset Register  				Address offset: 0x00 */
-	__vo uint32_t RCC_APB2RSTR; 		/* APB2 Peripheral Reset Register  				Address offset: 0x00 */
+	__vo uint32_t RCC_AHB1RSTR; 		/* AHB1 Peripheral Reset Register   			Address offset: 0x10 */
+	__vo uint32_t RCC_AHB2RSTR; 		/* AHB2 Peripheral Reset Register  				Address offset: 0x14 */
+	__vo uint32_t RCC_AHB3RSTR; 		/* AHB3 Peripheral Reset Register  			    Address offset: 0x18 */
+		 uint32_t RESERVED0; 			/* Reserved 									Address offset: 0x1C */
+	__vo uint32_t RCC_APB1RSTR; 		/* APB1 Peripheral Reset Register  				Address offset: 0x20 */
+	__vo uint32_t RCC_APB2RSTR; 		/* APB2 Peripheral Reset Register  				Address offset: 0x24 */
+		 uint32_t RESERVED1[2]; 			/* Two Reserved registers 						Address offset: 0x28-0x2C */
 
-	__vo uint32_t RCC_AHB1ENR; 			/* AHB1 Peripheral Clock Register   			Address offset: 0x00 */
-	__vo uint32_t RCC_AHB2ENR; 			/* AHB2 Peripheral Clock Enable  Register   	Address offset: 0x00 */
-	__vo uint32_t RCC_AHB3ENR; 			/* AHB3 Peripheral Clock Enable  Register   	Address offset: 0x00 */
-	__vo uint32_t RCC_AP1ENR; 			/* APB1 Peripheral Clock Enable  Register   	Address offset: 0x00 */
-	__vo uint32_t RCC_AP2ENR; 			/* APB2 Peripheral Clock Enable  Register   	Address offset: 0x00 */
+	__vo uint32_t RCC_AHB1ENR; 			/* AHB1 Peripheral Clock Register   			Address offset: 0x30 */
+	__vo uint32_t RCC_AHB2ENR; 			/* AHB2 Peripheral Clock Enable  Register   	Address offset: 0x34 */
+	__vo uint32_t RCC_AHB3ENR; 			/* AHB3 Peripheral Clock Enable  Register   	Address offset: 0x38 */
+		 uint32_t RESERVED3; 			/* Reserved 									Address offset: 0x3C */
 
-	__vo uint32_t RCC_AHB1LPENR; 		/* AHB1 Peripheral Clock enable in low power mode Register   Address offset: 0x00 */
-	__vo uint32_t RCC_AHB2LPENR; 		/* AHB2 Peripheral Clock enable in low power mode Register   Address offset: 0x00 */
-	__vo uint32_t RCC_AHB3LPENR; 		/* AHB3 Peripheral Clock enable in low power mode Register   Address offset: 0x00 */
-	__vo uint32_t RCC_APB1LPENR; 		/* APB1 Peripheral Clock enable in low power mode Register   Address offset: 0x00 */
-	__vo uint32_t RCC_APB2LPENR; 		/* APB2 Peripheral Clock enable in low power mode Register   Address offset: 0x00 */
+	__vo uint32_t RCC_AP1ENR; 			/* APB1 Peripheral Clock Enable  Register   	Address offset: 0x40 */
+	__vo uint32_t RCC_AP2ENR; 			/* APB2 Peripheral Clock Enable  Register   	Address offset: 0x44 */
+	 	 uint32_t RESERVED4[2]; 		/* Two Reserved registers 						Address offset: 0x48-0x4C */
+
+	__vo uint32_t RCC_AHB1LPENR; 		/* AHB1 Peripheral Clock enable in low power mode Register   Address offset: 0x50 */
+	__vo uint32_t RCC_AHB2LPENR; 		/* AHB2 Peripheral Clock enable in low power mode Register   Address offset: 0x54 */
+	__vo uint32_t RCC_AHB3LPENR; 		/* AHB3 Peripheral Clock enable in low power mode Register   Address offset: 0x58 */
+	 	 uint32_t RESERVED5; 			/* Reserved 									Address offset: 0x5C */
+
+	__vo uint32_t RCC_APB1LPENR; 		/* APB1 Peripheral Clock enable in low power mode Register   Address offset: 0x60 */
+	__vo uint32_t RCC_APB2LPENR; 		/* APB2 Peripheral Clock enable in low power mode Register   Address offset: 0x64 */
+	 	 uint32_t RESERVED6[2]; 		/* Two Reserved registers 						Address offset: 0x68-0x6C */
 
 
-	__vo uint32_t RCC_BDCR; 			/* Backup Domain control Register   			Address offset: 0x00 */
-	__vo uint32_t RCC_CSR; 				/* Clock control & Status Register   			Address offset: 0x00 */
-	__vo uint32_t RCC_SSCGR; 			/* Spread spectrum clock generation Register   	Address offset: 0x00 */
-	__vo uint32_t RCC_PLLI2SCFGR; 		/* PLL I2S configuration Register   			Address offset: 0x00 */
-	__vo uint32_t RCC_PLLSAICFGR; 		/* PLL Configuration Register   				Address offset: 0x00 */
-	__vo uint32_t RCC_DCKCFGR; 			/* Dedicated Clock Configuration Register   	Address offset: 0x00 */
+	__vo uint32_t RCC_BDCR; 			/* Backup Domain control Register   			Address offset: 0x70 */
+	__vo uint32_t RCC_CSR; 				/* Clock control & Status Register   			Address offset: 0x74 */
+		 uint32_t RESERVED7[2]; 		/* Two Reserved registers 						Address offset: 0x78-0x7C */
+
+	__vo uint32_t RCC_SSCGR; 			/* Spread spectrum clock generation Register   	Address offset: 0x80 */
+	__vo uint32_t RCC_PLLI2SCFGR; 		/* PLL I2S configuration Register   			Address offset: 0x84 */
+	__vo uint32_t RCC_PLLSAICFGR; 		/* PLL Configuration Register   				Address offset: 0x88 */
+	__vo uint32_t RCC_DCKCFGR; 			/* Dedicated Clock Configuration Register   	Address offset: 0x8C */
 
 }RCC_RegDef_t;
 
