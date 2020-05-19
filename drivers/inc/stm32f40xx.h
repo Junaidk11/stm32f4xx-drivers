@@ -71,6 +71,7 @@
 #define GPIOI_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x2000)
 #define GPIOJ_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x2400)
 #define GPIOK_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x2800)
+#define RCC_BASEADDR			(AHB1PERIPH_BASEADDR + 0x3800)
 
 /*
  * Base Addresses of peripherals connected to the APB1 bus.
@@ -200,5 +201,102 @@ typedef struct{
 
 }RCC_RegDef_t;
 
+
+/*
+ *  			Peripheral Definitions Type casted to their C Structure holding their register definitions.
+ */
+
+#define RCC 		((RCC_RegDef_t*)RCC_BASEADDR)
+
+
+/*
+ *  		Creating MACROS that can be used to enable clock access to the Peripherals.
+ */
+
+/*   Clock Enable Macros for GPIOx Peripherals  */
+
+#define GPIOA_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 0))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 0.  */
+#define GPIOB_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 1))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 1.  */
+#define GPIOC_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 2))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 2.  */
+#define GPIOD_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 3))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 3.  */
+#define GPIOE_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 4))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 4.  */
+#define GPIOF_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 5))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 5.  */
+#define GPIOG_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 6))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 6.  */
+#define GPIOH_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 7))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 7.  */
+#define GPIOI_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 8))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 8.  */
+#define GPIOJ_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 9))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 9.  */
+#define GPIOK_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 10)) /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 10.  */
+
+/*   Clock Enable Macros for I2Cx Peripherals  */
+#define I2C1_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 21))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 21.  */
+#define I2C2_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 22))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 22.  */
+#define I2C3_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 23))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 23.  */
+
+
+/*   Clock Enable Macros for SPIx Peripherals  */
+#define SPI1_PERIPH_CLOCK_EN()   		(RCC->RCC_APB2ENR |= (1 << 12))  /* Dereferencing APB2 Peripheral Clock Enable Register, and setting it's bit 12.  */
+#define SPI2_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 14))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 14.  */
+#define SPI3_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 15))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 15.  */
+
+/*   Clock Enable Macros for USARTx Peripherals  */
+#define USART1_PERIPH_CLOCK_EN()   		(RCC->RCC_APB2ENR |= (1 << 4))  /* Dereferencing APB2 Peripheral Clock Enable Register, and setting it's bit 4.  */
+#define USART2_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 17))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 17.  */
+#define USART3_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 18))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 18.  */
+#define USART6_PERIPH_CLOCK_EN()   		(RCC->RCC_APB2ENR |= (1 << 5))  /* Dereferencing APB2 Peripheral Clock Enable Register, and setting it's bit 5.  */
+
+/*   Clock Enable Macros for UARTx Peripherals  */
+#define UART4_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 19))  /* Dereferencing APB2 Peripheral Clock Enable Register, and setting it's bit 19.  */
+#define UART5_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 20))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 20.  */
+
+
+
+/*   Clock Enable Macros for SYSCFG Peripheral  */
+#define SYSCFG_PERIPH_CLOCK_EN()   		(RCC->RCC_APB2ENR |= (1 << 14))  /* Dereferencing APB2 Peripheral Clock Enable Register, and setting it's bit 14.  */
+
+
+
+
+/*
+ *  		Creating MACROS that can be used to disable clock access to the Peripherals.
+ */
+
+/*   Clock Disable Macros for GPIOx Peripherals  */
+
+#define GPIOA_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 0))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 0.  */
+#define GPIOB_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 1))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 1.  */
+#define GPIOC_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 2))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 2.  */
+#define GPIOD_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 3))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 3.  */
+#define GPIOE_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 4))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 4.  */
+#define GPIOF_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 5))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 5.  */
+#define GPIOG_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 6))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 6.  */
+#define GPIOH_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 7))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 7.  */
+#define GPIOI_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 8))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 8.  */
+#define GPIOJ_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 9))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 9.  */
+#define GPIOK_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 10)) /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 10.  */
+
+/*   Clock Disable Macros for I2Cx Peripherals  */
+#define I2C1_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 21))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 21.  */
+#define I2C2_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 22))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 22.  */
+#define I2C3_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 23))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 23.  */
+
+
+/*   Clock Disable Macros for SPIx Peripherals  */
+#define SPI1_PERIPH_CLOCK_DI()   		(RCC->RCC_APB2ENR &= ~ (1 << 12))  /* Dereferencing APB2 Peripheral Clock Enable Register, and clearing it's bit 12.  */
+#define SPI2_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 14))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 14.  */
+#define SPI3_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 15))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 15.  */
+
+/*   Clock Disable Macros for USARTx Peripherals  */
+#define USART1_PERIPH_CLOCK_DI()   		(RCC->RCC_APB2ENR &= ~ (1 << 4))  /* Dereferencing APB2 Peripheral Clock Enable Register, and clearing it's bit 4.  */
+#define USART2_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 17))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 17.  */
+#define USART3_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 18))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 18.  */
+#define USART6_PERIPH_CLOCK_DI()   		(RCC->RCC_APB2ENR &= ~ (1 << 5))  /* Dereferencing APB2 Peripheral Clock Enable Register, and clearing it's bit 5.  */
+
+/*   Clock Disable Macros for UARTx Peripherals  */
+#define UART4_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 19))  /* Dereferencing APB2 Peripheral Clock Enable Register, and clearing it's bit 19.  */
+#define UART5_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 20))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 20.  */
+
+
+/*   Clock Disable Macros for SYSCFG Peripheral  */
+#define SYSCFG_PERIPH_CLOCK_DI()   		(RCC->RCC_APB2ENR &= ~ (1 << 14))  /* Dereferencing APB2 Peripheral Clock Enable Register, and clearing it's bit 14.  */
 
 #endif /* INC_STM32F40XX_H_ */

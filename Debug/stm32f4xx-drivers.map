@@ -25,6 +25,13 @@ Discarded input sections
  .ARM.attributes
                 0x0000000000000000       0x1c c:/st/stm32cubeide_1.3.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.win32_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/crt0.o
  .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
+ .group         0x0000000000000000        0xc Src/main.o
  .text          0x0000000000000000        0x0 Src/main.o
  .data          0x0000000000000000        0x0 Src/main.o
  .bss           0x0000000000000000        0x0 Src/main.o
@@ -569,13 +576,13 @@ LOAD c:/st/stm32cubeide_1.3.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
                 0x00000000000000ce       0x1e c:/st/stm32cubeide_1.3.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.win32_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
 OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000       0x68
- .debug_info    0x0000000000000000       0x46 Src/main.o
- .debug_info    0x0000000000000046       0x22 Startup/startup_stm32f407vgtx.o
+.debug_info     0x0000000000000000       0xa7
+ .debug_info    0x0000000000000000       0x85 Src/main.o
+ .debug_info    0x0000000000000085       0x22 Startup/startup_stm32f407vgtx.o
 
-.debug_abbrev   0x0000000000000000       0x4e
- .debug_abbrev  0x0000000000000000       0x3c Src/main.o
- .debug_abbrev  0x000000000000003c       0x12 Startup/startup_stm32f407vgtx.o
+.debug_abbrev   0x0000000000000000       0x59
+ .debug_abbrev  0x0000000000000000       0x47 Src/main.o
+ .debug_abbrev  0x0000000000000047       0x12 Startup/startup_stm32f407vgtx.o
 
 .debug_aranges  0x0000000000000000       0x48
  .debug_aranges
@@ -587,17 +594,25 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000000       0x10 Src/main.o
  .debug_ranges  0x0000000000000010       0x20 Startup/startup_stm32f407vgtx.o
 
-.debug_macro    0x0000000000000000      0xa7b
- .debug_macro   0x0000000000000000       0x1b Src/main.o
- .debug_macro   0x000000000000001b      0xa60 Src/main.o
+.debug_macro    0x0000000000000000     0x1191
+ .debug_macro   0x0000000000000000       0x72 Src/main.o
+ .debug_macro   0x0000000000000072      0xa60 Src/main.o
+ .debug_macro   0x0000000000000ad2       0x22 Src/main.o
+ .debug_macro   0x0000000000000af4       0x8e Src/main.o
+ .debug_macro   0x0000000000000b82       0x51 Src/main.o
+ .debug_macro   0x0000000000000bd3       0xef Src/main.o
+ .debug_macro   0x0000000000000cc2       0x6a Src/main.o
+ .debug_macro   0x0000000000000d2c      0x1df Src/main.o
+ .debug_macro   0x0000000000000f0b      0x286 Src/main.o
 
-.debug_line     0x0000000000000000      0x10b
- .debug_line    0x0000000000000000       0x87 Src/main.o
- .debug_line    0x0000000000000087       0x84 Startup/startup_stm32f407vgtx.o
+.debug_line     0x0000000000000000      0x44a
+ .debug_line    0x0000000000000000      0x3c6 Src/main.o
+ .debug_line    0x00000000000003c6       0x84 Startup/startup_stm32f407vgtx.o
 
-.debug_str      0x0000000000000000     0x2d0c
- .debug_str     0x0000000000000000     0x2cdb Src/main.o
- .debug_str     0x0000000000002cdb       0x31 Startup/startup_stm32f407vgtx.o
+.debug_str      0x0000000000000000     0x4cf6
+ .debug_str     0x0000000000000000     0x4cc5 Src/main.o
+                                       0x4e20 (size before relaxing)
+ .debug_str     0x0000000000004cc5       0x31 Startup/startup_stm32f407vgtx.o
                                          0x60 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
