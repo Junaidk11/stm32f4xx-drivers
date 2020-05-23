@@ -299,4 +299,12 @@ typedef struct{
 /*   Clock Disable Macros for SYSCFG Peripheral  */
 #define SYSCFG_PERIPH_CLOCK_DI()   		(RCC->RCC_APB2ENR &= ~ (1 << 14))  /* Dereferencing APB2 Peripheral Clock Enable Register, and clearing it's bit 14.  */
 
+
+/*      GENERIC MACROS				 */
+
+#define ENABLE 					1
+#define DISABLE					0
+#define SET						ENABLE
+#define RESET					DISABLE
+
 #endif /* INC_STM32F40XX_H_ */

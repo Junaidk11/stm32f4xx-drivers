@@ -48,29 +48,65 @@ typedef struct{
 
 /*
  *  		GPIO Port Clock Access
+ *
+ *  	This API function will be used to enable clock access to one of the GPIO Ports.
+ *  	Therefore: The arguments of this function should be:
+ *  		1) a pointer to the base address of the port we want to configure - GPIO_RegDef_t -> points to the base-address of the port
+ *  		2) a variable to indicate if you wish to enable or disable the port. Define a Generic macro in MCU header file, use it - Use MACRO: Enable or Disable.
+ *
  */
 
-void GPIO_ClockControl(void);
+void GPIO_ClockControl(GPIO_RegDef_t *pGPIO_PORT,uint8_t enable_disable );
 
 /*
  * 			GPIO Port Init and Deinit
+ *
+ * 			For Initialization of GPIO port register:
+ * 		This API function will configure the pin that you wish to use.
+ * 		The Arguments of this function should be:
+ * 		1) Pointer to the GPIO handle; GPIO_Handle_t *
+ *
+ * 			For Reseting the GPIO port registers:
+ * 		You can use RCC's AHB1 Peripheral Reset Register.
+* 		This way, you don't have to reset each every register of the Port.
+* 		The Argument of this function should be:
+* 		1) The Base address of your GPIO port - GPIO_RegDef_t*
+ *
  */
-void GPIO_Init(void);
-void GPIO_DeInit(void);
+void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
+void GPIO_DeInit(GPIO_RegDef_t *pGPIO_PORT);
+
 
 /*
  *   		Data Read & Write
  */
 
-void GPIO_ReadFromInputPin(void);
-void GPIO_ReadFromInputPort(void);
-void GPIO_WriteToOutputPin(void);
-void GPIO_WriteToOutputPort(void);
-void GPIO_ToggleOutputPin(void);
+ /* Arguments: To read a pin, you need GPIO Base address & pin number. The returned value will either be 0 or 1, uint8_t is the closest data type to return. */
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber);
+
+/* Arguments: To read a PORT, you need GPIO Base address. The returned value will be 16 bits long, each PORT has 16 pins. uint16_t is the closest data type to return. */
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIO_PORT);
+
+/* Arguments: To write to a pin, you need GPIO Base address, pin number & the value (use Generic Macros defined in MCU header file.) you want to write to the pin.*/
+
+void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber, uint8_t value);
+
+/* Arguments: To write to a PORT, you need GPIO Base address & the value you want to write to the  port- value has to 16 bits long, each Port has 16 pins. */
+void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIO_PORT, uint16_t Value);
+
+/* Arguments: To toggle a specific output pin, you only need the Base address of the GPIO port & the pin number you wish to toggle. */
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber);
+
+
+
 /*
  *			GPIO Interrupt Configuration & Handling
  */
-void GPIO_IRQConfig(void);
-void GPIO_IRQHandling(void);
+
+/* Arguments: You need IRQ number, the interrupt priority, and variable to hold enable or disable command. */
+void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t enable_disable);
+
+/*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
+void GPIO_IRQHandling(uint8_t pinNumber);
 
 #endif /* INC_GPIO_DRIVER_H_ */
