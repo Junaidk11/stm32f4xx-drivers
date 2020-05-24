@@ -130,7 +130,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 
 //			Grabs the Physical Memory address dedicated to Mode register of your desired GPIO Port
 								// |
-				pGPIOHandle->pGPIOx_BASEADDR->MODER = temp; 		// Assign temp value to the MODER register using the base-address of your PORT.
+				pGPIOHandle->pGPIOx_BASEADDR->MODER |= temp; 		// Assign temp value to the MODER register using the base-address of your PORT.
 	}else {
 
 		// Do this for if the selected pin mode is one of the Interrupt Modes.
@@ -138,21 +138,24 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 	// 2. Configure slew rate of the GPIO pin
 	temp = 0; 			// Reset temp, can use temp for next register's value.
 	temp = (pGPIOHandle->PinConfig.PinSpeed << (2 * pGPIOHandle->PinConfig.PinNumber)); // Set the value to be assigned to the Speed register.
-	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR = temp; 										// Assign the value temp to the speed register of your specific GPIO port.
+	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR |= temp; 										// Assign the value temp to the speed register of your specific GPIO port.
 
 	// 3. Configure Pull-up/Pull-down resistor settings of the pin - to avoid floating state
 	temp = 0;     		// Rest temp
 	temp = (pGPIOHandle->PinConfig.PinPuPdControl << (2 * pGPIOHandle->PinConfig.PinNumber));
-	pGPIOHandle->pGPIOx_BASEADDR->PUPDR = temp;
+	pGPIOHandle->pGPIOx_BASEADDR->PUPDR |= temp;
 
 	// 4. configure the output type of the pin
 	temp = 0;
 	temp = (pGPIOHandle->PinConfig.PinOType << (pGPIOHandle->PinConfig.PinNumber)); // The Output type register has 1 bit dedicated for each pin of the port.
-	pGPIOHandle->pGPIOx_BASEADDR->OTYPER = temp;
+	pGPIOHandle->pGPIOx_BASEADDR->OTYPER |= temp;
 
 	// 5. configue the alternate functionality of the GPIO pin.
 
 	if(pGPIOHandle->PinConfig.PinMode == GPIO_PIN_ALTFUNC_MODE){ // Only configure the Alternate Functionality if the user has set the Pin mode to be in Alternate Function mode, else skip this part.
+
+
+
 				// There are two register's dedicated for selecting Alternate functionality, four bit for each pin.
 				// ALFL = alternate functionalit low for pins 0-7
 				// ALFH = alternate functionality high for pins 8-15
