@@ -2,7 +2,7 @@
  * stm32f0xx.h
  *
  *  Created on: May 17, 2020
- *      Author: Junai
+ *      Author: Junaid
  */
 
 #ifndef INC_STM32F40XX_H_
