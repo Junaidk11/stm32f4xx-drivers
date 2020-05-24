@@ -23,7 +23,7 @@ typedef struct{
 	uint8_t PinSpeed;				/* Pin's Slew rate: How fast does pin change state - select from @GPIO_PIN_SPEEDS */
 	uint8_t PinPuPdControl;  		/* Pin's Internal Pull-up or Pull-down Control - select from @GPIO_PUPD_CONFIGURATIONS */
 	uint8_t PinOType; 				/* Pin Output type: Open-drain configuration/Push-pull Configuration - select from @GPIO_OUTPUT_CONFIGURATIONS */
-	uint8_t PinAltFunMode; 			/* Pin's alternate Functionality Mode */
+	uint8_t PinAltFunMode; 			/* Pin's alternate Functionality Mode value is placed in here.  */
 }GPIO_PinConfig_t;
 
 

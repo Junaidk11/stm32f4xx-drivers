@@ -128,6 +128,9 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 								// |
 				temp = (pGPIOHandle->PinConfig.PinMode << (2 * pGPIOHandle->PinConfig.PinNumber)); // GPIO's MODE register has 2 bits dedicated to each pin of the PORT, hence the need for '2' for shifting to the right pin.
 
+				// Clear the desired bits before setting them.
+//														  | the 0x3 is because we're clearing 2 bits, which in decimal is a 3. Also, the left shift argument is to clear the respective field.
+				pGPIOHandle->pGPIOx_BASEADDR->MODER &= ~(0x3 << pGPIOHandle->PinConfig.PinNumber);
 //			Grabs the Physical Memory address dedicated to Mode register of your desired GPIO Port
 								// |
 				pGPIOHandle->pGPIOx_BASEADDR->MODER |= temp; 		// Assign temp value to the MODER register using the base-address of your PORT.
@@ -135,31 +138,77 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 
 		// Do this for if the selected pin mode is one of the Interrupt Modes.
 	}
+
+
+
 	// 2. Configure slew rate of the GPIO pin
 	temp = 0; 			// Reset temp, can use temp for next register's value.
 	temp = (pGPIOHandle->PinConfig.PinSpeed << (2 * pGPIOHandle->PinConfig.PinNumber)); // Set the value to be assigned to the Speed register.
-	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR |= temp; 										// Assign the value temp to the speed register of your specific GPIO port.
+
+	// Clear the bits before setting them
+	//											| two bits dedicated for each pin.
+	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR &= ~(0x3 << (pGPIOHandle->PinConfig.PinNumber));
+
+	// Setting the bits after clearing them first.
+	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR |= temp; 		// Assign the value temp to the speed register of your specific GPIO port.
 
 	// 3. Configure Pull-up/Pull-down resistor settings of the pin - to avoid floating state
 	temp = 0;     		// Rest temp
 	temp = (pGPIOHandle->PinConfig.PinPuPdControl << (2 * pGPIOHandle->PinConfig.PinNumber));
+
+	// Clear the bits before setting them.
+	pGPIOHandle->pGPIOx_BASEADDR->PUPDR &= ~(0x3 << (pGPIOHandle->PinConfig.PinNumber));
+	// Set the bits
 	pGPIOHandle->pGPIOx_BASEADDR->PUPDR |= temp;
 
 	// 4. configure the output type of the pin
 	temp = 0;
 	temp = (pGPIOHandle->PinConfig.PinOType << (pGPIOHandle->PinConfig.PinNumber)); // The Output type register has 1 bit dedicated for each pin of the port.
+
+	// Clear the bits before setting them.
+	//										   | 1 bit field for each pin - check the Reference manual
+	pGPIOHandle->pGPIOx_BASEADDR->OTYPER &= ~(0x1 << (pGPIOHandle->PinConfig.PinNumber));
+	// Set the bits
 	pGPIOHandle->pGPIOx_BASEADDR->OTYPER |= temp;
 
 	// 5. configue the alternate functionality of the GPIO pin.
 
 	if(pGPIOHandle->PinConfig.PinMode == GPIO_PIN_ALTFUNC_MODE){ // Only configure the Alternate Functionality if the user has set the Pin mode to be in Alternate Function mode, else skip this part.
 
-
-
 				// There are two register's dedicated for selecting Alternate functionality, four bit for each pin.
-				// ALFL = alternate functionalit low for pins 0-7
-				// ALFH = alternate functionality high for pins 8-15
+				// ALFL = alternate functionalit low for pins 0-7  = 		AFR[0]
+				// ALFH = alternate functionality high for pins 8-15 =		AFR[1]
+				// Each Alternate Functionality Register (AFR) has 4 bits dedicated to each pin.
+				// AFR[0] is dedicated to pins 0-7, and each pin gets 4 bits to decide its functionality
+				// AFR[1] is dedicated to pin  8-15, and each pin gets 4 bits to decide its functionality.
+				// The value that will be set in the 4 bits is placed by the user in the PinAltFunMode field of the GPIO_PinConfig_t structure.
+
+			// First we need to decide which AFR register to use, this will decided using the PinNumber field set by the user in the GPIO_PinConfig_t structure.
+			// Since, each pin is given 4 bits, and each AFR register has 8 pins dedicated, integer division of PinNumber by 8, will give the dedicated AFR register for the pin.
+			uint32_t temp1, temp2; // reset temp  //You can also use uint8_t instead of uint32_t - how?? AFR is 32 bits long.
+			temp1 = (pGPIOHandle->PinConfig.PinNumber) / 8;
+
+			// Now, to find the field of the dedicated AFR register to configure, you find the remainder of the PinNumber divided by 8, and shift the value in PinAltFunMode of field by 4 times that value. (4 times b/c each pin has 4 bits dedicated to it, in each AFR register)
+			temp2 = (pGPIOHandle->PinConfig.PinNumber) % 8;
+
+			// Clear the bits before setting them.
+			//											   | 4-bit field, all 4 bits in Decimal number = 15 == F
+			pGPIOHandle->pGPIOx_BASEADDR->AFR[temp1] &= ~(0xF << (4 *(temp2)));
+			// Set the bits
+			// Now configure the physical address dedicated to setting the alternate functionality mode.
+			pGPIOHandle->pGPIOx_BASEADDR->AFR[temp1] |= (pGPIOHandle->PinConfig.PinAltFunMode << (4 *(temp2)));
+
+/*  Alternate way of doing it.
+			if(temp == 1){  //PinNumber belongs to AFR[1] register
+
+				pGPIOHandle->pGPIOx_BASEADDR->AFR[1] |= (pGPIOHandle->PinConfig.PinAltFunMode << (4 *(pGPIOHandle->PinConfig.PinNumber % 8)));
+			}else if(temp==0){  // PinNumbr belong to AFR[0] register
+				pGPIOHandle->pGPIOx_BASEADDR->AFR[1] |= (pGPIOHandle->PinConfig.PinAltFunMode << (4 *(pGPIOHandle->PinConfig.PinNumber % 8)));
+
+			}*/
+
 	}
+
 
 
 

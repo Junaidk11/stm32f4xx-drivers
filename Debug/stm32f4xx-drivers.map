@@ -259,7 +259,7 @@ Discarded input sections
  .text.GPIO_ClockControl
                 0x0000000000000000      0x204 drivers/src/gpio_driver.o
  .text.GPIO_Init
-                0x0000000000000000       0x90 drivers/src/gpio_driver.o
+                0x0000000000000000      0x18e drivers/src/gpio_driver.o
  .text.GPIO_DeInit
                 0x0000000000000000       0x12 drivers/src/gpio_driver.o
  .text.GPIO_WriteToOutputPin
@@ -272,8 +272,8 @@ Discarded input sections
                 0x0000000000000000       0x1c drivers/src/gpio_driver.o
  .text.GPIO_IRQHandling
                 0x0000000000000000       0x14 drivers/src/gpio_driver.o
- .debug_info    0x0000000000000000      0x51c drivers/src/gpio_driver.o
- .debug_abbrev  0x0000000000000000      0x100 drivers/src/gpio_driver.o
+ .debug_info    0x0000000000000000      0x546 drivers/src/gpio_driver.o
+ .debug_abbrev  0x0000000000000000      0x109 drivers/src/gpio_driver.o
  .debug_aranges
                 0x0000000000000000       0x58 drivers/src/gpio_driver.o
  .debug_ranges  0x0000000000000000       0x48 drivers/src/gpio_driver.o
@@ -287,8 +287,8 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x1df drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x2a2 drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0xe1 drivers/src/gpio_driver.o
- .debug_line    0x0000000000000000      0x4eb drivers/src/gpio_driver.o
- .debug_str     0x0000000000000000     0x5447 drivers/src/gpio_driver.o
+ .debug_line    0x0000000000000000      0x4fa drivers/src/gpio_driver.o
+ .debug_str     0x0000000000000000     0x5453 drivers/src/gpio_driver.o
  .comment       0x0000000000000000       0x7c drivers/src/gpio_driver.o
  .debug_frame   0x0000000000000000      0x150 drivers/src/gpio_driver.o
  .ARM.attributes
