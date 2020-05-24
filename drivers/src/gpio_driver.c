@@ -215,20 +215,43 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 }
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  - GPIO_DeInit
  *
- * @brief             -
+ * @brief             - This API is used to reset the GPIO registers.
  *
+ * @param[in]         - Base address of your GPIO port
  * @param[in]         -
  * @param[in]         -
- * @param[in]         -
  *
- * @return            -
+ * @return            - none
  *
- * @Note              -
+ * @Note              - Use RCC peripheral register to reset all the GPIO registers instead of reseting all registers manually.
+ * 						Also, you need to set the bit in the RCC before you clear it for resetting.
 
 */
 void GPIO_DeInit(GPIO_RegDef_t *pGPIO_PORT){
+
+			if(pGPIO_PORT == GPIOA){
+				GPIOA_REG_RESET();				// GPIO port A register reset MACRO defined in MCU specific header file.
+			}else if(pGPIO_PORT == GPIOB){
+				GPIOB_REG_RESET();
+			}else if(pGPIO_PORT == GPIOC){
+				GPIOC_REG_RESET();
+			}else if(pGPIO_PORT == GPIOD){
+				GPIOD_REG_RESET();
+			}else if(pGPIO_PORT == GPIOE){
+				GPIOE_REG_RESET();
+			}else if(pGPIO_PORT == GPIOF){
+				GPIOF_REG_RESET();
+			}else if(pGPIO_PORT == GPIOG){
+				GPIOG_REG_RESET();
+			}else if(pGPIO_PORT == GPIOI){
+				GPIOI_REG_RESET();
+			}else if(pGPIO_PORT == GPIOJ){
+				GPIOJ_REG_RESET();
+			}else if(pGPIO_PORT == GPIOK){
+				GPIOK_REG_RESET();
+			}
 
 }
 

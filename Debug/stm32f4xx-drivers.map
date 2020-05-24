@@ -261,7 +261,7 @@ Discarded input sections
  .text.GPIO_Init
                 0x0000000000000000      0x18e drivers/src/gpio_driver.o
  .text.GPIO_DeInit
-                0x0000000000000000       0x12 drivers/src/gpio_driver.o
+                0x0000000000000000      0x190 drivers/src/gpio_driver.o
  .text.GPIO_WriteToOutputPin
                 0x0000000000000000       0x1a drivers/src/gpio_driver.o
  .text.GPIO_WriteToOutputPort
@@ -285,10 +285,10 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/gpio_driver.o
- .debug_macro   0x0000000000000000      0x2a2 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000000      0x2ef drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0xe1 drivers/src/gpio_driver.o
- .debug_line    0x0000000000000000      0x4fa drivers/src/gpio_driver.o
- .debug_str     0x0000000000000000     0x5453 drivers/src/gpio_driver.o
+ .debug_line    0x0000000000000000      0x535 drivers/src/gpio_driver.o
+ .debug_str     0x0000000000000000     0x5896 drivers/src/gpio_driver.o
  .comment       0x0000000000000000       0x7c drivers/src/gpio_driver.o
  .debug_frame   0x0000000000000000      0x150 drivers/src/gpio_driver.o
  .ARM.attributes
@@ -644,7 +644,7 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000000       0x10 Src/main.o
  .debug_ranges  0x0000000000000010       0x20 Startup/startup_stm32f407vgtx.o
 
-.debug_macro    0x0000000000000000     0x11ad
+.debug_macro    0x0000000000000000     0x11fa
  .debug_macro   0x0000000000000000       0x72 Src/main.o
  .debug_macro   0x0000000000000072      0xa60 Src/main.o
  .debug_macro   0x0000000000000ad2       0x22 Src/main.o
@@ -653,16 +653,16 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_macro   0x0000000000000bd3       0xef Src/main.o
  .debug_macro   0x0000000000000cc2       0x6a Src/main.o
  .debug_macro   0x0000000000000d2c      0x1df Src/main.o
- .debug_macro   0x0000000000000f0b      0x2a2 Src/main.o
+ .debug_macro   0x0000000000000f0b      0x2ef Src/main.o
 
 .debug_line     0x0000000000000000      0x44a
  .debug_line    0x0000000000000000      0x3c6 Src/main.o
  .debug_line    0x00000000000003c6       0x84 Startup/startup_stm32f407vgtx.o
 
-.debug_str      0x0000000000000000     0x4d22
- .debug_str     0x0000000000000000     0x4cf1 Src/main.o
-                                       0x4e4c (size before relaxing)
- .debug_str     0x0000000000004cf1       0x31 Startup/startup_stm32f407vgtx.o
+.debug_str      0x0000000000000000     0x5165
+ .debug_str     0x0000000000000000     0x5134 Src/main.o
+                                       0x528f (size before relaxing)
+ .debug_str     0x0000000000005134       0x31 Startup/startup_stm32f407vgtx.o
                                          0x60 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
