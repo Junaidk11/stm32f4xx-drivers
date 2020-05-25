@@ -263,96 +263,113 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIO_PORT){
  /* Arguments: To read a pin, you need GPIO Base address & pin number. The returned value will either be 0 or 1, uint8_t is the closest data type to return. */
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  - GPIO_ReadFromInputPin
  *
- * @brief             -
+ * @brief             - Reading the value of an input pin.
  *
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         -Base address of the GPIO port the input is connected to.
+ * @param[in]         -The pin you want to read
  * @param[in]         -
  *
- * @return            -
+ * @return            -0 or 1
  *
  * @Note              -
 
 */
-uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber);
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber){
+	uint8_t value;
+//					Grab the Input Data Register, followed by leftshifting the desired bit to the LSB position, followed by masking the remaining bits from Bit 0 - Bit 31, followed by typecasting the uint32_t  as uint8_t, to avoid compiler error.
+//							|
+	value = (uint8_t) ((pGPIO_PORT->IDR >> pinNumber) & 0x00000001);
+	return value;
+}
 
 /* Arguments: To read a PORT, you need GPIO Base address. The returned value will be 16 bits long, each PORT has 16 pins. uint16_t is the closest data type to return. */
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  - GPIO_ReadFromInputPort
  *
- * @brief             -
+ * @brief             - Reading the entire port data
  *
+ * @param[in]         - Base address of the Port
  * @param[in]         -
  * @param[in]         -
- * @param[in]         -
  *
- * @return            -
+ * @return            - 16 bit value with each bit corresponding to the data on the respective pin.
  *
- * @Note              -
+ * @Note              - Each port as 16 pins
 
 */
-uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIO_PORT);
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIO_PORT){
+	uint16_t value;
+
+	value = (uint16_t) pGPIO_PORT->IDR;
+	return value;
+}
 
 /* Arguments: To write to a pin, you need GPIO Base address, pin number & the value (use Generic Macros defined in MCU header file.) you want to write to the pin.*/
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  - GPIO_WriteToOutputPin
  *
- * @brief             -
+ * @brief             - Writing 1 or 0 to the respective pinNumber of the GPIO port.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         -GPIO port base address
+ * @param[in]         -The respective pin number you wish to set or clear
+ * @param[in]         -GPIO_PIN_SET or GPIO_PIN_CLEAR from @GPIO_PIN_SET_CLEAR_MACROS
  *
- * @return            -
+ * @return            -none
  *
  * @Note              -
 
 */
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber, uint8_t value){
+
+	if(value == GPIO_PIN_SET){
+		pGPIO_PORT->ODR |= (1 << pinNumber);
+	}else if(value == GPIO_PIN_CLEAR){
+		pGPIO_PORT->ODR &= ~(1 << pinNumber);
+	}
 }
 
 /* Arguments: To write to a PORT, you need GPIO Base address & the value you want to write to the  port- value has to 16 bits long, each Port has 16 pins. */
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  -GPIO_WriteToOutputPort
  *
- * @brief             -
+ * @brief             -Writing 16 bit value to the entire GPIO port
  *
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         -Base address of the PORT you want to write to.
+ * @param[in]         -The 16-bit value you want to set at the port.
  * @param[in]         -
  *
- * @return            -
+ * @return            -none
  *
  * @Note              -
 
 */
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIO_PORT, uint16_t Value){
-
+			pGPIO_PORT->ODR = Value;
 }
 
 /* Arguments: To toggle a specific output pin, you only need the Base address of the GPIO port & the pin number you wish to toggle. */
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  -GPIO_ToggleOutputPin
  *
- * @brief             -
+ * @brief             -Toggling a GPIO pin
  *
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         -Base address of the GPIO port
+ * @param[in]         -The pin you wish to toggle
  * @param[in]         -
  *
- * @return            -
+ * @return            -none
  *
  * @Note              -
 
 */
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber){
-
+		pGPIO_PORT->ODR ^= (1 << pinNumber);
 }
 
 

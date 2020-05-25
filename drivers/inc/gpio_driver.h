@@ -188,8 +188,12 @@ void GPIO_IRQHandling(uint8_t pinNumber);
 #define GPIO_PIN_PULL_UP								1
 #define GPIO_PIN_PULL_DOWN								2
 
+/*
+ *   GPIO Set & clear MACROS - @GPIO_PIN_SET_CLEAR_MACROS
+ */
 
-
+#define GPIO_PIN_SET 		1
+#define GPIO_PIN_CLEAR		0
 
 
 #endif /* INC_GPIO_DRIVER_H_ */

@@ -262,21 +262,25 @@ Discarded input sections
                 0x0000000000000000      0x18e drivers/src/gpio_driver.o
  .text.GPIO_DeInit
                 0x0000000000000000      0x190 drivers/src/gpio_driver.o
- .text.GPIO_WriteToOutputPin
+ .text.GPIO_ReadFromInputPin
+                0x0000000000000000       0x2a drivers/src/gpio_driver.o
+ .text.GPIO_ReadFromInputPort
                 0x0000000000000000       0x1a drivers/src/gpio_driver.o
+ .text.GPIO_WriteToOutputPin
+                0x0000000000000000       0x4e drivers/src/gpio_driver.o
  .text.GPIO_WriteToOutputPort
-                0x0000000000000000       0x16 drivers/src/gpio_driver.o
+                0x0000000000000000       0x1c drivers/src/gpio_driver.o
  .text.GPIO_ToggleOutputPin
                 0x0000000000000000       0x16 drivers/src/gpio_driver.o
  .text.GPIO_IRQConfig
                 0x0000000000000000       0x1c drivers/src/gpio_driver.o
  .text.GPIO_IRQHandling
                 0x0000000000000000       0x14 drivers/src/gpio_driver.o
- .debug_info    0x0000000000000000      0x546 drivers/src/gpio_driver.o
- .debug_abbrev  0x0000000000000000      0x109 drivers/src/gpio_driver.o
+ .debug_info    0x0000000000000000      0x5c7 drivers/src/gpio_driver.o
+ .debug_abbrev  0x0000000000000000      0x134 drivers/src/gpio_driver.o
  .debug_aranges
-                0x0000000000000000       0x58 drivers/src/gpio_driver.o
- .debug_ranges  0x0000000000000000       0x48 drivers/src/gpio_driver.o
+                0x0000000000000000       0x68 drivers/src/gpio_driver.o
+ .debug_ranges  0x0000000000000000       0x58 drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0x81 drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0xa60 drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0x22 drivers/src/gpio_driver.o
@@ -286,11 +290,11 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x6a drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x2ef drivers/src/gpio_driver.o
- .debug_macro   0x0000000000000000       0xe1 drivers/src/gpio_driver.o
- .debug_line    0x0000000000000000      0x535 drivers/src/gpio_driver.o
- .debug_str     0x0000000000000000     0x5896 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000000       0xef drivers/src/gpio_driver.o
+ .debug_line    0x0000000000000000      0x561 drivers/src/gpio_driver.o
+ .debug_str     0x0000000000000000     0x58e3 drivers/src/gpio_driver.o
  .comment       0x0000000000000000       0x7c drivers/src/gpio_driver.o
- .debug_frame   0x0000000000000000      0x150 drivers/src/gpio_driver.o
+ .debug_frame   0x0000000000000000      0x1a0 drivers/src/gpio_driver.o
  .ARM.attributes
                 0x0000000000000000       0x33 drivers/src/gpio_driver.o
  .text          0x0000000000000000        0x0 c:/st/stm32cubeide_1.3.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.win32_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-errno.o)
