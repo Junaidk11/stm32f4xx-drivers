@@ -148,7 +148,7 @@ void GPIO_IRQHandling(uint8_t pinNumber);
 
 /* The following are uninterrupted modes */
 #define GPIO_PIN_INPUT_MODE  							0
-#define GPIO_PIN OUTPUT_MODE  							1
+#define GPIO_PIN_OUTPUT_MODE  							1
 #define GPIO_PIN_ALTFUNC_MODE  							2
 #define GPIO_PIN_ANALOG_MODE  							3
 
