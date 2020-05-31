@@ -55,12 +55,10 @@ void GPIO_ClockControl(GPIO_RegDef_t *pGPIO_PORT,uint8_t enable_disable ){
 			GPIOF_PERIPH_CLOCK_EN();
 		}else if(pGPIO_PORT == GPIOG){
 			GPIOG_PERIPH_CLOCK_EN();
+		}else if(pGPIO_PORT == GPIOH){
+			GPIOH_PERIPH_CLOCK_EN();
 		}else if(pGPIO_PORT == GPIOI){
 			GPIOI_PERIPH_CLOCK_EN();
-		}else if(pGPIO_PORT == GPIOJ){
-			GPIOJ_PERIPH_CLOCK_EN();
-		}else if(pGPIO_PORT == GPIOK){
-			GPIOK_PERIPH_CLOCK_EN();
 		}
 	}else if(enable_disable == DISABLE){
 		if(pGPIO_PORT == GPIOA){
@@ -77,12 +75,10 @@ void GPIO_ClockControl(GPIO_RegDef_t *pGPIO_PORT,uint8_t enable_disable ){
 			GPIOF_PERIPH_CLOCK_DI();
 		}else if(pGPIO_PORT == GPIOG){
 			GPIOG_PERIPH_CLOCK_DI();
+		}else if(pGPIO_PORT == GPIOH){
+			GPIOH_PERIPH_CLOCK_DI();
 		}else if(pGPIO_PORT == GPIOI){
 			GPIOI_PERIPH_CLOCK_DI();
-		}else if(pGPIO_PORT == GPIOJ){
-			GPIOJ_PERIPH_CLOCK_DI();
-		}else if(pGPIO_PORT == GPIOK){
-			GPIOK_PERIPH_CLOCK_DI();
 		}
 	}
 }
@@ -130,7 +126,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 
 				// Clear the desired bits before setting them.
 //														  | the 0x3 is because we're clearing 2 bits, which in decimal is a 3. Also, the left shift argument is to clear the respective field.
-				pGPIOHandle->pGPIOx_BASEADDR->MODER &= ~(0x3 << pGPIOHandle->PinConfig.PinNumber);
+				pGPIOHandle->pGPIOx_BASEADDR->MODER &= ~(0x3 << (2 * pGPIOHandle->PinConfig.PinNumber));
 //			Grabs the Physical Memory address dedicated to Mode register of your desired GPIO Port
 								// |
 				pGPIOHandle->pGPIOx_BASEADDR->MODER |= temp; 		// Assign temp value to the MODER register using the base-address of your PORT.
@@ -147,7 +143,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 
 	// Clear the bits before setting them
 	//											| two bits dedicated for each pin.
-	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR &= ~(0x3 << (pGPIOHandle->PinConfig.PinNumber));
+	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR &= ~(0x3 << (2 * pGPIOHandle->PinConfig.PinNumber));
 
 	// Setting the bits after clearing them first.
 	pGPIOHandle->pGPIOx_BASEADDR->OSPEEDR |= temp; 		// Assign the value temp to the speed register of your specific GPIO port.
@@ -157,7 +153,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 	temp = (pGPIOHandle->PinConfig.PinPuPdControl << (2 * pGPIOHandle->PinConfig.PinNumber));
 
 	// Clear the bits before setting them.
-	pGPIOHandle->pGPIOx_BASEADDR->PUPDR &= ~(0x3 << (pGPIOHandle->PinConfig.PinNumber));
+	pGPIOHandle->pGPIOx_BASEADDR->PUPDR &= ~(0x3 << (2* pGPIOHandle->PinConfig.PinNumber));
 	// Set the bits
 	pGPIOHandle->pGPIOx_BASEADDR->PUPDR |= temp;
 
@@ -185,7 +181,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 
 			// First we need to decide which AFR register to use, this will decided using the PinNumber field set by the user in the GPIO_PinConfig_t structure.
 			// Since, each pin is given 4 bits, and each AFR register has 8 pins dedicated, integer division of PinNumber by 8, will give the dedicated AFR register for the pin.
-			uint32_t temp1, temp2; // reset temp  //You can also use uint8_t instead of uint32_t - how?? AFR is 32 bits long.
+			uint8_t temp1, temp2; // reset temp  //You can also use uint8_t instead of uint32_t - how?? AFR is 32 bits long.
 			temp1 = (pGPIOHandle->PinConfig.PinNumber) / 8;
 
 			// Now, to find the field of the dedicated AFR register to configure, you find the remainder of the PinNumber divided by 8, and shift the value in PinAltFunMode of field by 4 times that value. (4 times b/c each pin has 4 bits dedicated to it, in each AFR register)
@@ -245,12 +241,10 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIO_PORT){
 				GPIOF_REG_RESET();
 			}else if(pGPIO_PORT == GPIOG){
 				GPIOG_REG_RESET();
+			}else if(pGPIO_PORT == GPIOH){
+				GPIOH_REG_RESET();
 			}else if(pGPIO_PORT == GPIOI){
 				GPIOI_REG_RESET();
-			}else if(pGPIO_PORT == GPIOJ){
-				GPIOJ_REG_RESET();
-			}else if(pGPIO_PORT == GPIOK){
-				GPIOK_REG_RESET();
 			}
 
 }

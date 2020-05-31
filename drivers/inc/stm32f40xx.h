@@ -69,8 +69,7 @@
 #define GPIOG_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x1800)
 #define GPIOH_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x1C00)
 #define GPIOI_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x2000)
-#define GPIOJ_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x2400)
-#define GPIOK_BASEADDR 			(AHB1PERIPH_BASEADDR + 0x2800)
+
 #define RCC_BASEADDR			(AHB1PERIPH_BASEADDR + 0x3800)
 
 /*
@@ -81,8 +80,10 @@
 #define I2C1_BASEADDR 			(APB1PERIPH_BASEADDR + 0x5400)
 #define I2C2_BASEADDR 			(APB1PERIPH_BASEADDR + 0x5800)
 #define I2C3_BASEADDR 			(APB1PERIPH_BASEADDR + 0x5C00)
+
 #define SPI2_BASEADDR 			(APB1PERIPH_BASEADDR + 0x3800)
 #define SPI3_BASEADDR 			(APB1PERIPH_BASEADDR + 0x3C00)
+
 #define USART2_BASEADDR 		(APB1PERIPH_BASEADDR + 0x4400)
 #define USART3_BASEADDR 		(APB1PERIPH_BASEADDR + 0x4800)
 #define UART4_BASEADDR 			(APB1PERIPH_BASEADDR + 0x4C00)
@@ -142,8 +143,6 @@ typedef struct{
 #define GPIOG  			((GPIO_RegDef_t*) GPIOG_BASEADDR)
 #define GPIOH  			((GPIO_RegDef_t*) GPIOH_BASEADDR)
 #define GPIOI  			((GPIO_RegDef_t*) GPIOI_BASEADDR)
-#define GPIOJ  			((GPIO_RegDef_t*) GPIOJ_BASEADDR)
-#define GPIOK  			((GPIO_RegDef_t*) GPIOK_BASEADDR)
 
 /*
  *  				PERIPHERAL REGISTER DEFINITION STRUCTURE - For RCC
@@ -224,8 +223,6 @@ typedef struct{
 #define GPIOG_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 6))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 6.  */
 #define GPIOH_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 7))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 7.  */
 #define GPIOI_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 8))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 8.  */
-#define GPIOJ_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 9))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 9.  */
-#define GPIOK_PERIPH_CLOCK_EN()   		(RCC->RCC_AHB1ENR |= (1 << 10)) /* Dereferencing AHB1 Peripheral Clock Enable Register, and setting it's bit 10.  */
 
 /*   Clock Enable Macros for I2Cx Peripherals  */
 #define I2C1_PERIPH_CLOCK_EN()   		(RCC->RCC_APB1ENR |= (1 << 21))  /* Dereferencing APB1 Peripheral Clock Enable Register, and setting it's bit 21.  */
@@ -271,8 +268,6 @@ typedef struct{
 #define GPIOG_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 6))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 6.  */
 #define GPIOH_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 7))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 7.  */
 #define GPIOI_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 8))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 8.  */
-#define GPIOJ_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 9))  /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 9.  */
-#define GPIOK_PERIPH_CLOCK_DI()   		(RCC->RCC_AHB1ENR &= ~ (1 << 10)) /* Dereferencing AHB1 Peripheral Clock Enable Register, and clearing it's bit 10.  */
 
 /*   Clock Disable Macros for I2Cx Peripherals  */
 #define I2C1_PERIPH_CLOCK_DI()   		(RCC->RCC_APB1ENR &= ~ (1 << 21))  /* Dereferencing APB1 Peripheral Clock Enable Register, and clearing it's bit 21.  */
@@ -320,8 +315,6 @@ typedef struct{
 #define GPIOG_REG_RESET()      do{  (RCC->RCC_AHB1RSTR |= (1 << 6)); (RCC->RCC_AHB1RSTR &= ~(1 << 6)); }while(0)
 #define GPIOH_REG_RESET()      do{  (RCC->RCC_AHB1RSTR |= (1 << 7)); (RCC->RCC_AHB1RSTR &= ~(1 << 7)); }while(0)
 #define GPIOI_REG_RESET()      do{  (RCC->RCC_AHB1RSTR |= (1 << 8)); (RCC->RCC_AHB1RSTR &= ~(1 << 8)); }while(0)
-#define GPIOJ_REG_RESET()      do{  (RCC->RCC_AHB1RSTR |= (1 << 9)); (RCC->RCC_AHB1RSTR &= ~(1 << 9)); }while(0)
-#define GPIOK_REG_RESET()      do{  (RCC->RCC_AHB1RSTR |= (1 << 10)); (RCC->RCC_AHB1RSTR &= ~(1 << 10)); }while(0)
 
 
 #endif /* INC_STM32F40XX_H_ */

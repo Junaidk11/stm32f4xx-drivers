@@ -1,5 +1,3 @@
-"Src/001led_toggle.o"
-"Src/syscalls.o"
-"Src/sysmem.o"
+"Src/002led_button.o"
 "Startup/startup_stm32f407vgtx.o"
 "drivers/src/gpio_driver.o"
