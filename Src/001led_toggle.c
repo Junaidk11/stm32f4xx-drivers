@@ -30,7 +30,7 @@ int main(void){
 	gpio_push_pull.PinConfig.PinMode = GPIO_PIN_OUTPUT_MODE; 		 // Set the pin in Output mode.
 	gpio_push_pull.PinConfig.PinOType = GPIO_PUSH_PULL_OUTPUT_CONFIG; //Set the I/O pin in PUSH-PULL configuration of Output mode
 	gpio_push_pull.PinConfig.PinPuPdControl = GPIO_PIN_NO_PUPD;      // In Push-pull configuration, don't need pull-up or pull-down resistor.
-	gpio_push_pull.PinConfig.PinSpeed = GPIO_PIN_HIGH_SPEED;   // Speed doesn't really matter
+	gpio_push_pull.PinConfig.PinSpeed = GPIO_PIN_MEDIUM_SPEED;   // Speed doesn't really matter
 
 	// Now, enable clock access to GPIO Port D, use the RCC clock enable MACROS defined in the device specific header file or:
 	// Use the clock control API defined in GPIO driver - the better option.

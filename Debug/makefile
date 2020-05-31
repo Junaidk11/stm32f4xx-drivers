@@ -40,8 +40,8 @@ stm32f4xx-drivers.bin \
 all: stm32f4xx-drivers.elf secondary-outputs
 
 # Tool invocations
-stm32f4xx-drivers.elf: $(OBJS) $(USER_OBJS) C:\Users\Junai\Desktop\stm32f4xx-drivers\STM32F407VGTX_FLASH.ld
-	arm-none-eabi-gcc -o "stm32f4xx-drivers.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Junai\Desktop\stm32f4xx-drivers\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4xx-drivers.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+stm32f4xx-drivers.elf: $(OBJS) $(USER_OBJS) /Users/junaidkhan/Desktop/MCU-Udemy/stm32f4xx-drivers/STM32F407VGTX_FLASH.ld
+	arm-none-eabi-gcc -o "stm32f4xx-drivers.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/junaidkhan/Desktop/MCU-Udemy/stm32f4xx-drivers/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4xx-drivers.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
