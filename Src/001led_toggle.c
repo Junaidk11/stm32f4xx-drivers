@@ -22,6 +22,11 @@ void Delay(){
 }
 int main(void){
 
+	// The following statements use the GPIO handle to configure a Port D pin in output mode with Push-pull configuration.
+	// The same steps are used to configure a pin in output mode with open-drain configuration, the only difference is
+	//  - in Open drain configuration, the output can be actively driven low, but needs a pull-up resistor to drive the pin high.
+	// The pull-up resistor can be internal or external. Use internal unless you need to control the amount of current sourced from the output pin.
+
 	GPIO_Handle_t gpio_push_pull; 				// Instantiate a GPIO handle variable to hold pin configuration information and gain access to the API functions.
 	gpio_push_pull.pGPIOx_BASEADDR = GPIOD; 	// Set the baseaddress of the Port you're configuring - Green LED is connected to Port D, Pin 12.
 
@@ -39,6 +44,7 @@ int main(void){
 
 	// Now, call the Init API to configure the physical address of Port D
 	GPIO_Init(&gpio_push_pull);
+
 
 	while(1){
 
