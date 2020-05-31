@@ -14,7 +14,7 @@
  */
 
 #include "stm32f40xx.h" // Include device specific header file, to get access to the inner layout of your target.
-#include "gpio_driver.h" // Include GPIO driver header file, this will give you access to APIs that can be used to initialize and use the GPIO peripheral of your target.
+#include "gpio_driver.h" //Include GPIO driver header file, this will give you access to APIs that can be used to initialize and use the GPIO peripheral of your target.
 
 void Delay(){
 	int i = 0;
