@@ -196,4 +196,12 @@ void GPIO_IRQHandling(uint8_t pinNumber);
 #define GPIO_PIN_CLEAR		0
 
 
+/*
+*				C MACRO to get the code for selecting the Port that gets access to the EXTIx pin for delivering interrupt to the Processor via NVIC. 
+*  						The following MACRO can easily be implemented as a C function, but the MACRO method is neat - can move this macro to device header file if other files need it. 
+*/
+
+#define GPIO_BASEADDR_TO_PORTCODE(x)  ((x==GPIOA)? 0: (x==GPIOB)? 1:(x==GPIOC)? 2: (x==GPIOD)? 3: (x==GPIOE)? 4: (x==GPIOF)? 5: (x==GPIOG)? 6: (x==GPIOH)? 7: (x==GPIOI)? 8: 0)
+									  									  
+
 #endif /* INC_GPIO_DRIVER_H_ */

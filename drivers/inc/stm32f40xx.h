@@ -99,6 +99,7 @@
 #define USART6_BASEADDR 		(APB2PERIPH_BASEADDR + 0x1400)
 #define EXTI_BASEADDR 			(APB2PERIPH_BASEADDR + 0x3C00)
 #define SYSCFG_BASEADDR 		(APB2PERIPH_BASEADDR + 0x3800)
+#define EXTI_BASEADDR			(APB2PERIPH_BASEADDR + 0x3C00)
 
 
 /*
@@ -175,8 +176,8 @@ typedef struct{
 	__vo uint32_t RCC_AHB3ENR; 			/* AHB3 Peripheral Clock Enable  Register   	Address offset: 0x38 */
 		 uint32_t RESERVED3; 			/* Reserved 									Address offset: 0x3C */
 
-	__vo uint32_t RCC_AP1ENR; 			/* APB1 Peripheral Clock Enable  Register   	Address offset: 0x40 */
-	__vo uint32_t RCC_AP2ENR; 			/* APB2 Peripheral Clock Enable  Register   	Address offset: 0x44 */
+	__vo uint32_t RCC_APB1ENR; 			/* APB1 Peripheral Clock Enable  Register   	Address offset: 0x40 */
+	__vo uint32_t RCC_APB2ENR; 			/* APB2 Peripheral Clock Enable  Register   	Address offset: 0x44 */
 	 	 uint32_t RESERVED4[2]; 		/* Two Reserved registers 						Address offset: 0x48-0x4C */
 
 	__vo uint32_t RCC_AHB1LPENR; 		/* AHB1 Peripheral Clock enable in low power mode Register   Address offset: 0x50 */
@@ -202,7 +203,7 @@ typedef struct{
 
 
 /*
- *  			Peripheral Definitions Type casted to their C Structure holding their register definitions.
+ *  			Peripheral Definition Type casted to their C Structure holding their register definitions.
  */
 
 #define RCC 		((RCC_RegDef_t*)RCC_BASEADDR)
@@ -249,8 +250,6 @@ typedef struct{
 
 /*   Clock Enable Macros for SYSCFG Peripheral  */
 #define SYSCFG_PERIPH_CLOCK_EN()   		(RCC->RCC_APB2ENR |= (1 << 14))  /* Dereferencing APB2 Peripheral Clock Enable Register, and setting it's bit 14.  */
-
-
 
 
 /*
@@ -317,4 +316,74 @@ typedef struct{
 #define GPIOI_REG_RESET()      do{  (RCC->RCC_AHB1RSTR |= (1 << 8)); (RCC->RCC_AHB1RSTR &= ~(1 << 8)); }while(0)
 
 
+/*
+ *  				PERIPHERAL REGISTER DEFINITION STRUCTURE - For EXTI
+ *  				EXTI = External Interrupt/Event Controller 
+ *  				Need this peripheral for Edge Detection, enable & disable interrupt delivery to the processor via NVIC.
+ * 					NVIC = Nested Vector Interrupt Controller
+ */	
+
+/*
+ * Note: Registers of a Peripheral are specific to the MCU. Refer to the Reference Manual of Device.
+ *
+ */
+
+typedef struct{
+
+	__vo uint32_t IMR; 		/* Interrupt Mask Register. */
+	__vo uint32_t EMR; 		/* Event Mask Register. */
+	__vo uint32_t RTSR;		/* Rising Trigger Selection Register. */ 
+	__vo uint32_t FTSR;		/* Falling Trigger Selection Register. */ 
+	__vo uint32_t SWIER;	/* Software Interrupt Event  Register. */
+	__vo uint32_t PR; 		/* Pending Register. */
+
+}EXTI_RegDef_t;
+
+/*
+ *  			Peripheral Definition Type casted to their C Structure holding their register definitions.
+ */
+
+#define EXTI 		((EXTI_RegDef_t*)EXTI_BASEADDR)
+
+/*
+ *  				PERIPHERAL REGISTER DEFINITION STRUCTURE - For SYSCFG
+ *  				SYSCFG = System Configuration Controller 
+ *  				Need this peripheral for selecting the GPIO port corresponding to the pin configured to deliver interrupt to the Processor via NVIC
+ * 					NVIC = Nested Vector Interrupt Controller
+ */	
+
+/*
+ * Note: Registers of a Peripheral are specific to the MCU. Refer to the Reference Manual of Device.
+ *
+ */
+
+typedef struct{
+	__vo uint32_t MEMRMP;   		/* Memory Remap Register. */																/* Address offset: 0x00 */
+	__vo uint32_t PMC;   			/* Peripheral Mode Configuration */															/* Address offset: 0x04 */
+	__vo uint32_t EXTICR[4];   		/* External Interrupt Configuration Register 1-4  */ 										/* Address offset: 0x08 - 0x14 */
+		 uint32_t RESERVED[2]; 		/* According to Reference Manual - these are reserved  - always look at Address Offset!*/   /* Address offset: 0x18-0x1C */
+	__vo uint32_t CMPCR;    		/* Compensation Cell Control*/																/* Address offset: 0x20 */
+
+}SYSCFG_RegDef_t; 
+
+/*
+ *  			Peripheral Definition Type casted to their C Structure holding their register definitions.
+ */
+#define SYSCFG   ((SYSCFG_RegDef_t *)SYSCFG_BASEADDR)
+
+
+/**
+ *  
+ * 		Interrupt Request Numbers(IRQs)
+ * 			These numbers are MCU specific - refer to Reference Manual. 
+ * 				For STM32f407-Discovery - Interrupt & Exception Vector Table is under section Interrupts & Events 
+ */
+
+#define IRQ_NO_EXTI0 			6
+#define IRQ_NO_EXTI1			7 
+#define IRQ_NO_EXTI2			8
+#define IRQ_NO_EXTI3			9
+#define IRQ_NO_EXTI4			10
+#define IRQ_NO_EXTI9_5 			23
+#define IRQ_NO_EXTI15_10	    40
 #endif /* INC_STM32F40XX_H_ */

@@ -70,8 +70,8 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/gpio_driver.o
- .debug_macro   0x0000000000000000      0x2ab drivers/src/gpio_driver.o
- .debug_macro   0x0000000000000000       0xef drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000000      0x2f0 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000000       0xf6 drivers/src/gpio_driver.o
  .text          0x0000000000000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-exit.o)
  .data          0x0000000000000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-exit.o)
  .bss           0x0000000000000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-exit.o)
@@ -163,7 +163,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x0000000008000000                g_pfnVectors
                 0x00000000080001a8                . = ALIGN (0x4)
 
-.text           0x00000000080001a8      0x54c
+.text           0x00000000080001a8      0x718
                 0x00000000080001a8                . = ALIGN (0x4)
  *(.text)
  .text          0x00000000080001a8       0x40 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
@@ -275,91 +275,92 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x00000000080002dc      0x1d4 drivers/src/gpio_driver.o
                 0x00000000080002dc                GPIO_ClockControl
  .text.GPIO_Init
-                0x00000000080004b0      0x192 drivers/src/gpio_driver.o
+                0x00000000080004b0      0x35c drivers/src/gpio_driver.o
                 0x00000000080004b0                GPIO_Init
  .text.GPIO_ReadFromInputPin
-                0x0000000008000642       0x2a drivers/src/gpio_driver.o
-                0x0000000008000642                GPIO_ReadFromInputPin
+                0x000000000800080c       0x2a drivers/src/gpio_driver.o
+                0x000000000800080c                GPIO_ReadFromInputPin
  .text.GPIO_ToggleOutputPin
-                0x000000000800066c       0x28 drivers/src/gpio_driver.o
-                0x000000000800066c                GPIO_ToggleOutputPin
+                0x0000000008000836       0x28 drivers/src/gpio_driver.o
+                0x0000000008000836                GPIO_ToggleOutputPin
+ *fill*         0x000000000800085e        0x2 
  .text.__libc_init_array
-                0x0000000008000694       0x48 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-init.o)
-                0x0000000008000694                __libc_init_array
+                0x0000000008000860       0x48 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-init.o)
+                0x0000000008000860                __libc_init_array
  *(.glue_7)
- .glue_7        0x00000000080006dc        0x0 linker stubs
+ .glue_7        0x00000000080008a8        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x00000000080006dc        0x0 linker stubs
+ .glue_7t       0x00000000080008a8        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x00000000080006dc        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
+ .eh_frame      0x00000000080008a8        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
  *(.init)
- .init          0x00000000080006dc        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crti.o
-                0x00000000080006dc                _init
- .init          0x00000000080006e0        0x8 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
+ .init          0x00000000080008a8        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crti.o
+                0x00000000080008a8                _init
+ .init          0x00000000080008ac        0x8 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
  *(.fini)
- .fini          0x00000000080006e8        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crti.o
-                0x00000000080006e8                _fini
- .fini          0x00000000080006ec        0x8 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
-                0x00000000080006f4                . = ALIGN (0x4)
-                0x00000000080006f4                _etext = .
+ .fini          0x00000000080008b4        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crti.o
+                0x00000000080008b4                _fini
+ .fini          0x00000000080008b8        0x8 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
+                0x00000000080008c0                . = ALIGN (0x4)
+                0x00000000080008c0                _etext = .
 
-.vfp11_veneer   0x00000000080006f4        0x0
- .vfp11_veneer  0x00000000080006f4        0x0 linker stubs
+.vfp11_veneer   0x00000000080008c0        0x0
+ .vfp11_veneer  0x00000000080008c0        0x0 linker stubs
 
-.v4_bx          0x00000000080006f4        0x0
- .v4_bx         0x00000000080006f4        0x0 linker stubs
+.v4_bx          0x00000000080008c0        0x0
+ .v4_bx         0x00000000080008c0        0x0 linker stubs
 
-.iplt           0x00000000080006f4        0x0
- .iplt          0x00000000080006f4        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
+.iplt           0x00000000080008c0        0x0
+ .iplt          0x00000000080008c0        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
 
-.rel.dyn        0x00000000080006f4        0x0
- .rel.iplt      0x00000000080006f4        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
+.rel.dyn        0x00000000080008c0        0x0
+ .rel.iplt      0x00000000080008c0        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
 
-.rodata         0x00000000080006f4        0x0
-                0x00000000080006f4                . = ALIGN (0x4)
+.rodata         0x00000000080008c0        0x0
+                0x00000000080008c0                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
-                0x00000000080006f4                . = ALIGN (0x4)
+                0x00000000080008c0                . = ALIGN (0x4)
 
-.ARM.extab      0x00000000080006f4        0x0
-                0x00000000080006f4                . = ALIGN (0x4)
+.ARM.extab      0x00000000080008c0        0x0
+                0x00000000080008c0                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00000000080006f4                . = ALIGN (0x4)
+                0x00000000080008c0                . = ALIGN (0x4)
 
-.ARM            0x00000000080006f4        0x0
-                0x00000000080006f4                . = ALIGN (0x4)
-                0x00000000080006f4                __exidx_start = .
+.ARM            0x00000000080008c0        0x0
+                0x00000000080008c0                . = ALIGN (0x4)
+                0x00000000080008c0                __exidx_start = .
  *(.ARM.exidx*)
-                0x00000000080006f4                __exidx_end = .
-                0x00000000080006f4                . = ALIGN (0x4)
+                0x00000000080008c0                __exidx_end = .
+                0x00000000080008c0                . = ALIGN (0x4)
 
-.preinit_array  0x00000000080006f4        0x0
-                0x00000000080006f4                . = ALIGN (0x4)
-                0x00000000080006f4                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x00000000080008c0        0x0
+                0x00000000080008c0                . = ALIGN (0x4)
+                0x00000000080008c0                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x00000000080006f4                PROVIDE (__preinit_array_end = .)
-                0x00000000080006f4                . = ALIGN (0x4)
+                0x00000000080008c0                PROVIDE (__preinit_array_end = .)
+                0x00000000080008c0                . = ALIGN (0x4)
 
-.init_array     0x00000000080006f4        0x4
-                0x00000000080006f4                . = ALIGN (0x4)
-                0x00000000080006f4                PROVIDE (__init_array_start = .)
+.init_array     0x00000000080008c0        0x4
+                0x00000000080008c0                . = ALIGN (0x4)
+                0x00000000080008c0                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x00000000080006f4        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
-                0x00000000080006f8                PROVIDE (__init_array_end = .)
-                0x00000000080006f8                . = ALIGN (0x4)
+ .init_array    0x00000000080008c0        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
+                0x00000000080008c4                PROVIDE (__init_array_end = .)
+                0x00000000080008c4                . = ALIGN (0x4)
 
-.fini_array     0x00000000080006f8        0x4
-                0x00000000080006f8                . = ALIGN (0x4)
+.fini_array     0x00000000080008c4        0x4
+                0x00000000080008c4                . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x00000000080006f8        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
+ .fini_array    0x00000000080008c4        0x4 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x00000000080006fc                . = ALIGN (0x4)
-                0x00000000080006fc                _sidata = LOADADDR (.data)
+                0x00000000080008c8                . = ALIGN (0x4)
+                0x00000000080008c8                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000        0x0 load address 0x00000000080006fc
+.data           0x0000000020000000        0x0 load address 0x00000000080008c8
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -367,11 +368,11 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _edata = .
 
-.igot.plt       0x0000000020000000        0x0 load address 0x00000000080006fc
+.igot.plt       0x0000000020000000        0x0 load address 0x00000000080008c8
  .igot.plt      0x0000000020000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtbegin.o
                 0x0000000020000000                . = ALIGN (0x4)
 
-.bss            0x0000000020000000       0x1c load address 0x00000000080006fc
+.bss            0x0000000020000000       0x1c load address 0x00000000080008c8
                 0x0000000020000000                _sbss = .
                 0x0000000020000000                __bss_start__ = _sbss
  *(.bss)
@@ -383,7 +384,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x000000002000001c                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x000000002000001c      0x604 load address 0x00000000080006fc
+                0x000000002000001c      0x604 load address 0x00000000080008c8
                 0x0000000020000020                . = ALIGN (0x8)
  *fill*         0x000000002000001c        0x4 
                 [!provide]                        PROVIDE (end = .)
@@ -418,15 +419,15 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x0000000000000101       0x1e /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
 OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000      0x801
+.debug_info     0x0000000000000000      0x90a
  .debug_info    0x0000000000000000      0x218 Src/002led_button.o
  .debug_info    0x0000000000000218       0x22 Startup/startup_stm32f407vgtx.o
- .debug_info    0x000000000000023a      0x5c7 drivers/src/gpio_driver.o
+ .debug_info    0x000000000000023a      0x6d0 drivers/src/gpio_driver.o
 
-.debug_abbrev   0x0000000000000000      0x21d
+.debug_abbrev   0x0000000000000000      0x260
  .debug_abbrev  0x0000000000000000       0xd7 Src/002led_button.o
  .debug_abbrev  0x00000000000000d7       0x12 Startup/startup_stm32f407vgtx.o
- .debug_abbrev  0x00000000000000e9      0x134 drivers/src/gpio_driver.o
+ .debug_abbrev  0x00000000000000e9      0x177 drivers/src/gpio_driver.o
 
 .debug_aranges  0x0000000000000000       0xb8
  .debug_aranges
@@ -441,7 +442,7 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000018       0x20 Startup/startup_stm32f407vgtx.o
  .debug_ranges  0x0000000000000038       0x58 drivers/src/gpio_driver.o
 
-.debug_macro    0x0000000000000000     0x1345
+.debug_macro    0x0000000000000000     0x1391
  .debug_macro   0x0000000000000000       0x91 Src/002led_button.o
  .debug_macro   0x0000000000000091      0xa60 Src/002led_button.o
  .debug_macro   0x0000000000000af1       0x22 Src/002led_button.o
@@ -450,22 +451,22 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_macro   0x0000000000000bf2       0xef Src/002led_button.o
  .debug_macro   0x0000000000000ce1       0x6a Src/002led_button.o
  .debug_macro   0x0000000000000d4b      0x1df Src/002led_button.o
- .debug_macro   0x0000000000000f2a      0x2ab Src/002led_button.o
- .debug_macro   0x00000000000011d5       0xef Src/002led_button.o
- .debug_macro   0x00000000000012c4       0x81 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000f2a      0x2f0 Src/002led_button.o
+ .debug_macro   0x000000000000121a       0xf6 Src/002led_button.o
+ .debug_macro   0x0000000000001310       0x81 drivers/src/gpio_driver.o
 
-.debug_line     0x0000000000000000      0xa57
+.debug_line     0x0000000000000000      0xad5
  .debug_line    0x0000000000000000      0x449 Src/002led_button.o
  .debug_line    0x0000000000000449       0x84 Startup/startup_stm32f407vgtx.o
- .debug_line    0x00000000000004cd      0x58a drivers/src/gpio_driver.o
+ .debug_line    0x00000000000004cd      0x608 drivers/src/gpio_driver.o
 
-.debug_str      0x0000000000000000     0x55b1
- .debug_str     0x0000000000000000     0x52c1 Src/002led_button.o
-                                       0x542d (size before relaxing)
- .debug_str     0x00000000000052c1       0x31 Startup/startup_stm32f407vgtx.o
+.debug_str      0x0000000000000000     0x5771
+ .debug_str     0x0000000000000000     0x542b Src/002led_button.o
+                                       0x5597 (size before relaxing)
+ .debug_str     0x000000000000542b       0x31 Startup/startup_stm32f407vgtx.o
                                          0x6d (size before relaxing)
- .debug_str     0x00000000000052f2      0x2bf drivers/src/gpio_driver.o
-                                       0x569a (size before relaxing)
+ .debug_str     0x000000000000545c      0x315 drivers/src/gpio_driver.o
+                                       0x585a (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
  .comment       0x0000000000000000       0x7b Src/002led_button.o

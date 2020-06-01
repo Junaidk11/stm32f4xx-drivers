@@ -114,7 +114,7 @@ void GPIO_ClockControl(GPIO_RegDef_t *pGPIO_PORT,uint8_t enable_disable ){
 
 */
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
-
+		
 	uint8_t temp = 0;   // Use this temp variable to store the value that will be assigned to the register of the specific GPIO Port
 
 	if(pGPIOHandle->PinConfig.PinMode <= GPIO_PIN_ANALOG_MODE){ // i.e. the GPIO pin mode selected is a non-interrupt mode
@@ -133,10 +133,55 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 	}else {
 
 		// Do this for if the selected pin mode is one of the Interrupt Modes.
+
+		if(pGPIOHandle->PinConfig.PinMode == GPIO_PIN_INPUT_FALLING_EDGE_INTERRUPT_MODE){
+			// 1. Configure the Falling Edge Trigger Selection Register  
+			  EXTI->FTSR |= (1 << pGPIOHandle->PinConfig.PinNumber); 
+
+			// Clear the Corresponding Rising Edge Trigger Selection Register - Just to be safe.   
+			  EXTI->RTSR &= ~(1 << pGPIOHandle->PinConfig.PinNumber); 
+
+		}else if (pGPIOHandle->PinConfig.PinMode == GPIO_PIN_INPUT_RISING_EDGE_INTERRUPT_MODE){
+			// 1. Configure the Rising Edge Trigger Selection Register  
+			  EXTI->RTSR |= (1 << pGPIOHandle->PinConfig.PinNumber); 
+
+			// Clear the Corresponding Falling Edge Trigger Selection Register - Just to be safe.   
+			  EXTI->FTSR &= ~(1 << pGPIOHandle->PinConfig.PinNumber); 
+
+		}else if(pGPIOHandle->PinConfig.PinMode == GPIO_PIN_INPUT_RISING_FALLING_INTERRUPT_MODE){
+
+			// 1. Configure both Rising Edge Trigger & Falling Edge Trigger Selection Register 
+			  EXTI->RTSR |= (1 << pGPIOHandle->PinConfig.PinNumber); 
+
+			// Clear the Corresponding Falling Edge Trigger Selection Register - Just to be safe.   
+			  EXTI->FTSR |= (1 << pGPIOHandle->PinConfig.PinNumber); 	  
+		}
+		 	// 2. Select the GPIO port using the SYSCFG_EXTICR register.
+
+			// There are 4 EXTI Control registers(EXTI0-EXTI4)- Integer division of Pin Number by 5, this will give you the EXTICR register to configure 
+			// Each EXTIx assigned 4 bits - to find which one to configure in the respective EXTICRx register, find remainder of Pin NUmber / 5 
+			
+				uint8_t temp1;
+				uint8_t temp2; 
+
+				// Gives the value of EXTICRx Register 
+				temp1 = (pGPIOHandle->PinConfig.PinMode) / 5; 
+				// Gives the value of which field in EXTICRx to configure
+				temp2 = (pGPIOHandle->PinConfig.PinMode) % 5; 
+
+				uint8_t portCode = GPIO_BASEADDR_TO_PORTCODE(pGPIOHandle->pGPIOx_BASEADDR); // This macro will return the portCode corresponding to the baseaddress it receives.
+				SYSCFG_PERIPH_CLOCK_EN();   // Enable clock access to System Configuration Peripheral before you configure its register
+				//								The starting position of the field
+				//										|
+				SYSCFG->EXTICR[temp1] |= portCode << (temp2 * 4); 
+				
+			// 3. Enable the respective EXTI line to allow interrupts to be send to the Processor via NVIC - using Interrupt Mask Register
+		
+			EXTI->IMR |= (1<< pGPIOHandle->PinConfig.PinNumber); // This will Enable the EXTI line corresponding to the Pin number. 
+			
 	}
 
-
-
+	
 	// 2. Configure slew rate of the GPIO pin
 	temp = 0; 			// Reset temp, can use temp for next register's value.
 	temp = (pGPIOHandle->PinConfig.PinSpeed << (2 * pGPIOHandle->PinConfig.PinNumber)); // Set the value to be assigned to the Speed register.
