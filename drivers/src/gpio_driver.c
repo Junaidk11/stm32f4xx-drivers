@@ -115,7 +115,8 @@ void GPIO_ClockControl(GPIO_RegDef_t *pGPIO_PORT,uint8_t enable_disable ){
 */
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 		
-	uint8_t temp = 0;   // Use this temp variable to store the value that will be assigned to the register of the specific GPIO Port
+	uint32_t temp = 0;   // Use this temp variable to store the value that will be assigned to the register of the specific GPIO Port
+						// The temp variable needs to be size of 32 bits, because MODER register is 32 bits wide.
 
 	if(pGPIOHandle->PinConfig.PinMode <= GPIO_PIN_ANALOG_MODE){ // i.e. the GPIO pin mode selected is a non-interrupt mode
 
@@ -173,7 +174,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 				SYSCFG_PERIPH_CLOCK_EN();   												// Enable clock access to System Configuration Peripheral before you configure its register
 				//								The starting position of the field
 				//										|
-				SYSCFG->EXTICR[temp1] |= portCode << (temp2 * 4); 
+				SYSCFG->EXTICR[temp1] |= (portCode << (temp2 * 4));
 				
 			// 3. Enable the respective EXTI line to allow interrupts to be send to the Processor via NVIC - using Interrupt Mask Register
 		
@@ -511,21 +512,20 @@ void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
 /*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  - GPIO_IRQHandling
  *
- * @brief             -
+ * @brief             - Application ISR handler calls this API function to service the interrupt caused by a GPIO pin
  *
+ * @param[in]         - the pin number that caused the interrupt
  * @param[in]         -
  * @param[in]         -
- * @param[in]         -
  *
- * @return            -
+ * @return            -none
  *
  * @Note              -
 
 */
 void GPIO_IRQHandling(uint8_t pinNumber){
-
 
 	// Clear the EXTI's Pending Register Bit corresponding to the pinNumber
 	if(EXTI->PR & (1 << pinNumber)){ // Check if the bit was actually first
