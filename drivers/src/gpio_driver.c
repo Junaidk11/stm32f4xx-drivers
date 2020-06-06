@@ -526,4 +526,12 @@ void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
 */
 void GPIO_IRQHandling(uint8_t pinNumber){
 
+
+	// Clear the EXTI's Pending Register Bit corresponding to the pinNumber
+	if(EXTI->PR & (1 << pinNumber)){ // Check if the bit was actually first
+			
+			// Clearing the Registered Interrupt on EXTI is done by writing 1 at the bit position assigned to the Pin in the Pending Register of EXTI module
+			EXTI->PR |= (1 << pinNumber);
+	}
+
 }
