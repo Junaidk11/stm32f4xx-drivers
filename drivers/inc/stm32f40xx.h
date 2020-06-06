@@ -425,7 +425,52 @@ typedef struct{
 #define 	NVIC_ICER6			((__vo uint32_t*)0xE000E198)
 #define 	NVIC_ICER7			((__vo uint32_t*)0xE000E19C)
 
+// Interrutp Priorty Registers Base address - NVIC_IPR0
 
+#define NVIC_IPR_BASEADDR   	((__vo uint32_t*)0xE000E400)    // Address of NVIC_IPR0 register.
+
+/**
+ * 				There are 60 Interrupt Priority Registers, you can define all 60 as commented out below,
+ * 				Or, you can define the baseaddress (NVIC_IPR0) register and add the offset of
+ * 				size depending of the IRQ Number /4, because each NVIC_IPRx register has 4 IRQs assigned to it. 
+ *
+#define NVIC_IPR0 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR1 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR2 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR3 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR4 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR5 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR6 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR7 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR8				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR9 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR10 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR11 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR12 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR13 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR14 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR15 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR16 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR17 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR18 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR19 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR20 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR21 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR22 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR23 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR24 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR25 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR26 				((__vo uint32_t*)0xE000E400)
+#define NVIC_IPR27 				((__vo uint32_t*)0xE000E400)
+*/
+
+
+/** 
+ * 					Number of Priority bits implemented for STM devices. Each MCU has its own rules for this- refer to Generic Device Manual 
+ * 								Note: Number of priority bits is specific to the MCU. E.g. Some TI MCU's this value is 3. 
+*/
+
+#define NO_PR_BITS_IMPLEMENTED		4
 
 
 #endif /* INC_STM32F40XX_H_ */

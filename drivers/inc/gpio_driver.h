@@ -104,7 +104,9 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber);
  */
 
 /* Arguments: You need IRQ number, the interrupt priority, and variable to hold enable or disable command. */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t enable_disable);
+void GPIO_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
+
+void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
 
 /*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
 void GPIO_IRQHandling(uint8_t pinNumber);

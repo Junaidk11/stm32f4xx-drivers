@@ -430,7 +430,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber){
  * @Note              -
 
 */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t enable_disable){
+void GPIO_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable){
 	if( enable_disable == ENABLE){
 		if(IRQNumber <= 31){
 
@@ -457,13 +457,12 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t enable_disab
 			(*NVIC_ICER0) |= (1 << IRQNumber); 
 
 		}else if (IRQNumber > 31 && IRQNumber < 64){  // Interrupt lines  from 32 - 63
-
 			// Program the NVIC_ICER1 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
 			// 32 % 32 = 0 --> bit 0 of the NVIC_ICER1 register, 33 % 32 == 1 --> bit 1 of the NVIC_ICER1 register...
 			(*NVIC_ICER1) |=  (1 << (IRQNumber % 32)); 
 
 		}else if(IRQNumber >64 && IRQNumber < 96){   // IRQ lines from 64 - 96 
-		
+
 			// Program the NVIC_ICER2 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
 			// 64 % 64 = 0 --> bit 0 of the NVIC_ICER2 register, 65 % 64 == 1 --> bit 1 of the NVIC_ICER2 register...
 			(*NVIC_ICER2) |= (1 << (IRQNumber % 64)); 
@@ -474,6 +473,41 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t enable_disab
 
 }
 
+/*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
+
+/*********************************************************************
+ * @fn      		  - GPIO_IRQ_Priority_Config
+ *
+ * @brief             - This function can be used to configure the priority of the given IRQ number. 
+ *
+ * @param[in]         - the IRQ numebr coresponding to the interrupt you want to configure on the processor side from @IRQNumbers defined in MCU header file
+ * @param[in]         - The priority of the IRQNumber
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              -
+
+*/
+void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
+
+	//1. Find the IPRx register assigned to the IRQNumber
+	uint8_t iprx = IRQNumber /4; 
+	//2. Find the section of the iprx register assigned to the IRQNumber
+	uint8_t iprx_Section = IRQNumber % 4; 
+
+	//3. Set the IRQPriority in the respective iprx register using the NVIC_IPRR baseaddr defined in the device specific header file. 
+	//				Each NVIC_IPRx register is 32-bits wide, iprx is an 8-bit value - 1 byte, to get to the NVIC_IPRx register corresponding to iprx, you need to add 4 bytes for each register till you reach NVIC_IPRx register corresponding to iprx.  	
+	//							|					Multiply by 8 because each section has 8 bits.
+	//							|								|
+	//*(NVIC_IPR_BASEADDR + (iprx * 4)) |= (IRQPriority << 8 * iprx_Section);  --> Explained in Notes. 
+	
+	//		To get to the corrected section of the iprx register
+	//								|			To fill to the Top 4 bits of the section, as the bottom 4 bits are N.A		
+	//													|
+	uint8_t shift_amount = (8 * iprx_Section) + (8 - NO_PR_BITS_IMPLEMENTED); 
+	*(NVIC_IPR_BASEADDR + (iprx * 4)) |= (IRQPriority << shift_amount); 
+}
 /*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
 
 /*********************************************************************
