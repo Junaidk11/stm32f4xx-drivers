@@ -53,14 +53,14 @@ int main(void){
 	/*   The following statements are for configuring the user button PA0 as an input pin. */
 
 	GPIO_Handle_t gpio_user_button; 				// Instantiate a GPIO handle variable to hold pin configuration information and gain access to the API functions.
-	gpio_push_pull.pGPIOx_BASEADDR = GPIOA; 	// Set the base-address of the Port you're configuring - User button is connected to Port A, Pin 0.
+	gpio_user_button.pGPIOx_BASEADDR = GPIOA; 	// Set the base-address of the Port you're configuring - User button is connected to Port A, Pin 0.
 
 	// Now, use the Pin structure of the GPIO handle to configure the I/O pin 0 in input mode.
-	gpio_push_pull.PinConfig.PinNumber = GPIO_PIN_0;
-	gpio_push_pull.PinConfig.PinMode = GPIO_PIN_INPUT_MODE; 		 // Set the pin in Output mode.
+	gpio_user_button.PinConfig.PinNumber = GPIO_PIN_0;
+	gpio_user_button.PinConfig.PinMode = GPIO_PIN_INPUT_MODE; 		 // Set the pin in Output mode.
 	//gpio_push_pull.PinConfig.PinOType = GPIO_PUSH_PULL_OUTPUT_CONFIG; //PA0 is being configured as an input pin, this is irrelevant to it.
-	gpio_push_pull.PinConfig.PinPuPdControl = GPIO_PIN_NO_PUPD;      // Stm32f407-discovery schematic shows an external pull-down resistor, so don't need to enable internal pull-down resistor.
-	gpio_push_pull.PinConfig.PinSpeed = GPIO_PIN_MEDIUM_SPEED;   // Speed doesn't really matter
+	gpio_user_button.PinConfig.PinPuPdControl = GPIO_PIN_NO_PUPD;      // Stm32f407-discovery schematic shows an external pull-down resistor, so don't need to enable internal pull-down resistor.
+	gpio_user_button.PinConfig.PinSpeed = GPIO_PIN_MEDIUM_SPEED;   // Speed doesn't really matter
 
 	// Now, enable clock access to GPIO Port D, use the RCC clock enable MACROS defined in the device specific header file or:
 	// Use the clock control API defined in GPIO driver - the better option.
