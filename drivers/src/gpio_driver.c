@@ -170,7 +170,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 				temp2 = (pGPIOHandle->PinConfig.PinMode) % 5; 
 
 				uint8_t portCode = GPIO_BASEADDR_TO_PORTCODE(pGPIOHandle->pGPIOx_BASEADDR); // This macro will return the portCode corresponding to the baseaddress it receives.
-				SYSCFG_PERIPH_CLOCK_EN();   // Enable clock access to System Configuration Peripheral before you configure its register
+				SYSCFG_PERIPH_CLOCK_EN();   												// Enable clock access to System Configuration Peripheral before you configure its register
 				//								The starting position of the field
 				//										|
 				SYSCFG->EXTICR[temp1] |= portCode << (temp2 * 4); 
@@ -249,9 +249,6 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 			}*/
 
 	}
-
-
-
 
 }
 
@@ -419,20 +416,61 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber){
 /* Arguments: You need IRQ number, the interrupt priority, and variable to hold enable or disable command. */
 
 /*********************************************************************
- * @fn      		  -
+ * @fn      		  - GPIO_IRQConfig
  *
- * @brief             -
+ * @brief             - This function is used to configure the Processor side of interrupt configuration and handling. Use this function to configure the IRQs and enable them. 
+ * 						 By default, all IRQs are disabled. Therefore, for the processor to accept an interrupt from a peripheral, the assigned IRQ number to that peripheral should be 
+ * 						 configured in the NVIC. 
+ * @param[in]         - the IRQ numebr coresponding to the interrupt you want to configure on the processor side from @IRQNumbers defined in MCU header file
+ * @param[in]         - Priority of the interrupt.
+ * @param[in]         - ENABLE or DISABLE 
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
- *
- * @return            -
+ * @return            - none
  *
  * @Note              -
 
 */
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t enable_disable){
+	if( enable_disable == ENABLE){
+		if(IRQNumber <= 31){
+
+			// Program the NVIC_ISER0 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+			(*NVIC_ISER0) |= (1 << IRQNumber); 
+		
+		}else if (IRQNumber > 31 && IRQNumber < 64){  // Interrupt lines  from 32 - 63
+
+			// Program the NVIC_ISER1 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+			// 32 % 32 = 0 --> bit 0 of the NVIC_ISER1 register, 33 % 32 == 1 --> bit 1 of the NVIC_ISER1 register...
+			(*NVIC_ISER1) |= (1 << (IRQNumber % 32)); 
+
+		}else if(IRQNumber >64 && IRQNumber < 96){   // IRQ lines from 64 - 96 
+
+			// Program the NVIC_ISER2 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+			// 64 % 64 = 0 --> bit 0 of the NVIC_ISER2 register, 65 % 64 == 1 --> bit 1 of the NVIC_ISER2 register...
+			(*NVIC_ISER2) |= (1 << (IRQNumber % 64)); 
+		}
+		/*   You can add the rest of the NVIC_ISERx registers, there are a total of 8 NVIC_ISER registers. */ 
+	}else if (enable_disable == DISABLE){
+		if(IRQNumber <= 31){
+
+			// Program the NVIC_ICER0 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+			(*NVIC_ICER0) |= (1 << IRQNumber); 
+
+		}else if (IRQNumber > 31 && IRQNumber < 64){  // Interrupt lines  from 32 - 63
+
+			// Program the NVIC_ICER1 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+			// 32 % 32 = 0 --> bit 0 of the NVIC_ICER1 register, 33 % 32 == 1 --> bit 1 of the NVIC_ICER1 register...
+			(*NVIC_ICER1) |=  (1 << (IRQNumber % 32)); 
+
+		}else if(IRQNumber >64 && IRQNumber < 96){   // IRQ lines from 64 - 96 
+		
+			// Program the NVIC_ICER2 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+			// 64 % 64 = 0 --> bit 0 of the NVIC_ICER2 register, 65 % 64 == 1 --> bit 1 of the NVIC_ICER2 register...
+			(*NVIC_ICER2) |= (1 << (IRQNumber % 64)); 
+		}
+
+		/*   You can add the rest of the NVIC_ICERx registers, there are a total of 8 NVIC_ISER registers. */ 
+	}
 
 }
 
