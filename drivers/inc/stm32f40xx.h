@@ -472,5 +472,26 @@ typedef struct{
 
 #define NO_PR_BITS_IMPLEMENTED		4
 
+/**
+ * 					NVIC Priority Possibilities Macro definition
+ */
+
+#define NVIC_PRIORITY_0 		0
+#define NVIC_PRIORITY_1 		1 
+#define NVIC_PRIORITY_2 		2 
+#define NVIC_PRIORITY_3 		3 
+#define NVIC_PRIORITY_4 		4 
+#define NVIC_PRIORITY_5 		5 
+#define NVIC_PRIORITY_6 		6 
+#define NVIC_PRIORITY_7 		7 
+#define NVIC_PRIORITY_8 		8 
+#define NVIC_PRIORITY_9 		9 
+#define NVIC_PRIORITY_10 		10 
+#define NVIC_PRIORITY_11 		11 
+#define NVIC_PRIORITY_12 		12 
+#define NVIC_PRIORITY_13 		13 
+#define NVIC_PRIORITY_14 		14 
+#define NVIC_PRIORITY_15 		15 
+
 
 #endif /* INC_STM32F40XX_H_ */

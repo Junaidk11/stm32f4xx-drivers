@@ -31,7 +31,7 @@ int main(void){
 	gpio_push_pull.pGPIOx_BASEADDR = GPIOD; 	// Set the baseaddress of the Port you're configuring - Green LED is connected to Port D, Pin 12.
 
 	// Now, use the Pin structure of the GPIO handle to configure the I/O pin 12 in Push-pull configuration.
-	gpio_push_pull.PinConfig.PinNumber = GPIO_PIN_14;
+	gpio_push_pull.PinConfig.PinNumber = GPIO_PIN_12;
 	gpio_push_pull.PinConfig.PinMode = GPIO_PIN_OUTPUT_MODE; 		 // Set the pin in Output mode.
 	gpio_push_pull.PinConfig.PinOType = GPIO_PUSH_PULL_OUTPUT_CONFIG; //Set the I/O pin in PUSH-PULL configuration of Output mode
 	gpio_push_pull.PinConfig.PinPuPdControl = GPIO_PIN_NO_PUPD;      // In Push-pull configuration, don't need pull-up or pull-down resistor.
@@ -48,7 +48,7 @@ int main(void){
 
 	while(1){
 
-		GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_14); // Toggle Pin 12
+		GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_12); // Toggle Pin 12
 		Delay(); 								  // Set a software delay
 	}
 
