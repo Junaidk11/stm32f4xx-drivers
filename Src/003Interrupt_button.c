@@ -13,6 +13,12 @@
 
 #include "gpio_driver.h" 
 #include <string.h>
+
+void delay(){
+
+    // This will introduce ~200ms delay when sysclk is 16Mhz
+    for (uint32_t i =0; i< 500000/2 ; i++); 
+}
 int main(void){
 
     //++ 1 - Initialize LED 
@@ -75,7 +81,12 @@ int main(void){
 }
 
 void EXTI0_IRQHandler(){
+
+    // To prevent de-bouncing, introduce delay when interrupt occurs, this will prevent the multiple calls of the ISR when you continuous press the user button
+     delay();
+
 	//++ 4:  Write the application layer ISR function and store the function at the address assigned to IRQ number that will register the interrupt request made.
+
 
     //  Handle the Interrupt - call the Driver IRQ handling API here. 
     GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line
