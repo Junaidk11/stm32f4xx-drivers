@@ -501,13 +501,18 @@ void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
 	//				Each NVIC_IPRx register is 32-bits wide, iprx is an 8-bit value - 1 byte, to get to the NVIC_IPRx register corresponding to iprx, you need to add 4 bytes for each register till you reach NVIC_IPRx register corresponding to iprx.  	
 	//							|					Multiply by 8 because each section has 8 bits.
 	//							|								|
-	//*(NVIC_IPR_BASEADDR + (iprx * 4)) |= (IRQPriority << 8 * iprx_Section);  --> Explained in Notes. 
+	//*(NVIC_IPR_BASEADDR + (iprx * 4 )) |= (IRQPriority << 8 * iprx_Section);  --> Explained in Notes; Updated: don't need the 4, because NVIC_IPR_BASEADDR is a 32-bit pointer, incrementing by 1 will point to the next 32-bit register.
 	
 	//		To get to the corrected section of the iprx register
 	//								|			To fill to the Top 4 bits of the section, as the bottom 4 bits are N.A		
 	//													|
-	uint8_t shift_amount = (8 * iprx_Section) + (8 - NO_PR_BITS_IMPLEMENTED); 
-	*(NVIC_IPR_BASEADDR + (iprx * 4)) |= (IRQPriority << shift_amount); 
+	uint8_t shift_amount = (8 * iprx_Section) + (8 - NO_PR_BITS_IMPLEMENTED);
+
+
+	*(NVIC_IPR_BASEADDR + (iprx)) |= (IRQPriority << shift_amount);
+
+	// Removed the *4 from statement above b/c the NVIC_IPR_BASEADDR is defined as a 32-bit pointer (in the device header file) as ((__vo uint32_t*)0xE000E400),
+	// Therfore, an increment by 1, will move the pointer to ((__vo uint32_t*)0xE000E404), i.e. increment of 4 bytes (4*8 = 32 bits, i.e. next register). Therefore, you don't need to mulitply by 4.
 }
 /*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
 

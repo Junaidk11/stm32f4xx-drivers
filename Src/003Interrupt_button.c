@@ -16,17 +16,17 @@
 
 void delay(){
 
-    // This will introduce ~200ms delay when sysclk is 16Mhz
-    for (uint32_t i =0; i< 500000/2 ; i++); 
+	// This will introduce ~200ms delay when sysclk is 16Mhz
+	for (uint32_t i =0; i< 500000/2 ; i++);
 }
 int main(void){
 
-    //++ 1 - Initialize LED 
-    GPIO_Handle_t gpio_push_pull; 				// Instantiate a GPIO handle variable to hold pin configuration information and gain access to the API functions.
+	//++ 1 - Initialize LED
+	GPIO_Handle_t gpio_push_pull; 				// Instantiate a GPIO handle variable to hold pin configuration information and gain access to the API functions.
 
-    memset(&gpio_push_pull, 0, sizeof(gpio_push_pull));  // Standard Function that sets all the registers of gpio_push_pull to zero.
+	memset(&gpio_push_pull, 0, sizeof(gpio_push_pull));  // Standard Function that sets all the registers of gpio_push_pull to zero.
 
-    gpio_push_pull.pGPIOx_BASEADDR = GPIOD; 	// Set the baseaddress of the Port you're configuring - Green LED is connected to Port D, Pin 12.
+	gpio_push_pull.pGPIOx_BASEADDR = GPIOD; 	// Set the baseaddress of the Port you're configuring - Green LED is connected to Port D, Pin 12.
 
 
 	// Now, use the Pin structure of the GPIO handle to configure the I/O pin 12 in Push-pull configuration.
@@ -44,10 +44,10 @@ int main(void){
 	// Now, call the Init API to configure the physical address of Port D
 	GPIO_Init(&gpio_push_pull);
 
-    //-- Initialize LED 
+	//-- Initialize LED
 
-    //++ 2 - Initialize Button on PD5 
-      /*   The following statements are for configuring the user button PA0 as an input pin. */
+	//++ 2 - Initialize Button on PD5
+	/*   The following statements are for configuring the user button PA0 as an input pin. */
 
 	GPIO_Handle_t gpio_user_button; 				// Instantiate a GPIO handle variable to hold pin configuration information and gain access to the API functions.
 
@@ -68,31 +68,31 @@ int main(void){
 
 	// Now, call the Init API to configure the physical address of Port D
 	GPIO_Init(&gpio_user_button);  
-    // -- Initialize Button PD5
+	// -- Initialize Button PD5
 
-    // ++ 3- IRQ Configurations - Set Priority and Enable IRQ on the NVIC. 
+	// ++ 3- IRQ Configurations - Set Priority and Enable IRQ on the NVIC.
 
-    GPIO_IRQ_Priority_Config(IRQ_NO_EXTI0, NVIC_PRIORITY_0);    // Don't need to set priority if there is only 1 interrupt enabled. 
-    GPIO_IRQ_Interrupt_Config(IRQ_NO_EXTI0, ENABLE);            // Pin 0 delivers interrupt on EXTI0 line to the Processor via NVIC. 
-    // -- IRQ Configurations - Set Priority and Enable IRQ on the NVIC. 
+	GPIO_IRQ_Priority_Config(IRQ_NO_EXTI0, NVIC_PRIORITY_15);    // Don't need to set priority if there is only 1 interrupt enabled.
+	GPIO_IRQ_Interrupt_Config(IRQ_NO_EXTI0, ENABLE);            // Pin 0 delivers interrupt on EXTI0 line to the Processor via NVIC.
+	// -- IRQ Configurations - Set Priority and Enable IRQ on the NVIC.
 
-    while(1);
+	while(1);
 
 }
 
 void EXTI0_IRQHandler(){
 
-    // To prevent de-bouncing, introduce delay when interrupt occurs, this will prevent the multiple calls of the ISR when you continuous press the user button
-     delay();
+	// To prevent de-bouncing, introduce delay when interrupt occurs, this will prevent the multiple calls of the ISR when you continuous press the user button
+	delay();
 
 	//++ 4:  Write the application layer ISR function and store the function at the address assigned to IRQ number that will register the interrupt request made.
 
 
-    //  Handle the Interrupt - call the Driver IRQ handling API here. 
-    GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line, you clear the pending event here, followed by calling the ISR to handle the interrupt.
+	//  Handle the Interrupt - call the Driver IRQ handling API here.
+	GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line, you clear the pending event here, followed by calling the ISR to handle the interrupt.
 
-    // We want to toggle the LED, so we can use the Toggle API here. 
-    GPIO_ToggleOutputPin(GPIOD,GPIO_PIN_12); 
-    //-- 4: Write the application layer ISR function and store the function at the address assigned to IRQ number that will register the interrupt request made.
+	// We want to toggle the LED, so we can use the Toggle API here.
+	GPIO_ToggleOutputPin(GPIOD,GPIO_PIN_12);
+	//-- 4: Write the application layer ISR function and store the function at the address assigned to IRQ number that will register the interrupt request made.
 
 }

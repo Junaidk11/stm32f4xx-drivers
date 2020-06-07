@@ -205,8 +205,8 @@ int main(void){
 
     // ++ 3- IRQ Configurations - Set Priority and Enable IRQ on the NVIC. 
 
-    GPIO_IRQ_Priority_Config(IRQ_NO_EXTI0, NVIC_PRIORITY_0);    // Don't need to set priority if there is only 1 interrupt enabled. 
- 800027e:	2100      	movs	r1, #0
+    GPIO_IRQ_Priority_Config(IRQ_NO_EXTI0, NVIC_PRIORITY_15);    // Don't need to set priority if there is only 1 interrupt enabled.
+ 800027e:	210f      	movs	r1, #15
  8000280:	2006      	movs	r0, #6
  8000282:	f000 fb77 	bl	8000974 <GPIO_IRQ_Priority_Config>
     GPIO_IRQ_Interrupt_Config(IRQ_NO_EXTI0, ENABLE);            // Pin 0 delivers interrupt on EXTI0 line to the Processor via NVIC. 
@@ -236,7 +236,7 @@ void EXTI0_IRQHandler(){
 
 
     //  Handle the Interrupt - call the Driver IRQ handling API here. 
-    GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line
+    GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line, you clear the pending event here, followed by calling the ISR to handle the interrupt.
  80002a0:	2000      	movs	r0, #0
  80002a2:	f000 fb95 	bl	80009d0 <GPIO_IRQHandling>
 
@@ -1372,20 +1372,22 @@ void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
  800098a:	79fb      	ldrb	r3, [r7, #7]
  800098c:	f003 0303 	and.w	r3, r3, #3
  8000990:	73bb      	strb	r3, [r7, #14]
-	//*(NVIC_IPR_BASEADDR + (iprx * 4)) |= (IRQPriority << 8 * iprx_Section);  --> Explained in Notes. 
+	//*(NVIC_IPR_BASEADDR + (iprx * 4 )) |= (IRQPriority << 8 * iprx_Section);  --> Explained in Notes; Updated: don't need the 4, because NVIC_IPR_BASEADDR is a 32-bit pointer, incrementing by 1 will point to the next 32-bit register.
 	
 	//		To get to the corrected section of the iprx register
 	//								|			To fill to the Top 4 bits of the section, as the bottom 4 bits are N.A		
 	//													|
-	uint8_t shift_amount = (8 * iprx_Section) + (8 - NO_PR_BITS_IMPLEMENTED); 
+	uint8_t shift_amount = (8 * iprx_Section) + (8 - NO_PR_BITS_IMPLEMENTED);
  8000992:	7bbb      	ldrb	r3, [r7, #14]
  8000994:	00db      	lsls	r3, r3, #3
  8000996:	b2db      	uxtb	r3, r3
  8000998:	3304      	adds	r3, #4
  800099a:	737b      	strb	r3, [r7, #13]
-	*(NVIC_IPR_BASEADDR + (iprx * 4)) |= (IRQPriority << shift_amount); 
+
+
+	*(NVIC_IPR_BASEADDR + (iprx)) |= (IRQPriority << shift_amount);
  800099c:	7bfb      	ldrb	r3, [r7, #15]
- 800099e:	011b      	lsls	r3, r3, #4
+ 800099e:	009b      	lsls	r3, r3, #2
  80009a0:	f103 4360 	add.w	r3, r3, #3758096384	; 0xe0000000
  80009a4:	f503 4364 	add.w	r3, r3, #58368	; 0xe400
  80009a8:	681a      	ldr	r2, [r3, #0]
@@ -1394,11 +1396,14 @@ void GPIO_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
  80009ae:	fa01 f303 	lsl.w	r3, r1, r3
  80009b2:	4619      	mov	r1, r3
  80009b4:	7bfb      	ldrb	r3, [r7, #15]
- 80009b6:	011b      	lsls	r3, r3, #4
+ 80009b6:	009b      	lsls	r3, r3, #2
  80009b8:	f103 4360 	add.w	r3, r3, #3758096384	; 0xe0000000
  80009bc:	f503 4364 	add.w	r3, r3, #58368	; 0xe400
  80009c0:	430a      	orrs	r2, r1
  80009c2:	601a      	str	r2, [r3, #0]
+
+	// Removed the *4 from statement above b/c the NVIC_IPR_BASEADDR is defined as a 32-bit pointer (in the device header file) as ((__vo uint32_t*)0xE000E400),
+	// Therfore, an increment by 1, will move the pointer to ((__vo uint32_t*)0xE000E404), i.e. increment of 4 bytes (4*8 = 32 bits, i.e. next register). Therefore, you don't need to mulitply by 4.
 }
  80009c4:	bf00      	nop
  80009c6:	3714      	adds	r7, #20
