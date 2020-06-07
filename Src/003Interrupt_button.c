@@ -89,7 +89,7 @@ void EXTI0_IRQHandler(){
 
 
     //  Handle the Interrupt - call the Driver IRQ handling API here. 
-    GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line
+    GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line, you clear the pending event here, followed by calling the ISR to handle the interrupt.
 
     // We want to toggle the LED, so we can use the Toggle API here. 
     GPIO_ToggleOutputPin(GPIOD,GPIO_PIN_12); 
