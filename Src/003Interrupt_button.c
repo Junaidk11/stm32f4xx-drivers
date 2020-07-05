@@ -8,7 +8,6 @@
 /**
  *          Toggle an LED when user button is pressed. The user-button is connected to PA0 and delivers an interrupt to the Processor on its Falling Edge. 
  *              The LED is toggled in the ISR.  
- * 
  */ 
 
 #include "gpio_driver.h" 
@@ -27,7 +26,6 @@ int main(void){
 	memset(&gpio_push_pull, 0, sizeof(gpio_push_pull));  // Standard Function that sets all the registers of gpio_push_pull to zero.
 
 	gpio_push_pull.pGPIOx_BASEADDR = GPIOD; 	// Set the baseaddress of the Port you're configuring - Green LED is connected to Port D, Pin 12.
-
 
 	// Now, use the Pin structure of the GPIO handle to configure the I/O pin 12 in Push-pull configuration.
 	gpio_push_pull.PinConfig.PinNumber = GPIO_PIN_12;
@@ -77,7 +75,7 @@ int main(void){
 	// -- IRQ Configurations - Set Priority and Enable IRQ on the NVIC.
 
 	while(1);
-
+    
 }
 
 void EXTI0_IRQHandler(){
@@ -86,7 +84,6 @@ void EXTI0_IRQHandler(){
 	delay();
 
 	//++ 4:  Write the application layer ISR function and store the function at the address assigned to IRQ number that will register the interrupt request made.
-
 
 	//  Handle the Interrupt - call the Driver IRQ handling API here.
 	GPIO_IRQHandling(GPIO_PIN_0); // I/O Pin number 0 deliver's interrupts on the EXTI0 line, you clear the pending event here, followed by calling the ISR to handle the interrupt.
