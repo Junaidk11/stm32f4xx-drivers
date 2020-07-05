@@ -494,4 +494,45 @@ typedef struct{
 #define NVIC_PRIORITY_15 		15 
 
 
+/*
+ *  				PERIPHERAL REGISTER DEFINITION STRUCTURE - For SPI
+ *  				SPI = Serial Peripheral Interface
+ */	
+
+/*
+ * Note: Registers of a Peripheral are specific to the MCU. Refer to the Reference Manual of Device.
+ *
+ */
+
+/*
+ * 			A C Structure for SPI Register Definitions
+ *
+ * 	Note: Create a pointer of type SPI_RegDef_t and assign it the address of the SPI module you want to configure, SPI1, SPI2, or SPI3
+ * 		e.g. SPI_RegDef_t *pSPI1 = (SPI_RegDef_t *)0x40013000 ; where 0x40013000 is the base address of SPI1; Type cast is used to convert 0x40013000 from a VALUE to a MEMORY ADDRESS.
+ */
+
+typedef struct
+{
+	__vo uint32_t CR1; 			/* Control Register 1 */     			/* Offset: 0x00 */ 
+	__vo uint32_t CR2; 			/* Control Register 2 */     			/* Offset: 0x04 */ 	
+	__vo uint32_t SR;  			/* Status Register */     				/* Offset: 0x08 */ 
+	__vo uint32_t DR;  			/* Data Register */     				/* Offset: 0x0C */
+	__vo uint32_t CRCPR; 		/* CRC Polynomial Register */      		/* Offset: 0x10 */
+	__vo uint32_t RXCRCR; 		/* RX CRC Register */      				/* Offset: 0x14 */
+	__vo uint32_t TXCRCR; 		/* TX CRC Register */      				/* Offset: 0x18 */
+	__vo uint32_t I2SCFGR; 		/* I2S Configuration Register */      	/* Offset: 0x1C */
+	__vo uint32_t I2SPR; 		/* I2S Prescaler Register */      		/* Offset: 0x20 */
+	
+}SPI_RegDef_t;
+
+/*
+ *  			Peripheral Definitions Type casted to their C Structure holding their register definitions.
+ */
+
+#define SPI1 	((SPI_RegDef_t *)SPI1_BASEADDR)
+#define SPI2    ((SPI_RegDef_t *)SPI2_BASEADDR)
+#define SPI3 	((SPI_RegDef_t *)SPI3_BASEADDR)
+
+
+
 #endif /* INC_STM32F40XX_H_ */
