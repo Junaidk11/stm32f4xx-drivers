@@ -417,7 +417,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIO_PORT, uint8_t pinNumber){
 /* Arguments: You need IRQ number, the interrupt priority, and variable to hold enable or disable command. */
 
 /*********************************************************************
- * @fn      		  - GPIO_IRQConfig
+ * @fn      		  - GPIO_IRQ_Interrupt_Config
  *
  * @brief             - This function is used to configure the Processor side of interrupt configuration and handling. Use this function to configure the IRQs and enable them. 
  * 						 By default, all IRQs are disabled. Therefore, for the processor to accept an interrupt from a peripheral, the assigned IRQ number to that peripheral should be 
@@ -474,7 +474,7 @@ void GPIO_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable){
 
 }
 
-/*  For Interrupt handling, this API only needs to know the pin number that needs interrupt servicing. */
+/*  For Interrupt handling, this API only needs to know the IRQ number that needs interrupt servicing. */
 
 /*********************************************************************
  * @fn      		  - GPIO_IRQ_Priority_Config

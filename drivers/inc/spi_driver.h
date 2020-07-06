@@ -41,4 +41,44 @@ typedef struct{
 
 }SPI_Handle_t;
 
+/*
+ * 					APIs supported by this SPI driver.
+ *
+ */
+
+
+void SPI_ClockControl(SPI_RegDef_t *pSPIx,uint8_t enable_disable );
+void SPI_Init(SPI_Handle_t *pSPIHandle);
+void SPI_DeInit(SPI_RegDef_t *pSPIx);
+
+/*
+ *   		Data Read & Write 
+ * 
+ *      For Communication protocols, there are two types of Data Read & Write APIs:
+ *              Non-blocking & Blocking APIs. 
+ *          Blocking -> Polling method for Data Read and Write 
+ *          Non-Blocking -> Interrutp Method for Data Read and Write
+ *              
+ */
+
+        /* Blocking Method APIs */
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength);
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLength);
+
+/*
+ *			SPI Interrupt Configuration & Handling
+ */
+
+/* Arguments: You need IRQ number, the interrupt priority, and variable to hold enable or disable command. */
+void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
+
+void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
+
+/*  For Interrupt handling in communication, use the baseaddress */
+void SPI_IRQHandling(SPI_Handle_t *pHandle);
+
+
+
+
+
 #endif /* INC_SPI_DRIVER_H_ */
