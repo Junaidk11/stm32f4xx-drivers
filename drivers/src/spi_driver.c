@@ -22,7 +22,31 @@
 
  */
 
-void SPI_ClockControl(SPI_RegDef_t *pSPIx,uint8_t enable_disable );
+void SPI_ClockControl(SPI_RegDef_t *pSPIx,uint8_t enable_disable ){
+    
+    /*
+	 *  Check if the enable_disable arugment is enable or disable, and then use the
+	 *  clock enable macros that we have written in the MCU specific file.
+	 */
+	if(enable_disable == ENABLE){
+
+		if(pSPIx == SPI1){
+			SPI1_PERIPH_CLOCK_EN(); // SPI1 enable clock access MACRO defined in MCU specific header file.
+		}else if(pSPIx == SPI2){
+			SPI2_PERIPH_CLOCK_EN();
+		}else if(pSPIx == SPI3){
+			SPI3_PERIPH_CLOCK_EN();
+		}
+	}else if(enable_disable == DISABLE){
+		if(pSPIx == SPI1){
+			SPI1_PERIPH_CLOCK_DI(); // SPI1 disable clock access MACRO defined in MCU specific header file.
+		}else if(pSPIx == SPI2){
+			SPI2_PERIPH_CLOCK_DI();
+		}else if(pSPIx == SPI3){
+			SPI3_PERIPH_CLOCK_DI();
+		}
+	}
+}
 
 /*********************************************************************
  * @fn      		  -  SPI_Init
