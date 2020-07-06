@@ -82,7 +82,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/gpio_driver.o
- .debug_macro   0x0000000000000000      0x3f3 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000000      0x4da drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0xf8 drivers/src/gpio_driver.o
  .group         0x0000000000000000        0xc drivers/src/spi_driver.o
  .group         0x0000000000000000        0xc drivers/src/spi_driver.o
@@ -113,10 +113,10 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/spi_driver.o
- .debug_macro   0x0000000000000000      0x3f3 drivers/src/spi_driver.o
+ .debug_macro   0x0000000000000000      0x4da drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000       0x88 drivers/src/spi_driver.o
  .debug_line    0x0000000000000000      0x461 drivers/src/spi_driver.o
- .debug_str     0x0000000000000000     0x5a7b drivers/src/spi_driver.o
+ .debug_str     0x0000000000000000     0x5d78 drivers/src/spi_driver.o
  .comment       0x0000000000000000       0x7c drivers/src/spi_driver.o
  .debug_frame   0x0000000000000000       0x60 drivers/src/spi_driver.o
  .ARM.attributes
@@ -500,7 +500,7 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000020       0x20 Startup/startup_stm32f407vgtx.o
  .debug_ranges  0x0000000000000040       0x60 drivers/src/gpio_driver.o
 
-.debug_macro    0x0000000000000000     0x1d9a
+.debug_macro    0x0000000000000000     0x1e81
  .debug_macro   0x0000000000000000      0x147 Src/003Interrupt_button.o
  .debug_macro   0x0000000000000147      0xa60 Src/003Interrupt_button.o
  .debug_macro   0x0000000000000ba7       0x22 Src/003Interrupt_button.o
@@ -509,36 +509,36 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_macro   0x0000000000000ca8       0xef Src/003Interrupt_button.o
  .debug_macro   0x0000000000000d97       0x6a Src/003Interrupt_button.o
  .debug_macro   0x0000000000000e01      0x1df Src/003Interrupt_button.o
- .debug_macro   0x0000000000000fe0      0x3f3 Src/003Interrupt_button.o
- .debug_macro   0x00000000000013d3       0xf8 Src/003Interrupt_button.o
- .debug_macro   0x00000000000014cb       0x46 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001511       0x18 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001529       0x3c Src/003Interrupt_button.o
- .debug_macro   0x0000000000001565       0x34 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001599      0x174 Src/003Interrupt_button.o
- .debug_macro   0x000000000000170d       0x52 Src/003Interrupt_button.o
- .debug_macro   0x000000000000175f       0x1f Src/003Interrupt_button.o
- .debug_macro   0x000000000000177e       0x43 Src/003Interrupt_button.o
- .debug_macro   0x00000000000017c1       0x20 Src/003Interrupt_button.o
- .debug_macro   0x00000000000017e1      0x1a3 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001984      0x330 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001cb4       0x10 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001cc4       0x35 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001cf9       0x20 Src/003Interrupt_button.o
- .debug_macro   0x0000000000001d19       0x81 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000fe0      0x4da Src/003Interrupt_button.o
+ .debug_macro   0x00000000000014ba       0xf8 Src/003Interrupt_button.o
+ .debug_macro   0x00000000000015b2       0x46 Src/003Interrupt_button.o
+ .debug_macro   0x00000000000015f8       0x18 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001610       0x3c Src/003Interrupt_button.o
+ .debug_macro   0x000000000000164c       0x34 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001680      0x174 Src/003Interrupt_button.o
+ .debug_macro   0x00000000000017f4       0x52 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001846       0x1f Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001865       0x43 Src/003Interrupt_button.o
+ .debug_macro   0x00000000000018a8       0x20 Src/003Interrupt_button.o
+ .debug_macro   0x00000000000018c8      0x1a3 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001a6b      0x330 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001d9b       0x10 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001dab       0x35 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001de0       0x20 Src/003Interrupt_button.o
+ .debug_macro   0x0000000000001e00       0x81 drivers/src/gpio_driver.o
 
 .debug_line     0x0000000000000000      0xcb4
  .debug_line    0x0000000000000000      0x5d5 Src/003Interrupt_button.o
  .debug_line    0x00000000000005d5       0x84 Startup/startup_stm32f407vgtx.o
  .debug_line    0x0000000000000659      0x65b drivers/src/gpio_driver.o
 
-.debug_str      0x0000000000000000     0x8df9
- .debug_str     0x0000000000000000     0x8a76 Src/003Interrupt_button.o
-                                       0x8cc3 (size before relaxing)
- .debug_str     0x0000000000008a76       0x31 Startup/startup_stm32f407vgtx.o
+.debug_str      0x0000000000000000     0x90f6
+ .debug_str     0x0000000000000000     0x8d73 Src/003Interrupt_button.o
+                                       0x8fc0 (size before relaxing)
+ .debug_str     0x0000000000008d73       0x31 Startup/startup_stm32f407vgtx.o
                                          0x6d (size before relaxing)
- .debug_str     0x0000000000008aa7      0x352 drivers/src/gpio_driver.o
-                                       0x5d00 (size before relaxing)
+ .debug_str     0x0000000000008da4      0x352 drivers/src/gpio_driver.o
+                                       0x5ffd (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
  .comment       0x0000000000000000       0x7b Src/003Interrupt_button.o
