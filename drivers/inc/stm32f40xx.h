@@ -534,5 +534,27 @@ typedef struct
 #define SPI3 	((SPI_RegDef_t *)SPI3_BASEADDR)
 
 
+/**
+ *  SPI Peripheral Register Bit Position Definition
+ *   	SYNTAX -->  PERIPHERALNAME_REGISTERNAME_BITFIELDNAME
+ */
+
+#define SPI_CR1_CPHA 		0
+#define SPI_CR1_CPOL 		1
+#define SPI_CR1_MSTR 		2
+#define SPI_CR1_BR 			3
+#define SPI_CR1_SPE 		6
+#define SPI_CR1_LSBFIRST    7
+#define SPI_CR1_SSI 		8
+#define SPI_CR1_SSM 		9
+#define SPI_CR1_RXONLY 		10
+#define SPI_CR1_DFF 		11
+#define SPI_CR1_CRCNEXT     12
+#define SPI_CR1_CRCEN 		13
+#define SPI_CR1_BIDIOE 		14
+#define SPI_CR1_BIDIMODE    15
+
+
+
 
 #endif /* INC_STM32F40XX_H_ */
