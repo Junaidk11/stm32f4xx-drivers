@@ -1,3 +1,0 @@
-003Interrupt_button.c:16:6:delay	16	static
-003Interrupt_button.c:21:5:main	32	static
-003Interrupt_button.c:81:6:EXTI0_IRQHandler	8	static
