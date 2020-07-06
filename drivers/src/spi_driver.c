@@ -149,20 +149,75 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx){
 }
 
 /*********************************************************************
+ * @fn      		  - SPI_GetFlagStatus
+ *
+ * @brief             - Check if the requested flag is set or not.
+ *
+ * @param[in]         - Base address of the SPIx
+ * @param[in]         - Masked flag bit field 
+ * @param[in]         - 
+ *
+ * @return            -  None 
+ *
+ * @Note              - None
+ */
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName){
+
+    if(pSPIx->SR & FlagName){
+        return FLAG_SET;
+    }
+    return FLAG_RESET;
+}
+
+/*********************************************************************
  * @fn      		  - SPI_SendData
  *
  * @brief             - Data Write
  *
  * @param[in]         - Base address of the SPI peripheral -> SPI1/SPI2/SPI3
  * @param[in]         - Pointer to buffer holding the data to be sent
- * @param[in]         - Length of the data to Send 
+ * @param[in]         - Length of the data to Send in Bytes
  *
  * @return            -  None 
  *
  * @Note              -  uint32_t is a standared for defining data length. 
-
+ *                       This is a "Blocking" implementation of SPI send, you wait till TXE is set, before you can push data into the Tx Buffer.
+ *                        It is also called Polling method, because we're waiting till Transmit buffer gets empty, the function will stay there.                        
+ *                        There are problems with this method of implementation, what if something wrong with the hardware and the TXE flag is NEVER set, then the system 
+                        will be stuck here forever, this when you need a WATCHDOG module to reset the system if it becomes non-responsive for a certain time period. 
  */
-void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength);
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength){
+
+    while(DataLength > 0){
+        //1. Wait until TXE is set
+                    // while( !(pSPIx->SR & (1 << 1)) ); // Checking if TXE flag is set in the Status Register, implement the condition using a function defined in this source. 
+        while(SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG));  // Same as above statement, but a much cleaner method of implementation. 
+    
+        //2. Check DFF bit CR1 to determine how many bytes to upload in the DR, which will push the data bytes to the Tx Buffer
+        if(pSPIx->CR1 & (1 << SPI_CR1_DFF)){
+
+            // If bit is set, then DFF = 16-bit. You need to upload 2 bytes of data into the DR register. 
+            //             The type casting here will convert the 8-bit pointer to a 16-bit pointer, allowing to dereference 2-bytes of consecutive data. Without the uint16_t* typecast, you would be dereferencing a byte of data. 
+            //                  |
+            pSPIx->DR = *((uint16_t *)pTxBuffer);
+             
+            // Pushed 2 bytes of Data into Tx Buffer, so reduced length by 2 bytes.
+            DataLength--; 
+            DataLength--; 
+            // Move pointer 2 bytes ahead
+            (uint16_t *)pTxBuffer++; // This will make the pointer point to the start of the 16-bits to send.
+
+        }else
+        {
+            // DFF = 8-bit, you need to upload a byte at a time. 
+            pSPIx->DR = *(pTxBuffer); // Don't need typecasting as pointer is of 8-bit type. 
+            DataLength--; 
+            pTxBuffer++; 
+        }
+        
+    }
+
+}
 
 /*********************************************************************
  * @fn      		  - SPI_ReceiveData
@@ -171,7 +226,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength);
  *
  * @param[in]         - Base address of the SPI peripheral -> SPI1/SPI2/SPI3
  * @param[in]         - Pointer to buffer holding the data to be sent
- * @param[in]         - Length of the data to Receive
+ * @param[in]         - Length of the data to Receive in bytes.
  *
  *
  * @return            -  None

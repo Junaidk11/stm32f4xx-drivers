@@ -1,3 +1,5 @@
 spi_driver.c:25:6:SPI_ClockControl	16	static
 spi_driver.c:65:6:SPI_Init	24	static
 spi_driver.c:139:6:SPI_DeInit	16	static
+spi_driver.c:164:9:SPI_GetFlagStatus	16	static
+spi_driver.c:189:6:SPI_SendData	24	static

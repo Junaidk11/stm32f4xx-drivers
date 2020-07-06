@@ -300,6 +300,8 @@ typedef struct{
 #define DISABLE					0
 #define SET						ENABLE
 #define RESET					DISABLE
+#define FLAG_SET				SET
+#define FLAG_RESET				RESET
 
 
 /*   GPIO Port Register Reset MACROS */
@@ -586,7 +588,6 @@ typedef struct
 #define SPI1_REG_RESET()      do{  (RCC->RCC_APB2RSTR |= (1 << 12)); (RCC->RCC_APB2RSTR &= ~(1 << 12)); }while(0)
 #define SPI2_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 14)); (RCC->RCC_APB1RSTR &= ~(1 << 14)); }while(0)
 #define SPI3_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 15)); (RCC->RCC_APB1RSTR &= ~(1 << 15)); }while(0)
-
 
 
 

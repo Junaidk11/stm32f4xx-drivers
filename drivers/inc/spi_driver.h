@@ -104,6 +104,23 @@ typedef struct{
 #define SPI_SOFTWARE_SLAVE_MANAGEMENT_DI    0           /* By Default, Software Slave Management is Disabled, i.e. SlaveManagementType = Hardware Slave Management. */ 
 #define SPI_SOFTWARE_SLAVE_MANAGEMENT_EN    1
 
+/**
+ *  Masked bit fields of the Status Register, to be used for FlagName in SPI_GetFlagStatus function. 
+ */ 
+
+ //                             Using Bit Field defined in the MCU specific header file to get the masking detail for the respective flag defined in the Status Register of SPI
+ //                               | 
+#define SPI_RXNE_FLAG       (1 << SPI_SR_RXNE)
+#define SPI_TXE_FLAG        (1 << SPI_SR_TXE) 
+#define SPI_CHSIDE_FLAG     (1 << SPI_SR_CHSIDE) 
+#define SPI_UDR_FLAG        (1 << SPI_SR_UDR) 
+#define SPI_CRCERR_FLAG     (1 << SPI_SR_CRCERR) 
+#define SPI_MODF_FLAG       (1 << SPI_SR_MODF) 
+#define SPI_OVR_FLAG        (1 << SPI_SR_OVR) 
+#define SPI_BUSY_FLAG        (1 << SPI_SR_BSY) 
+#define SPI_FRE_FLAG        (1 << SPI_SR_FRE)
+
+
 
 /*
  * 					APIs supported by this SPI driver.
