@@ -70,7 +70,7 @@ void SPI_Init(SPI_Handle_t *pSPIHandle){
 
     // 1. Configure Device Mode
     
-    tempReg |= ((pSPIHandle->SPIConfig.DeviceMode) << 2); // '2' Because bit 2 of CR1 is used for configuring Master or Slave mode. 
+    tempReg |= ((pSPIHandle->SPIConfig.DeviceMode) << SPI_CR1_MSTR); // '2' Because bit 2 of CR1 is used for configuring Master or Slave mode. 
 
     /* Not very clear --> Need to REVIEW spi communication type configurations */ 
 
@@ -79,42 +79,42 @@ void SPI_Init(SPI_Handle_t *pSPIHandle){
     {
         // Set BIDIMODE bit of CR1 as '0' -> Will configure 2-line unidirection data mode
         // resulting in separate line for RX and TX
-        tempReg &= ~(1 << 15);
+        tempReg &= ~(1 << SPI_CR1_BIDIMODE);
         
         // RXONLY bit is by default = '0' which means Receive and Transmit.
     }else if (pSPIHandle->SPIConfig.BusConfig == SPI_IN_HALF_DUPLEX_MODE){
         // Set BIDIMODE bit of CR1 as '1' -> will configure 1-line bidirection data mode, same line for RX and TX 
-        tempReg |= (1 << 15); 
+        tempReg |= (1 << SPI_CR1_BIDIMODE); 
 
     }else if (pSPIHandle->SPIConfig.BusConfig == SPI_IN_SIMPLEX_TX_ONLY){
 
         // Clear BIDIMODE bit of CR1 to '0' -> 2-line bidirection data mode, different line for RX & TX
-        tempReg &= ~(1<<15);
+        tempReg &= ~(1<<SPI_CR1_BIDIMODE);
         // Clear RXONLY bit to '0', basically configuring Full-duplex mode with Transmission ONLY, and ignoring Receive 
-        tempReg &= ~(1<<10);
+        tempReg &= ~(1<<SPI_CR1_RXONLY);
         
 
     }else if(pSPIHandle->SPIConfig.BusConfig == SPI_IN_SIMPLEX_RX_ONLY){
         // Clear BIDIMODE bit of CR1 to '0' -> 2-line unidirectional data mode, i.e. Full duplex SPI communication type
-        tempReg &= ~(1<<15); 
+        tempReg &= ~(1<<SPI_CR1_BIDIMODE); 
         // Set RXONLY bit to force clock generation,i.e. if the device is master, you want to only RECEIVE.
-        tempReg |= (1<<10);
+        tempReg |= (1<<SPI_CR1_RXONLY);
     }
 
     // 3. Configure Serial Clock but setting Baudrate. 
-    tempReg |= ((pSPIHandle->SPIConfig.SclkSpeed) << 3);
+    tempReg |= ((pSPIHandle->SPIConfig.SclkSpeed) << SPI_CR1_BR);
 
     // 4. Configure Data Frame Format
-    tempReg |= ((pSPIHandle->SPIConfig.DataFrameFormat) << 11); 
+    tempReg |= ((pSPIHandle->SPIConfig.DataFrameFormat) << SPI_CR1_DFF); 
 
     // 5. Configure ClockPolarity (CPOL)
-    tempReg |= ((pSPIHandle->SPIConfig.ClockPolarity) << 1); 
+    tempReg |= ((pSPIHandle->SPIConfig.ClockPolarity) << SPI_CR1_CPOL); 
 
     // 6. Configure ClockPhase (CPHA)
-    tempReg |= ((pSPIHandle->SPIConfig.ClockPhase) << 0); 
+    tempReg |= ((pSPIHandle->SPIConfig.ClockPhase) << SPI_CR1_CPHA); 
 
     // 7. Configure Software Slave Management 
-    tempReg |= ((pSPIHandle->SPIConfig.SlaveManagementType) << 9); 
+    tempReg |= ((pSPIHandle->SPIConfig.SlaveManagementType) << SPI_CR1_SSM); 
 
     // Assign tempReg to your SPIx's CR1 register.
     pSPIHandle->pSPIx_BASEADDR->CR1 = tempReg;
