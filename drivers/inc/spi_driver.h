@@ -137,7 +137,4 @@ void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
 
 
-
-
-
 #endif /* INC_SPI_DRIVER_H_ */
