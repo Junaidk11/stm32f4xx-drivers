@@ -68,13 +68,8 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
 /*
  *			SPI Interrupt Configuration & Handling
  */
-
-/* Arguments: You need IRQ number, the interrupt priority, and variable to hold enable or disable command. */
 void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
-
 void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
-
-/*  For Interrupt handling in communication, use the baseaddress */
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
 
 
