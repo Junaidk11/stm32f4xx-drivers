@@ -86,17 +86,31 @@ void SPI2_Inits(){
 }
 int main(){
  
-	// Call Function to configure the I/O pins above to be used as SPI2 pin. 
+	// 1. Call Function to configure the I/O pins above to be used as SPI2 pin. 
 	SPI2_GPIOInits();
 
-	// Call Function to Configure the SPI2 Peripheral 
+	// 2. Call Function to Configure the SPI2 Peripheral 
 	SPI2_Inits();
 
-	// Data to send
+	// 3. Enable the SPI Peripheral
+
+	SPI_PeripheralControl(SPI2, ENABLE); 
+	
+	// 4. SSI is set 1, this will pull the Master's NSS pin to High, internally. This will prevent MODF (MODE FAULT) error. 
+	/* MODF error is set in the SPI_CR1_SR, to indicate that the master's NSS pin was driven to Low, 
+	*  which means a different master has taken over the Bus and will generate the clock.
+	*  to avoid the MODF error, when there is no slave configured in the network and Software slave management is configured, the NSS pin of the Master is internally pulled High to avoid MODF error.  
+	*/
+	SPI_SSIConfig(SPI2, ENABLE);
+
+	// 5. Data to send
 	char data[] ="HELLO WORLD!"; 
 
-	// Call SPI_SendData Function
+	// 6. Call SPI_SendData Function
 	SPI_SendData(SPI2,(uint8_t *)data,strlen(data)); 
+
+	// 7. Disable SPI Peripheral 
+	SPI_PeripheralControl(SPI2, DISABLE);
 
 	while(1);
 }

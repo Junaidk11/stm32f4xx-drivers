@@ -132,6 +132,18 @@ void SPI_ClockControl(SPI_RegDef_t *pSPIx,uint8_t enable_disable );
 void SPI_Init(SPI_Handle_t *pSPIHandle);
 void SPI_DeInit(SPI_RegDef_t *pSPIx);
 
+
+/**
+ *      SPI Peripheral Enable/Disable API
+ */
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable);
+
+/**
+ * 
+ *         SPI NSS Enable/Disable API
+ */ 
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable);
+
 /*
  *   		Data Read & Write 
  * 
@@ -152,6 +164,8 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
 void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
 void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
+
+
 
 
 #endif /* INC_SPI_DRIVER_H_ */

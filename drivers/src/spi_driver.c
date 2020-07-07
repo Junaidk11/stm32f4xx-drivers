@@ -149,6 +149,54 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx){
 }
 
 /*********************************************************************
+ * @fn      		  - SPI_PeripheralControl
+ *
+ * @brief             - SPI Peripheral Enable/Disable API
+ *
+ * @param[in]         - Base address of the SPIx
+ * @param[in]         - ENABLE or DISABLE
+ * @param[in]         - 
+ *
+ * @return            -  None 
+ *
+ * @Note              - None
+ */
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable){
+
+    if(Enable_Disable == ENABLE){
+        pSPIx->CR1 |= (1 << SPI_CR1_SPE);
+    }else if(Enable_Disable == DISABLE){
+        pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+    }
+}
+
+/**
+ * 
+ *         SPI NSS Enable/Disable API
+ */ 
+/*********************************************************************
+ * @fn      		  - SPI_SSIConfig
+ *
+ * @brief             - SPI NSS Enable/Disable API
+ *
+ * @param[in]         - Base address of the SPIx
+ * @param[in]         - ENABLE or DISABLE
+ * @param[in]         - 
+ *
+ * @return            -  None 
+ *
+ * @Note              - None
+ */
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable){
+
+    if(Enable_Disable==ENABLE){
+        pSPIx->CR1 |= (1 << SPI_CR1_SSI);
+    }else if(Enable_Disable==DISABLE){
+        pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
+    }
+}
+
+/*********************************************************************
  * @fn      		  - SPI_GetFlagStatus
  *
  * @brief             - Check if the requested flag is set or not.
