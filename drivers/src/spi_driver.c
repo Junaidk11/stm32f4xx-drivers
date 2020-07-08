@@ -223,7 +223,7 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable){
  * @param[in]         - Masked flag bit field 
  * @param[in]         - 
  *
- * @return            -  None 
+ * @return            -  Either '1' or '0' 
  *
  * @Note              - None
  */

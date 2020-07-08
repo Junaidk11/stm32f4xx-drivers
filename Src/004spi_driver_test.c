@@ -109,7 +109,11 @@ int main(){
 	// 6. Call SPI_SendData Function
 	SPI_SendData(SPI2,(uint8_t *)data,strlen(data)); 
 
-	// 7. Disable SPI Peripheral 
+	// 7. Test SPI Busy Flag before closing the SPI peripheral 
+	// SPI_SR_BSY flag is controlled by hardware and it is cleared when SPI is not busy
+    while(SPI_GetFlagStatus(SPI2, SPI_SR_BSY)){} // SPI busy, you stay here
+	
+	// 8. Disable SPI Peripheral 
 	SPI_PeripheralControl(SPI2, DISABLE);
 
 	while(1);

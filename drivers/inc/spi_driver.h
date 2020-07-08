@@ -165,6 +165,13 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable);
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLength);
 
+
+/**
+ *  Get SPI Flag Status 
+ */
+
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName);
+
 /*
  *			SPI Interrupt Configuration & Handling
  */

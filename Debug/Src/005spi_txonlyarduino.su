@@ -1,5 +1,0 @@
-005spi_txonlyarduino.c:25:6:SPI2_GPIOInits	24	static
-005spi_txonlyarduino.c:62:6:SPI2_Inits	24	static
-005spi_txonlyarduino.c:88:6:GPIO_ButtonInits	24	static
-005spi_txonlyarduino.c:112:6:Delay	16	static
-005spi_txonlyarduino.c:117:5:main	32	static

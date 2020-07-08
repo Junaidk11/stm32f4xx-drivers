@@ -141,11 +141,20 @@ int main(){
             
             // 7. Data to send
             char data[] ="HELLO WORLD!"; 
+                
+            // 8. Send data length information to the slave before sending data,
+            uint8_t dataLength = strlen(data);
+            SPI_SendData(SPI2, &dataLength, 1);  // 1 byte of data that holds the length of the actual data to be sent 
 
-            // 8. Call SPI_SendData Function
+
+            // 9. Call SPI_SendData Function to send actual data 
             SPI_SendData(SPI2,(uint8_t *)data,strlen(data)); 
 
-            // 9. Disable SPI Peripheral 
+            // 10. Test SPI Busy Flag before closing the SPI peripheral 
+            // SPI_SR_BSY flag is controlled by hardware and it is cleared when SPI is not busy
+            while(SPI_GetFlagStatus(SPI2, SPI_SR_BSY)); // SPI busy, you stay here
+
+            // 11. Disable SPI Peripheral 
             SPI_PeripheralControl(SPI2, DISABLE);
     }
 
