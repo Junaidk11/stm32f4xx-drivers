@@ -1,4 +1,4 @@
-"Src/004spi_driver_test.o"
+"Src/005spi_txonlyarduino.o"
 "Startup/startup_stm32f407vgtx.o"
 "drivers/src/gpio_driver.o"
 "drivers/src/spi_driver.o"

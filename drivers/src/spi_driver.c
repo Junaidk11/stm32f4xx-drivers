@@ -170,10 +170,7 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable){
     }
 }
 
-/**
- * 
- *         SPI NSS Enable/Disable API
- */ 
+
 /*********************************************************************
  * @fn      		  - SPI_SSIConfig
  *
@@ -195,7 +192,28 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable){
         pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
     }
 }
+ 
+/*********************************************************************
+ * @fn      		  - SPI_SSOEConfig
+ *
+ * @brief             - SPI SPOE Enable/Disable API
+ *
+ * @param[in]         - Base address of the SPIx
+ * @param[in]         - ENABLE or DISABLE
+ * @param[in]         - 
+ *
+ * @return            -  None 
+ *
+ * @Note              - None
+ */
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable){
 
+    if(Enable_Disable==ENABLE){
+        pSPIx->CR2 |= (1 << SPI_CR2_SSOE);
+    }else if(Enable_Disable == DISABLE){
+        pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
+    }
+}
 /*********************************************************************
  * @fn      		  - SPI_GetFlagStatus
  *

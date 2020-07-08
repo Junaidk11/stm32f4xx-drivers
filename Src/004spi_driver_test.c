@@ -74,7 +74,7 @@ void SPI2_Inits(){
 		// Configure the SPI2 Peripheral as desired. 
 		SPI2Handle.SPIConfig.DeviceMode = SPI_IN_MASTER_MODE;  
 		SPI2Handle.SPIConfig.BusConfig = SPI_IN_FULL_DUPLEX_MODE; 
-		SPI2Handle.SPIConfig.DataFrameFormat = SPI_DATAFRAME_16BIT; 
+		SPI2Handle.SPIConfig.DataFrameFormat = SPI_DATAFRAME_8BITS; 
 		SPI2Handle.SPIConfig.ClockPolarity = SPI_SCLK_LOW; 
 		SPI2Handle.SPIConfig.ClockPhase = SPI_DATA_SAMPLED_ON_LEADING_EDGE; 
 		SPI2Handle.SPIConfig.SclkSpeed = SPI_PERIPHERAL_CLOCK_DIV2; // Serial Clock is at lowest possible at 8 MHz as Prescaler = 2, System Clock source is Internal RC oscillator, producing 16MHz
