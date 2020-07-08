@@ -35,7 +35,7 @@ void SPI2_GPIOInits(){
 	SPIPins.PinConfig.PinMode = GPIO_PIN_ALTFUNC_MODE; 
 	SPIPins.PinConfig.PinAltFunMode = 5; 
 	SPIPins.PinConfig.PinOType = GPIO_PUSH_PULL_OUTPUT_CONFIG; // Output Drain Type is required for I2C -> specification insists.
-	SPIPins.PinConfig.PinPuPdControl = GPIO_PIN_NO_PUPD;  // Don't need PU/PD for Push-pull output configuration
+	SPIPins.PinConfig.PinPuPdControl = GPIO_PIN_PULL_UP;  // Don't need PU/PD for Push-pull output configuration
 	SPIPins.PinConfig.PinSpeed = GPIO_PIN_HIGH_SPEED;  // Doesn't matter, can set to any speed
 
 	// Set Pin number and call the GPIOInit to initialize each of the PBx pins.
