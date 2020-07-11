@@ -147,7 +147,7 @@ void GPIO_ButtonInits(){
 void Delay()
 {
     int i = 0;
-    for (; i < 500000 / 2; i++);
+    for (; i < 50000 / 2; i++);
 }
 
 uint8_t SPI_VerifyResponse(uint8_t ackByte){
@@ -230,7 +230,7 @@ int main(){
             arguments[1] = LED_ON;  //  Turn LED on
 
            //  Send Arguments to Slave
-           SPI_SendData(SPI2, arguments, 1); // '2' because we're sending 2 arguments of 8 bits each. 
+           SPI_SendData(SPI2, arguments, 1); // '1' because we're sending 2 arguments of 8 bits each.
        
             // Dummy read to clear RXNE flag 
 
@@ -238,7 +238,7 @@ int main(){
        }
 
         // Confirm SPI2 is not busy 
-        while(!(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait. 
+        while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
 
         // SPI2 not busy anymore, disable SPI2 
         SPI_PeripheralControl(SPI2, DISABLE); 

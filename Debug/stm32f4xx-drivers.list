@@ -287,48 +287,48 @@ void Delay()
     int i = 0;
  80002de:	2300      	movs	r3, #0
  80002e0:	607b      	str	r3, [r7, #4]
-    for (; i < 500000 / 2; i++);
+    for (; i < 50000 / 2; i++);
  80002e2:	e002      	b.n	80002ea <Delay+0x12>
  80002e4:	687b      	ldr	r3, [r7, #4]
  80002e6:	3301      	adds	r3, #1
  80002e8:	607b      	str	r3, [r7, #4]
  80002ea:	687b      	ldr	r3, [r7, #4]
- 80002ec:	4a03      	ldr	r2, [pc, #12]	; (80002fc <Delay+0x24>)
- 80002ee:	4293      	cmp	r3, r2
- 80002f0:	ddf8      	ble.n	80002e4 <Delay+0xc>
+ 80002ec:	f246 12a7 	movw	r2, #24999	; 0x61a7
+ 80002f0:	4293      	cmp	r3, r2
+ 80002f2:	ddf7      	ble.n	80002e4 <Delay+0xc>
 }
- 80002f2:	bf00      	nop
- 80002f4:	370c      	adds	r7, #12
- 80002f6:	46bd      	mov	sp, r7
- 80002f8:	bc80      	pop	{r7}
- 80002fa:	4770      	bx	lr
- 80002fc:	0003d08f 	.word	0x0003d08f
+ 80002f4:	bf00      	nop
+ 80002f6:	370c      	adds	r7, #12
+ 80002f8:	46bd      	mov	sp, r7
+ 80002fa:	bc80      	pop	{r7}
+ 80002fc:	4770      	bx	lr
 
-08000300 <SPI_VerifyResponse>:
+080002fe <SPI_VerifyResponse>:
 
 uint8_t SPI_VerifyResponse(uint8_t ackByte){
- 8000300:	b480      	push	{r7}
- 8000302:	b083      	sub	sp, #12
- 8000304:	af00      	add	r7, sp, #0
- 8000306:	4603      	mov	r3, r0
- 8000308:	71fb      	strb	r3, [r7, #7]
+ 80002fe:	b480      	push	{r7}
+ 8000300:	b083      	sub	sp, #12
+ 8000302:	af00      	add	r7, sp, #0
+ 8000304:	4603      	mov	r3, r0
+ 8000306:	71fb      	strb	r3, [r7, #7]
 
     if(ackByte == ACK_CODE){
- 800030a:	79fb      	ldrb	r3, [r7, #7]
- 800030c:	2bf5      	cmp	r3, #245	; 0xf5
- 800030e:	d101      	bne.n	8000314 <SPI_VerifyResponse+0x14>
+ 8000308:	79fb      	ldrb	r3, [r7, #7]
+ 800030a:	2bf5      	cmp	r3, #245	; 0xf5
+ 800030c:	d101      	bne.n	8000312 <SPI_VerifyResponse+0x14>
         return 1;
- 8000310:	2301      	movs	r3, #1
- 8000312:	e000      	b.n	8000316 <SPI_VerifyResponse+0x16>
+ 800030e:	2301      	movs	r3, #1
+ 8000310:	e000      	b.n	8000314 <SPI_VerifyResponse+0x16>
     }
     return 0;
- 8000314:	2300      	movs	r3, #0
+ 8000312:	2300      	movs	r3, #0
 }
- 8000316:	4618      	mov	r0, r3
- 8000318:	370c      	adds	r7, #12
- 800031a:	46bd      	mov	sp, r7
- 800031c:	bc80      	pop	{r7}
- 800031e:	4770      	bx	lr
+ 8000314:	4618      	mov	r0, r3
+ 8000316:	370c      	adds	r7, #12
+ 8000318:	46bd      	mov	sp, r7
+ 800031a:	bc80      	pop	{r7}
+ 800031c:	4770      	bx	lr
+	...
 
 08000320 <main>:
  *        6. Wait till Button pressed again. 
@@ -435,7 +435,7 @@ int main(){
        if(SPI_VerifyResponse(slave_response)){
  8000394:	7b7b      	ldrb	r3, [r7, #13]
  8000396:	4618      	mov	r0, r3
- 8000398:	f7ff ffb2 	bl	8000300 <SPI_VerifyResponse>
+ 8000398:	f7ff ffb1 	bl	80002fe <SPI_VerifyResponse>
  800039c:	4603      	mov	r3, r0
  800039e:	2b00      	cmp	r3, #0
  80003a0:	d011      	beq.n	80003c6 <main+0xa6>
@@ -449,7 +449,7 @@ int main(){
  80003a8:	727b      	strb	r3, [r7, #9]
 
            //  Send Arguments to Slave
-           SPI_SendData(SPI2, arguments, 1); // '2' because we're sending 2 arguments of 8 bits each. 
+           SPI_SendData(SPI2, arguments, 1); // '1' because we're sending 2 arguments of 8 bits each.
  80003aa:	f107 0308 	add.w	r3, r7, #8
  80003ae:	2201      	movs	r2, #1
  80003b0:	4619      	mov	r1, r3
@@ -467,14 +467,14 @@ int main(){
        }
 
         // Confirm SPI2 is not busy 
-        while(!(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait. 
+        while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
  80003c6:	bf00      	nop
  80003c8:	2180      	movs	r1, #128	; 0x80
  80003ca:	4805      	ldr	r0, [pc, #20]	; (80003e0 <main+0xc0>)
  80003cc:	f000 fb82 	bl	8000ad4 <SPI_GetFlagStatus>
  80003d0:	4603      	mov	r3, r0
  80003d2:	2b00      	cmp	r3, #0
- 80003d4:	d0f8      	beq.n	80003c8 <main+0xa8>
+ 80003d4:	d1f8      	bne.n	80003c8 <main+0xa8>
 
         // SPI2 not busy anymore, disable SPI2 
         SPI_PeripheralControl(SPI2, DISABLE); 
@@ -1731,14 +1731,14 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength){
  8000b06:	e027      	b.n	8000b58 <SPI_SendData+0x5e>
         //1. Wait until TXE is set
                     // while( !(pSPIx->SR & (1 << 1)) ); // Checking if TXE flag is set in the Status Register, implement the condition using a function defined in this source. 
-        while(SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG));  // Same as above statement, but a much cleaner method of implementation. 
+        while(! SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG));  // Same as above statement, but a much cleaner method of implementation. If TXNE, you stay here, if empty, you push data into Tx Buffer
  8000b08:	bf00      	nop
  8000b0a:	2102      	movs	r1, #2
  8000b0c:	68f8      	ldr	r0, [r7, #12]
  8000b0e:	f7ff ffe1 	bl	8000ad4 <SPI_GetFlagStatus>
  8000b12:	4603      	mov	r3, r0
  8000b14:	2b00      	cmp	r3, #0
- 8000b16:	d1f8      	bne.n	8000b0a <SPI_SendData+0x10>
+ 8000b16:	d0f8      	beq.n	8000b0a <SPI_SendData+0x10>
     
         //2. Check DFF bit CR1 to determine how many bytes to upload in the DR, which will push the data bytes to the Tx Buffer
         if(pSPIx->CR1 & (1 << SPI_CR1_DFF)){
@@ -1823,14 +1823,14 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
  8000b72:	e027      	b.n	8000bc4 <SPI_ReceiveData+0x5e>
         //1. Wait until RXNE is set, which RX Buffer in the SPI block is not Empty, there is new data available 
                     // while( !(pSPIx->SR & (0 << 1)) ); // Checking if RXNE flag is set in the Status Register, implement the condition using a function defined in this source. 
-        while(SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG));  // Same as above statement, but a much cleaner method of implementation. 
+        while(! SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG));  // Same as above statement, but a much cleaner method of implementation.
  8000b74:	bf00      	nop
  8000b76:	2101      	movs	r1, #1
  8000b78:	68f8      	ldr	r0, [r7, #12]
  8000b7a:	f7ff ffab 	bl	8000ad4 <SPI_GetFlagStatus>
  8000b7e:	4603      	mov	r3, r0
  8000b80:	2b00      	cmp	r3, #0
- 8000b82:	d1f8      	bne.n	8000b76 <SPI_ReceiveData+0x10>
+ 8000b82:	d0f8      	beq.n	8000b76 <SPI_ReceiveData+0x10>
         
         //2. Check DFF bit CR1 to determine how many bytes to Download/grab/read from the DR, which will push the data bytes from the SPI RX buffer to the RX buffer of the program
         if(pSPIx->CR1 & (1 << SPI_CR1_DFF)){
