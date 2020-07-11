@@ -117,7 +117,7 @@ typedef struct{
 #define SPI_CRCERR_FLAG     (1 << SPI_SR_CRCERR) 
 #define SPI_MODF_FLAG       (1 << SPI_SR_MODF) 
 #define SPI_OVR_FLAG        (1 << SPI_SR_OVR) 
-#define SPI_BUSY_FLAG        (1 << SPI_SR_BSY) 
+#define SPI_BUSY_FLAG       (1 << SPI_SR_BSY) 
 #define SPI_FRE_FLAG        (1 << SPI_SR_FRE)
 
 

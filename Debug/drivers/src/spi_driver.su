@@ -6,3 +6,4 @@ spi_driver.c:187:6:SPI_SSIConfig	16	static
 spi_driver.c:209:6:SPI_SSOEConfig	16	static
 spi_driver.c:230:9:SPI_GetFlagStatus	16	static
 spi_driver.c:255:6:SPI_SendData	24	static
+spi_driver.c:303:6:SPI_ReceiveData	24	static

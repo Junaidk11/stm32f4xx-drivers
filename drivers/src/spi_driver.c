@@ -300,7 +300,38 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength){
  * @Note              -  uint32_t is a standared for defining data length.
 
  */
-void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLength);
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLength){
+
+     while(DataLength > 0){
+        //1. Wait until RXNE is set, which RX Buffer in the SPI block is not Empty, there is new data available 
+                    // while( !(pSPIx->SR & (0 << 1)) ); // Checking if RXNE flag is set in the Status Register, implement the condition using a function defined in this source. 
+        while(SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG));  // Same as above statement, but a much cleaner method of implementation. 
+        
+        //2. Check DFF bit CR1 to determine how many bytes to Download/grab/read from the DR, which will push the data bytes from the SPI RX buffer to the RX buffer of the program
+        if(pSPIx->CR1 & (1 << SPI_CR1_DFF)){
+
+            // If bit is set, then DFF = 16-bit. You need to upload 2 bytes of data into the DR register. 
+            //             The type casting here will convert the 8-bit pointer to a 16-bit pointer, allowing to dereference 2-bytes of consecutive data - in this case you will download/read 16-bits of data from SPI's RX buffer. Without the uint16_t* typecast, you would be storing a byte of data.
+            //                  |
+            *((uint16_t *)pRxBuffer) = pSPIx->DR;
+             
+            // Pushed 2 bytes of Data into Tx Buffer, so reduced length by 2 bytes.
+            DataLength--; 
+            DataLength--; 
+            // Move pointer 2 bytes ahead
+            (uint16_t *)pRxBuffer++; // This will make the pointer point to the start of the 16-bits to send.
+
+        }else
+        {
+            // DFF = 8-bit, you need to read a byte at a time from the SPI's RX buffer 
+            *(pRxBuffer) = pSPIx->DR; // Don't need typecasting as pointer is of 8-bit type. 
+            DataLength--; 
+            pRxBuffer++; 
+        }
+        
+    }
+
+}
 
 /*********************************************************************
  * @fn      		  - SPI_IRQ_Interrupt_Config
