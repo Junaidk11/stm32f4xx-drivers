@@ -305,7 +305,8 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
      while(DataLength > 0){
         //1. Wait until RXNE is set, which RX Buffer in the SPI block is not Empty, there is new data available 
                     // while( !(pSPIx->SR & (0 << 1)) ); // Checking if RXNE flag is set in the Status Register, implement the condition using a function defined in this source. 
-        while(! SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG));  // Same as above statement, but a much cleaner method of implementation.
+
+    	 while(SPI_GetFlagStatus(pSPIx,SPI_RXNE_FLAG)  == (uint8_t)FLAG_RESET );  // Same as above statement, but a much cleaner method of implementation.
         
         //2. Check DFF bit CR1 to determine how many bytes to Download/grab/read from the DR, which will push the data bytes from the SPI RX buffer to the RX buffer of the program
         if(pSPIx->CR1 & (1 << SPI_CR1_DFF)){

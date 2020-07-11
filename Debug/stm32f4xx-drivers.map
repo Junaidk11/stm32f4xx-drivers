@@ -209,12 +209,11 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .text.GPIO_ButtonInits
                 0x00000000080002a0       0x38 Src/006spi_cmd_handling.o
                 0x00000000080002a0                GPIO_ButtonInits
- .text.Delay    0x00000000080002d8       0x26 Src/006spi_cmd_handling.o
+ .text.Delay    0x00000000080002d8       0x28 Src/006spi_cmd_handling.o
                 0x00000000080002d8                Delay
  .text.SPI_VerifyResponse
-                0x00000000080002fe       0x20 Src/006spi_cmd_handling.o
-                0x00000000080002fe                SPI_VerifyResponse
- *fill*         0x000000000800031e        0x2 
+                0x0000000008000300       0x20 Src/006spi_cmd_handling.o
+                0x0000000008000300                SPI_VerifyResponse
  .text.main     0x0000000008000320       0xc8 Src/006spi_cmd_handling.o
                 0x0000000008000320                main
  .text.Reset_Handler

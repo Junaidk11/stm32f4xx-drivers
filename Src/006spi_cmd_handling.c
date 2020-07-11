@@ -47,6 +47,7 @@
 
 #define ACK_CODE  0xF5
 
+
 /**
  *  Pins for Configuring SPI2 for transmission
  * 
@@ -147,7 +148,7 @@ void GPIO_ButtonInits(){
 void Delay()
 {
     int i = 0;
-    for (; i < 50000 / 2; i++);
+    for (; i < 500000 / 2; i++);
 }
 
 uint8_t SPI_VerifyResponse(uint8_t ackByte){
@@ -182,8 +183,10 @@ int main(){
             // 3. Call Function to Configure the SPI2 Peripheral 
             SPI2_Inits();
 
-            // 4. clear SSOE pin to Disable Software Slave Managment, as ST is connected to Arduino Slave
-            SPI_SSOEConfig(SPI2, DISABLE);
+            // 4. Set SSOE pin to enable Slave Select Output, which will tie Peripheral Enable bit to the NSS output
+           // i.e. when SPI enabled, NSS will be driven low to initiate communication with the slave --> Only if the SPI is in master mode, which is the case here.
+
+            SPI_SSOEConfig(SPI2, ENABLE);
 
     //              -- INITIALIZE THE PERIPHERALS 
 
@@ -230,7 +233,7 @@ int main(){
             arguments[1] = LED_ON;  //  Turn LED on
 
            //  Send Arguments to Slave
-           SPI_SendData(SPI2, arguments, 1); // '1' because we're sending 2 arguments of 8 bits each.
+           SPI_SendData(SPI2, arguments, 2); // '2' because we're sending 2 arguments of 8 bits each.
        
             // Dummy read to clear RXNE flag 
 

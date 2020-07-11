@@ -287,48 +287,48 @@ void Delay()
     int i = 0;
  80002de:	2300      	movs	r3, #0
  80002e0:	607b      	str	r3, [r7, #4]
-    for (; i < 50000 / 2; i++);
+    for (; i < 500000 / 2; i++);
  80002e2:	e002      	b.n	80002ea <Delay+0x12>
  80002e4:	687b      	ldr	r3, [r7, #4]
  80002e6:	3301      	adds	r3, #1
  80002e8:	607b      	str	r3, [r7, #4]
  80002ea:	687b      	ldr	r3, [r7, #4]
- 80002ec:	f246 12a7 	movw	r2, #24999	; 0x61a7
- 80002f0:	4293      	cmp	r3, r2
- 80002f2:	ddf7      	ble.n	80002e4 <Delay+0xc>
+ 80002ec:	4a03      	ldr	r2, [pc, #12]	; (80002fc <Delay+0x24>)
+ 80002ee:	4293      	cmp	r3, r2
+ 80002f0:	ddf8      	ble.n	80002e4 <Delay+0xc>
 }
- 80002f4:	bf00      	nop
- 80002f6:	370c      	adds	r7, #12
- 80002f8:	46bd      	mov	sp, r7
- 80002fa:	bc80      	pop	{r7}
- 80002fc:	4770      	bx	lr
+ 80002f2:	bf00      	nop
+ 80002f4:	370c      	adds	r7, #12
+ 80002f6:	46bd      	mov	sp, r7
+ 80002f8:	bc80      	pop	{r7}
+ 80002fa:	4770      	bx	lr
+ 80002fc:	0003d08f 	.word	0x0003d08f
 
-080002fe <SPI_VerifyResponse>:
+08000300 <SPI_VerifyResponse>:
 
 uint8_t SPI_VerifyResponse(uint8_t ackByte){
- 80002fe:	b480      	push	{r7}
- 8000300:	b083      	sub	sp, #12
- 8000302:	af00      	add	r7, sp, #0
- 8000304:	4603      	mov	r3, r0
- 8000306:	71fb      	strb	r3, [r7, #7]
+ 8000300:	b480      	push	{r7}
+ 8000302:	b083      	sub	sp, #12
+ 8000304:	af00      	add	r7, sp, #0
+ 8000306:	4603      	mov	r3, r0
+ 8000308:	71fb      	strb	r3, [r7, #7]
 
     if(ackByte == ACK_CODE){
- 8000308:	79fb      	ldrb	r3, [r7, #7]
- 800030a:	2bf5      	cmp	r3, #245	; 0xf5
- 800030c:	d101      	bne.n	8000312 <SPI_VerifyResponse+0x14>
+ 800030a:	79fb      	ldrb	r3, [r7, #7]
+ 800030c:	2bf5      	cmp	r3, #245	; 0xf5
+ 800030e:	d101      	bne.n	8000314 <SPI_VerifyResponse+0x14>
         return 1;
- 800030e:	2301      	movs	r3, #1
- 8000310:	e000      	b.n	8000314 <SPI_VerifyResponse+0x16>
+ 8000310:	2301      	movs	r3, #1
+ 8000312:	e000      	b.n	8000316 <SPI_VerifyResponse+0x16>
     }
     return 0;
- 8000312:	2300      	movs	r3, #0
+ 8000314:	2300      	movs	r3, #0
 }
- 8000314:	4618      	mov	r0, r3
- 8000316:	370c      	adds	r7, #12
- 8000318:	46bd      	mov	sp, r7
- 800031a:	bc80      	pop	{r7}
- 800031c:	4770      	bx	lr
-	...
+ 8000316:	4618      	mov	r0, r3
+ 8000318:	370c      	adds	r7, #12
+ 800031a:	46bd      	mov	sp, r7
+ 800031c:	bc80      	pop	{r7}
+ 800031e:	4770      	bx	lr
 
 08000320 <main>:
  *        6. Wait till Button pressed again. 
@@ -355,9 +355,11 @@ int main(){
             SPI2_Inits();
  800032e:	f7ff ff5b 	bl	80001e8 <SPI2_Inits>
 
-            // 4. clear SSOE pin to Disable Software Slave Managment, as ST is connected to Arduino Slave
-            SPI_SSOEConfig(SPI2, DISABLE);
- 8000332:	2100      	movs	r1, #0
+            // 4. Set SSOE pin to enable Slave Select Output, which will tie Peripheral Enable bit to the NSS output
+           // i.e. when SPI enabled, NSS will be driven low to initiate communication with the slave --> Only if the SPI is in master mode, which is the case here.
+
+            SPI_SSOEConfig(SPI2, ENABLE);
+ 8000332:	2101      	movs	r1, #1
  8000334:	482a      	ldr	r0, [pc, #168]	; (80003e0 <main+0xc0>)
  8000336:	f000 fbaf 	bl	8000a98 <SPI_SSOEConfig>
 
@@ -435,7 +437,7 @@ int main(){
        if(SPI_VerifyResponse(slave_response)){
  8000394:	7b7b      	ldrb	r3, [r7, #13]
  8000396:	4618      	mov	r0, r3
- 8000398:	f7ff ffb1 	bl	80002fe <SPI_VerifyResponse>
+ 8000398:	f7ff ffb2 	bl	8000300 <SPI_VerifyResponse>
  800039c:	4603      	mov	r3, r0
  800039e:	2b00      	cmp	r3, #0
  80003a0:	d011      	beq.n	80003c6 <main+0xa6>
@@ -449,9 +451,9 @@ int main(){
  80003a8:	727b      	strb	r3, [r7, #9]
 
            //  Send Arguments to Slave
-           SPI_SendData(SPI2, arguments, 1); // '1' because we're sending 2 arguments of 8 bits each.
+           SPI_SendData(SPI2, arguments, 2); // '1' because we're sending 2 arguments of 8 bits each.
  80003aa:	f107 0308 	add.w	r3, r7, #8
- 80003ae:	2201      	movs	r2, #1
+ 80003ae:	2202      	movs	r2, #2
  80003b0:	4619      	mov	r1, r3
  80003b2:	480b      	ldr	r0, [pc, #44]	; (80003e0 <main+0xc0>)
  80003b4:	f000 fba1 	bl	8000afa <SPI_SendData>
@@ -1823,7 +1825,8 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
  8000b72:	e027      	b.n	8000bc4 <SPI_ReceiveData+0x5e>
         //1. Wait until RXNE is set, which RX Buffer in the SPI block is not Empty, there is new data available 
                     // while( !(pSPIx->SR & (0 << 1)) ); // Checking if RXNE flag is set in the Status Register, implement the condition using a function defined in this source. 
-        while(! SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG));  // Same as above statement, but a much cleaner method of implementation.
+
+    	 while(SPI_GetFlagStatus(pSPIx,SPI_RXNE_FLAG)  == (uint8_t)FLAG_RESET );  // Same as above statement, but a much cleaner method of implementation.
  8000b74:	bf00      	nop
  8000b76:	2101      	movs	r1, #1
  8000b78:	68f8      	ldr	r0, [r7, #12]
