@@ -9,9 +9,13 @@
 #include "gpio_driver.h"
 #include "spi_driver.h"
 #include "string.h"
+#include "stdio.h"
 
 
-
+/**
+ *    For Semi-hosting 
+ */
+extern void initialise_monitor_handles();
 /**
  *  Command Codes
  */ 
@@ -173,6 +177,13 @@ uint8_t SPI_VerifyResponse(uint8_t ackByte){
 
 int main(){
 
+    /**
+     *      For Semi-hosting
+     */
+    initialise_monitor_handles();
+
+    printf("Main Function entered. \n");
+
     //              ++ INITIALIZE THE PERIPHERALS 
 
             // 1. Call Function to configure the I/O pin PA0 as button 
@@ -190,7 +201,7 @@ int main(){
             SPI_SSOEConfig(SPI2, ENABLE);
 
     //              -- INITIALIZE THE PERIPHERALS 
-
+    printf("Initialization Complete. \n");
     uint8_t dummy_read; 
     uint8_t dummy_write = 0xFF; 
     uint8_t slave_response; 
@@ -202,7 +213,7 @@ int main(){
         // ++ First Command - Turn ON LED
                 // Wait till button is pressed 
                 while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
-
+                printf("Button Pressed \n");
                 // To avoid Button de-bouncing, add software delay
                 Delay();
 
@@ -215,7 +226,7 @@ int main(){
                 
                 // Send LED command first
                 SPI_SendData(SPI2, &command, 1);
-
+                printf("Master sent: %X \n", command);
                 // Dummy read, to clear RXNE flag
                 SPI_ReceiveData(SPI2, &dummy_read, 1);
 
@@ -225,6 +236,7 @@ int main(){
 
                 // Read Slave response
                 SPI_ReceiveData(SPI2, &slave_response, 1); 
+                printf("Slave Response to %X: %X \n", command, slave_response);
 
                 // Check if slave responsed with ACK or NACK 
 
@@ -254,10 +266,11 @@ int main(){
                  *  	Connect A0 -> 5 V, Read the value returned by Arduino, should be 255
                  *  	Connect A0 -> 3.3 V, Read the value returned by Arduino, should be less than 255 but greater than 128
                  */
-
+                
+                printf("Waiting for button to be pressed! \n");
                 // Wait till button is pressed 
                 while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
-
+                printf("Button Pressed \n");
                 // To avoid Button de-bouncing, add software delay
                 Delay();
 
@@ -267,6 +280,7 @@ int main(){
                 
                 // Send Sensor Read Command First 
                 SPI_SendData(SPI2, &command, 1);
+                printf("Master sent: %X \n", command);
 
                 // Dummy read, to clear RXNE flag
                 SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -277,6 +291,7 @@ int main(){
 
                 // Read Slave response
                 SPI_ReceiveData(SPI2, &slave_response, 1); 
+                printf("Slave Response to %X: %X \n", command, slave_response);
 
                 // Check if slave responsed with ACK or NACK 
                 if(SPI_VerifyResponse(slave_response)){
@@ -299,14 +314,16 @@ int main(){
 
                     // Read Slave response - Which should be an 8-bit value between 0-255 corresponding to the voltage at pin A0 - which is used as the Sensor Input
                     SPI_ReceiveData(SPI2, &slave_response, 1); 
+                    printf("Slave returned Analog value as: %X\n", slave_response);
 
                 }
         // -- Second Command - Read Sensor Value 
 
         // ++ Third Command - LED Read
+                printf("Waiting for button to be pressed! \n");
                 // Wait till button is pressed 
                 while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
-
+                printf("Button Pressed \n");
                 // To avoid Button de-bouncing, add software delay
                 Delay();
 
@@ -316,6 +333,7 @@ int main(){
                 
                 // Send LED Read Command First 
                 SPI_SendData(SPI2, &command, 1);
+                printf("Master sent: %X \n", command);
 
                 // Dummy read, to clear RXNE flag
                 SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -326,6 +344,7 @@ int main(){
 
                 // Read Slave response
                 SPI_ReceiveData(SPI2, &slave_response, 1); 
+                printf("Slave Response to %X: %X \n", command, slave_response);
 
                 // Check if slave responsed with ACK or NACK 
                 if(SPI_VerifyResponse(slave_response)){
@@ -345,14 +364,17 @@ int main(){
 
                     // Read Slave response - Which should be either a '1' or '0' --> Will read '1' because initially we turn the LED on.
                     SPI_ReceiveData(SPI2, &slave_response, 1); 
+                    printf("Slave returned Analog value as: %X\n", slave_response);
+
                 }
 
         // -- Third Command - LED Read
 
         // ++ Fourth Command - Print Command
                 // Wait till button is pressed 
+                printf("Waiting for button to be pressed! \n");
                 while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
-
+                printf("Button Pressed \n");
                 // To avoid Button de-bouncing, add software delay
                 Delay();
 
@@ -362,6 +384,7 @@ int main(){
                 
                 // Send LED Read Command First 
                 SPI_SendData(SPI2, &command, 1);
+                printf("Master sent: %X \n", command);
 
                 // Dummy read, to clear RXNE flag
                 SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -372,7 +395,8 @@ int main(){
 
                 // Read Slave response
                 SPI_ReceiveData(SPI2, &slave_response, 1);
-                
+                printf("Slave Response to %X: %X \n", command, slave_response);
+
                 // Check if slave responsed with ACK or NACK 
                 if(SPI_VerifyResponse(slave_response)){
                     // Recieved acknowledgment from Slave, arguments of the command you sent befoe
@@ -383,16 +407,17 @@ int main(){
                     SPI_SendData(SPI2, arguments, 1); // First argument only
 
                     // Send Message now
-                    SPI_SendData(SPI2, message, arguments[0]); 
-                    
+                    SPI_SendData(SPI2, message, arguments[0]);
+                    printf("Message sent to slave! \n");
                 }
 
         // -- Fourth Command - Print Command
 
         // ++ Fifth Command - ID read
             // Wait till button is pressed 
+                printf("Waiting for button to be pressed! \n");
                 while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
-
+                printf("Button Pressed \n");
                 // To avoid Button de-bouncing, add software delay
                 Delay();
 
@@ -402,6 +427,7 @@ int main(){
                 
                 // Send LED Read Command First 
                 SPI_SendData(SPI2, &command, 1);
+                printf("Master sent: %X \n", command);
 
                 // Dummy read, to clear RXNE flag
                 SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -412,7 +438,8 @@ int main(){
 
                 // Read Slave response
                 SPI_ReceiveData(SPI2, &slave_response, 1);
-                
+                printf("Slave Response to %X: %X \n", command, slave_response);
+
                 // To store Received Data
                 uint8_t slaveData[10];
 
@@ -431,19 +458,17 @@ int main(){
 						// Read Slave response
 						SPI_ReceiveData(SPI2, &slaveData[dataLength], 1);
 						dataLength++;
-
+                        printf("Received a byte of data from slave! \n");
                     }
-
                 }
-
-
         // -- Fifth Command - ID read
 
         // Confirm SPI2 is not busy 
         while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
-
+        printf("SPI2 not busy anymore! \n");
         // SPI2 not busy anymore, disable SPI2 
         SPI_PeripheralControl(SPI2, DISABLE); 
+        printf("SPI2 disabled. \n");
 
     }
 
