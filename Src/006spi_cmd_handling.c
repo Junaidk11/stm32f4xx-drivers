@@ -198,47 +198,110 @@ int main(){
 
     while(1){
 
-        // Wait till button is pressed 
-        while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
+        // ++ First Command - Turn ON LED
+                // Wait till button is pressed 
+                while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
 
-        // To avoid Button de-bouncing, add software delay
-        Delay();
+                // To avoid Button de-bouncing, add software delay
+                Delay();
 
-        // Enable SPI2
-        SPI_PeripheralControl(SPI2, ENABLE); 
+                // Enable SPI2
+                SPI_PeripheralControl(SPI2, ENABLE); 
 
-        // Send LED Control Command 
-        // CMD_LED_CTRL  <Pin number> <Value>
-        uint8_t command = COMMAND_LED_CTRL; 
-        
-        // Send LED command first
-        SPI_SendData(SPI2, &command, 1);
+                // Send LED Control Command 
+                // CMD_LED_CTRL  <Pin number> <Value>
+                uint8_t command = COMMAND_LED_CTRL; 
+                
+                // Send LED command first
+                SPI_SendData(SPI2, &command, 1);
 
-        // Dummy read, to clear RXNE flag
-        SPI_ReceiveData(SPI2, &dummy_read, 1);
+                // Dummy read, to clear RXNE flag
+                SPI_ReceiveData(SPI2, &dummy_read, 1);
 
-        //Send Dummy byte, to read slave response for the command that was send earlier. 
-        //Master always initiates communication, so send dummy bytes to get slave response. 
-        SPI_SendData(SPI2, &dummy_write, 1); 
+                //Send Dummy byte, to read slave response for the command that was send earlier. 
+                //Master always initiates communication, so send dummy bytes to get slave response. 
+                SPI_SendData(SPI2, &dummy_write, 1); 
 
-        // Read Slave response
-        SPI_ReceiveData(SPI2, &slave_response, 1); 
+                // Read Slave response
+                SPI_ReceiveData(SPI2, &slave_response, 1); 
 
-       // Check if slave responsed with ACK or NACK 
+                // Check if slave responsed with ACK or NACK 
 
-       if(SPI_VerifyResponse(slave_response)){
+                if(SPI_VerifyResponse(slave_response)){
 
-           // Recieved acknowledment from Slave, arguments of the command you sent befoe
-            arguments[0] = LED_PIN; // Argument 1 is Pin number
-            arguments[1] = LED_ON;  //  Turn LED on
+                    // Recieved acknowledment from Slave, arguments of the command you sent befoe
+                    arguments[0] = LED_PIN; // Argument 1 is Pin number
+                    arguments[1] = LED_ON;  //  Turn LED on
 
-           //  Send Arguments to Slave
-           SPI_SendData(SPI2, arguments, 2); // '2' because we're sending 2 arguments of 8 bits each.
-       
-            // Dummy read to clear RXNE flag 
+                    //  Send Arguments to Slave
+                    SPI_SendData(SPI2, arguments, 2); // '2' because we're sending 2 arguments of 8 bits each.
+            
+                    // Dummy read to clear RXNE flag 
 
-            SPI_ReceiveData(SPI2, &dummy_read, 1); 
-       }
+                    SPI_ReceiveData(SPI2, &dummy_read, 1); 
+                }
+
+        // -- First Command - Turn ON LED
+
+        // ++ Second Command - Read Sensor Value 
+
+
+                /*
+                 *  The way we're going to test the the Sensor Read Command:
+                 *  	Using Analog Pin 0 on the Arduino.
+                 *  	Connect A0 -> 0 V, Read the value returned by Arduino, should be 0
+                 *  	Connect A0 -> 5 V, Read the value returned by Arduino, should be 255
+                 *  	Connect A0 -> 3.3 V, Read the value returned by Arduino, should be less than 255 but greater than 128
+                 */
+
+                // Wait till button is pressed 
+                while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
+
+                // To avoid Button de-bouncing, add software delay
+                Delay();
+
+                // Update command with "Sensor Read Command"
+                // CMD_LED_CTRL  <Analog Pin number> 
+                command = COMMAND_SENSOR_READ; 
+                
+                // Send Sensor Read Command First 
+                SPI_SendData(SPI2, &command, 1);
+
+                // Dummy read, to clear RXNE flag
+                SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+                //Send Dummy byte, to read slave response for the command that was send earlier. 
+                //Master always initiates communication, so send dummy bytes to get slave response. 
+                SPI_SendData(SPI2, &dummy_write, 1); 
+
+                // Read Slave response
+                SPI_ReceiveData(SPI2, &slave_response, 1); 
+
+                // Check if slave responsed with ACK or NACK 
+                if(SPI_VerifyResponse(slave_response)){
+
+                    // Recieved acknowledment from Slave, arguments of the command you sent befoe
+                    arguments[0] = ANALOG_PIN0; // Argument is Analog Pin number
+
+                    //  Send Arguments to Slave
+                    SPI_SendData(SPI2, arguments, 1); // '2' because we're sending 1 argument
+            
+                    // Dummy read to clear RXNE flag 
+                    SPI_ReceiveData(SPI2, &dummy_read, 1); 
+
+                    // Create Delay to allow Arduino ADC to convert the Analog input to Digital value between 0-255
+                    Delay();
+
+                    //Send Dummy byte, to read slave response for the command that was send earlier.
+                    //Master always initiates communication, so send dummy bytes to get slave response. 
+                    SPI_SendData(SPI2, &dummy_write, 1); 
+
+                    // Read Slave response - Which should be an 8-bit value between 0-255 corresponding to the voltage at pin A0 - which is used as the Sensor Input
+                    SPI_ReceiveData(SPI2, &slave_response, 1); 
+
+                }
+        // -- Second Command - Read Sensor Value 
+
 
         // Confirm SPI2 is not busy 
         while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
