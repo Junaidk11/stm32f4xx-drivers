@@ -350,44 +350,94 @@ int main(){
         // -- Third Command - LED Read
 
         // ++ Fourth Command - Print Command
-            // Wait till button is pressed 
-                    while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
+                // Wait till button is pressed 
+                while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
 
-                    // To avoid Button de-bouncing, add software delay
-                    Delay();
+                // To avoid Button de-bouncing, add software delay
+                Delay();
 
-                    // Update command with "Sensor Read Command"
-                    // CMD_PRINT <Message Length in bytes>  <The message> 
-                    command = COMMAND_PRINT; 
+                // Update command with "Sensor Read Command"
+                // CMD_PRINT <Message Length in bytes>  <The message> 
+                command = COMMAND_PRINT; 
+                
+                // Send LED Read Command First 
+                SPI_SendData(SPI2, &command, 1);
+
+                // Dummy read, to clear RXNE flag
+                SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+                //Send Dummy byte, to read slave response for the command that was send earlier. 
+                //Master always initiates communication, so send dummy bytes to get slave response. 
+                SPI_SendData(SPI2, &dummy_write, 1); 
+
+                // Read Slave response
+                SPI_ReceiveData(SPI2, &slave_response, 1);
+                
+                // Check if slave responsed with ACK or NACK 
+                if(SPI_VerifyResponse(slave_response)){
+                    // Recieved acknowledgment from Slave, arguments of the command you sent befoe
+                    uint8_t message[] = "Hello! How is it going?"; 
+
+                    // Send Message length first
+                    arguments[0]= strlen((char *)message); 
+                    SPI_SendData(SPI2, arguments, 1); // First argument only
+
+                    // Send Message now
+                    SPI_SendData(SPI2, message, arguments[0]); 
                     
-                    // Send LED Read Command First 
-                    SPI_SendData(SPI2, &command, 1);
-
-                    // Dummy read, to clear RXNE flag
-                    SPI_ReceiveData(SPI2, &dummy_read, 1);
-
-                    //Send Dummy byte, to read slave response for the command that was send earlier. 
-                    //Master always initiates communication, so send dummy bytes to get slave response. 
-                    SPI_SendData(SPI2, &dummy_write, 1); 
-
-                    // Read Slave response
-                    SPI_ReceiveData(SPI2, &slave_response, 1);
-                    
-                    // Check if slave responsed with ACK or NACK 
-                    if(SPI_VerifyResponse(slave_response)){
-                        // Recieved acknowledgment from Slave, arguments of the command you sent befoe
-                        uint8_t message[] = "Hello! How is it going?"; 
-
-                        // Send Message length first
-                        arguments[0]= strlen((char *)message); 
-                        SPI_SendData(SPI2, arguments, 1); // First argument only
-
-                        // Send Message now
-                        SPI_SendData(SPI2, message, arguments[0]); 
-                        
-                    }
+                }
 
         // -- Fourth Command - Print Command
+
+        // ++ Fifth Command - ID read
+            // Wait till button is pressed 
+                while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
+
+                // To avoid Button de-bouncing, add software delay
+                Delay();
+
+                // Update command with "Sensor Read Command"
+                // CMD_ID_READ
+                command = COMMAND_ID_READ; 
+                
+                // Send LED Read Command First 
+                SPI_SendData(SPI2, &command, 1);
+
+                // Dummy read, to clear RXNE flag
+                SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+                //Send Dummy byte, to read slave response for the command that was send earlier. 
+                //Master always initiates communication, so send dummy bytes to get slave response. 
+                SPI_SendData(SPI2, &dummy_write, 1); 
+
+                // Read Slave response
+                SPI_ReceiveData(SPI2, &slave_response, 1);
+                
+                // To store Received Data
+                uint8_t slaveData[10];
+
+                // Check if slave responsed with ACK or NACK 
+                if(SPI_VerifyResponse(slave_response)){
+            
+                    // We're receiving information from the arduino. Message to be received -> "ARDUINOUNO" -> 10 bytes of data
+                    uint8_t dataLength = 0; 
+
+                    while(dataLength!=10){
+                        
+                        //Send Dummy byte, to read slave response for the command that was send earlier. 
+                        //Master always initiates communication, so send dummy bytes to get slave response.
+                        SPI_SendData(SPI2, &dummy_write, 1); 
+
+						// Read Slave response
+						SPI_ReceiveData(SPI2, &slaveData[dataLength], 1);
+						dataLength++;
+
+                    }
+
+                }
+
+
+        // -- Fifth Command - ID read
 
         // Confirm SPI2 is not busy 
         while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
