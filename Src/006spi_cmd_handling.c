@@ -8,6 +8,7 @@
 #include "stm32f40xx.h"
 #include "gpio_driver.h"
 #include "spi_driver.h"
+#include "string.h"
 
 
 
@@ -347,6 +348,46 @@ int main(){
                 }
 
         // -- Third Command - LED Read
+
+        // ++ Fourth Command - Print Command
+            // Wait till button is pressed 
+                    while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
+
+                    // To avoid Button de-bouncing, add software delay
+                    Delay();
+
+                    // Update command with "Sensor Read Command"
+                    // CMD_PRINT <Message Length in bytes>  <The message> 
+                    command = COMMAND_PRINT; 
+                    
+                    // Send LED Read Command First 
+                    SPI_SendData(SPI2, &command, 1);
+
+                    // Dummy read, to clear RXNE flag
+                    SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+                    //Send Dummy byte, to read slave response for the command that was send earlier. 
+                    //Master always initiates communication, so send dummy bytes to get slave response. 
+                    SPI_SendData(SPI2, &dummy_write, 1); 
+
+                    // Read Slave response
+                    SPI_ReceiveData(SPI2, &slave_response, 1);
+                    
+                    // Check if slave responsed with ACK or NACK 
+                    if(SPI_VerifyResponse(slave_response)){
+                        // Recieved acknowledgment from Slave, arguments of the command you sent befoe
+                        uint8_t message[] = "Hello! How is it going?"; 
+
+                        // Send Message length first
+                        arguments[0]= strlen((char *)message); 
+                        SPI_SendData(SPI2, arguments, 1); // First argument only
+
+                        // Send Message now
+                        SPI_SendData(SPI2, message, arguments[0]); 
+                        
+                    }
+
+        // -- Fourth Command - Print Command
 
         // Confirm SPI2 is not busy 
         while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
