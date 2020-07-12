@@ -284,7 +284,7 @@ int main(){
                     arguments[0] = ANALOG_PIN0; // Argument is Analog Pin number
 
                     //  Send Arguments to Slave
-                    SPI_SendData(SPI2, arguments, 1); // '2' because we're sending 1 argument
+                    SPI_SendData(SPI2, arguments, 1); // '1' because we're sending 1 argument
             
                     // Dummy read to clear RXNE flag 
                     SPI_ReceiveData(SPI2, &dummy_read, 1); 
@@ -302,6 +302,51 @@ int main(){
                 }
         // -- Second Command - Read Sensor Value 
 
+        // ++ Third Command - LED Read
+                // Wait till button is pressed 
+                while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0)); 
+
+                // To avoid Button de-bouncing, add software delay
+                Delay();
+
+                // Update command with "Sensor Read Command"
+                // CMD_LED_READ  <Pin number> 
+                command = COMMAND_LED_READ; 
+                
+                // Send LED Read Command First 
+                SPI_SendData(SPI2, &command, 1);
+
+                // Dummy read, to clear RXNE flag
+                SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+                //Send Dummy byte, to read slave response for the command that was send earlier. 
+                //Master always initiates communication, so send dummy bytes to get slave response. 
+                SPI_SendData(SPI2, &dummy_write, 1); 
+
+                // Read Slave response
+                SPI_ReceiveData(SPI2, &slave_response, 1); 
+
+                // Check if slave responsed with ACK or NACK 
+                if(SPI_VerifyResponse(slave_response)){
+
+                    // Recieved acknowledment from Slave, arguments of the command you sent befoe
+                    arguments[0] = LED_PIN; // Argument is LED Pin
+
+                    //  Send Arguments to Slave
+                    SPI_SendData(SPI2, arguments, 1); // '1' because we're sending 1 argument
+            
+                    // Dummy read to clear RXNE flag 
+                    SPI_ReceiveData(SPI2, &dummy_read, 1); 
+
+                    //Send Dummy byte, to read slave response for the command that was send earlier.
+                    //Master always initiates communication, so send dummy bytes to get slave response. 
+                    SPI_SendData(SPI2, &dummy_write, 1); 
+
+                    // Read Slave response - Which should be either a '1' or '0' --> Will read '1' because initially we turn the LED on.
+                    SPI_ReceiveData(SPI2, &slave_response, 1); 
+                }
+
+        // -- Third Command - LED Read
 
         // Confirm SPI2 is not busy 
         while((SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG)));  // While SPI is busy, you wait.
