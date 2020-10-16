@@ -39,6 +39,8 @@ typedef struct{
     SPI_RegDef_t *pSPIx_BASEADDR;  /* Holds the Base address of the desired SPI peripheral (SPI1/SPI2/SPI3), the Base addresses defined in device header as MACROS, SPI1, SPI2, and SPI3 */
     SPI_Config_t SPIConfig; /* Holds the SPI configuration information - filled out by the user before calling using any of the API functions defined in this file. */
 
+    /* The following additions were made to the Data Handle DS for Non-blocking implementation of Sending and Receiving Data
+
 }SPI_Handle_t;
 
 /*
@@ -164,6 +166,11 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t Enable_Disable);
         /* Blocking Method APIs */
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t DataLength);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLength);
+
+
+		/* Non-Blocking Method APIs */
+void SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuffer, uint32_t DataLength);
+void SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t DataLength);
 
 
 /**

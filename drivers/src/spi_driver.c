@@ -325,7 +325,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
         }else
         {
             // DFF = 8-bit, you need to read a byte at a time from the SPI's RX buffer 
-            *(pRxBuffer) = pSPIx->DR; // Don't need typecasting as pointer is of 8-bit type. 
+            *(pRxBuffer) = pSPIx->DR; // Don't need type-casting as pointer is of 8-bit type.
             DataLength--; 
             pRxBuffer++; 
         }
@@ -340,7 +340,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
  * @brief             - This function is used to configure the Processor side of interrupt configuration and handling. Use this function to configure the IRQs and enable them. 
  * 						 By default, all IRQs are disabled. Therefore, for the processor to accept an interrupt from a peripheral, the assigned IRQ number to that peripheral should be 
  * 						 configured in the NVIC. 
- * @param[in]         - the IRQ numebr coresponding to the interrupt you want to configure on the processor side from @IRQNumbers defined in MCU header file
+ * @param[in]         - the IRQ number corresponding to the interrupt you want to configure on the processor side from @IRQNumbers defined in MCU header file
  * @param[in]         - Priority of the interrupt.
  * @param[in]         - ENABLE or DISABLE 
  *
@@ -349,14 +349,54 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
  * @Note              - None
 
 */
-void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
+void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable){
+		if( enable_disable == ENABLE){
+			if(IRQNumber <= 31){
+
+				// Program the NVIC_ISER0 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+				(*NVIC_ISER0) |= (1 << IRQNumber);
+
+			}else if (IRQNumber > 31 && IRQNumber < 64){  // Interrupt lines  from 32 - 63
+
+				// Program the NVIC_ISER1 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+				// 32 % 32 = 0 --> bit 0 of the NVIC_ISER1 register, 33 % 32 == 1 --> bit 1 of the NVIC_ISER1 register...
+				(*NVIC_ISER1) |= (1 << (IRQNumber % 32));
+
+			}else if(IRQNumber >64 && IRQNumber < 96){   // IRQ lines from 64 - 96
+
+				// Program the NVIC_ISER2 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+				// 64 % 64 = 0 --> bit 0 of the NVIC_ISER2 register, 65 % 64 == 1 --> bit 1 of the NVIC_ISER2 register...
+				(*NVIC_ISER2) |= (1 << (IRQNumber % 64));
+			}
+			/*   You can add the rest of the NVIC_ISERx registers, there are a total of 8 NVIC_ISER registers. */
+		}else if (enable_disable == DISABLE){
+			if(IRQNumber <= 31){
+
+				// Program the NVIC_ICER0 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+				(*NVIC_ICER0) |= (1 << IRQNumber);
+
+			}else if (IRQNumber > 31 && IRQNumber < 64){  // Interrupt lines  from 32 - 63
+				// Program the NVIC_ICER1 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+				// 32 % 32 = 0 --> bit 0 of the NVIC_ICER1 register, 33 % 32 == 1 --> bit 1 of the NVIC_ICER1 register...
+				(*NVIC_ICER1) |=  (1 << (IRQNumber % 32));
+
+			}else if(IRQNumber >64 && IRQNumber < 96){   // IRQ lines from 64 - 96
+
+				// Program the NVIC_ICER2 Register of the NVIC Controller - Registers Defined in the Cortex-M4 Generic User Guide, under the NVIC Section
+				// 64 % 64 = 0 --> bit 0 of the NVIC_ICER2 register, 65 % 64 == 1 --> bit 1 of the NVIC_ICER2 register...
+				(*NVIC_ICER2) |= (1 << (IRQNumber % 64));
+			}
+
+			/*   You can add the rest of the NVIC_ICERx registers, there are a total of 8 NVIC_ISER registers. */
+		}
+}
 
 /*********************************************************************
  * @fn      		  - SPI_IRQ_Priority_Config
  *
  * @brief             - This function can be used to configure the priority of the given IRQ number. 
  *
- * @param[in]         - the IRQ numebr coresponding to the interrupt you want to configure on the processor side from @IRQNumbers defined in MCU header file
+ * @param[in]         - the IRQ number corresponding to the interrupt you want to configure on the processor side from @IRQNumbers defined in MCU header file
  * @param[in]         - The priority of the IRQNumber
  * @param[in]         -
  *
@@ -365,7 +405,78 @@ void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
  * @Note              - None
 
 */
-void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
+void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
+
+	//1. Find the IPRx register assigned to the IRQNumber
+	uint8_t iprx = IRQNumber /4;
+	//2. Find the section of the iprx register assigned to the IRQNumber
+	uint8_t iprx_Section = IRQNumber % 4;
+
+	//3. Set the IRQPriority in the respective iprx register using the NVIC_IPRR baseaddr defined in the device specific header file.
+	//				Each NVIC_IPRx register is 32-bits wide, iprx is an 8-bit value - 1 byte, to get to the NVIC_IPRx register corresponding to iprx, you need to add 4 bytes for each register till you reach NVIC_IPRx register corresponding to iprx.
+	//							|					Multiply by 8 because each section has 8 bits.
+	//							|								|
+	//*(NVIC_IPR_BASEADDR + (iprx * 4 )) |= (IRQPriority << 8 * iprx_Section);  --> Explained in Notes; Updated: don't need the 4, because NVIC_IPR_BASEADDR is a 32-bit pointer, incrementing by 1 will point to the next 32-bit register.
+
+	//		To get to the corrected section of the iprx register
+	//								|			To fill to the Top 4 bits of the section, as the bottom 4 bits are N.A
+	//													|
+	uint8_t shift_amount = (8 * iprx_Section) + (8 - NO_PR_BITS_IMPLEMENTED);
+
+
+	*(NVIC_IPR_BASEADDR + (iprx)) |= (IRQPriority << shift_amount);
+
+	// Removed the *4 from statement above b/c the NVIC_IPR_BASEADDR is defined as a 32-bit pointer (in the device header file) as ((__vo uint32_t*)0xE000E400),
+	// Therefore, an increment by 1, will move the pointer to ((__vo uint32_t*)0xE000E404), i.e. increment of 4 bytes (4*8 = 32 bits, i.e. next register). Therefore, you don't need to multiply by 4.
+
+}
+
+/*********************************************************************
+ * @fn      		  - SPI_SendData_UsingInterrupt
+ *
+ * @brief             - Data write function using Interrupts  (IT = Interrupt
+ *
+ * @param[in]         - Pointer to the SPI Handler of the SPI module to use for sending data
+ * @param[in]         - Pointer to buffer that contains data to be transmitted
+ * @param[in]         - Length of the buffer
+ *
+ * @return            - None
+ *
+ * @Note              - This API is a non-blocking implementation of the SPI_SendData function.
+ * 						This API DOES not transmit the data, it does the following:
+ * 							1) Stores the data buffer location and its length in some global variables
+ * 							2) Marks the SPI module in the given handle as BUSY -> to avoid other parts of the application code trying to access this SPI module until its completed its transmission
+ * 						  	3) Enable the TXIE(Transmit Interrupt Enable) control bit to get interrupts whenever the TXE flag is set in Status Register of the SPI.
+ *
+ * 						The ACTUAL Data transmission is handled by the ISR Handler.
+ *
+*/
+void SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuffer, uint32_t DataLength);
+
+
+/*********************************************************************
+ * @fn      		  - SPI_ReceiveDataIT
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - None
+ *
+ * @Note              - None
+
+*/
+void SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t DataLength);
+
+
+
+
+
+
+
+
 
 
 /*********************************************************************

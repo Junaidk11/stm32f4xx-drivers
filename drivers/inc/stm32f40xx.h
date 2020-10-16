@@ -591,6 +591,16 @@ typedef struct
 
 
 
+/**
+ *
+ * 		Interrupt Request Numbers(IRQs)
+ * 			These numbers are MCU specific - refer to Reference Manual.
+ * 				For STM32f407-Discovery - Interrupt & Exception Vector Table is under section Interrupts & Events  @IRQNumbers
+ */
+
+#define IRQ_NO_SPI1			35
+#define IRQ_NO_SPI2			36
+#define IRQ_NO_SPI3			51
 
 
 
