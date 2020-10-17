@@ -7,6 +7,17 @@
 
 #include "spi_driver.h"
 
+/*
+ *  The following are helper functions to the ISR handling of SPI.
+ *  	These shouldn't be accessible by the application. The use of static makes that happen.
+ *  		Static keyword only allows these functions to be called by any function in this source file  -> spi_driver.c
+ *
+ */
+
+static void spi_txe_interrupt_handler();
+static void spi_rxne_interrupt_handler();
+static void spi_ovr_err_interrupt_handler();
+
 /*********************************************************************
  * @fn      		  - SPI_ClockControl
  *
@@ -527,14 +538,6 @@ uint8_t SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuf
 }
 
 
-
-
-
-
-
-
-
-
 /*********************************************************************
  * @fn      		  - SPI_IRQHandling
  *
@@ -549,4 +552,49 @@ uint8_t SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuf
  * @Note              - None
 
 */
-void SPI_IRQHandling(SPI_Handle_t *pHandle);
+void SPI_IRQHandling(SPI_Handle_t *pHandle){
+
+
+
+	// 1. Check SR of the SPI module for the respective Interrupt.
+	// 2. Check if the respective interrupt was enabled by the user.
+	uint8_t temp1, temp2;
+
+	// Checking for Transmission interrupt and if Transmission interrupt was enabled by the user.
+	temp1 = pHandle->pSPIx_BASEADDR->SR & (1 << SPI_SR_TXE); // Extract status of TX; if TXE = 1, interrupt caused by transmission of data;
+	temp2 = pHandle->pSPIx_BASEADDR->CR2 & (1 << SPI_CR2_TXEIE);
+
+	if(temp1 && temp2){  // If the interrupt was caused by the transmission AND if user enabled transmission interrupt, HANDLE it in the if block below
+
+		// Handle TXE
+		spi_txe_interrupt_handler(); // Helper function, not available to the application.
+
+	}
+
+	// Checking for Reception interrupt and if reception interrupt was enabled by the user.
+	temp1 = pHandle->pSPIx_BASEADDR->SR & (1 << SPI_SR_RXNE); // Extract status of RX; if RXNE = 1, interrupt caused by reception of data;
+	temp2 = pHandle->pSPIx_BASEADDR->CR2 & (1 << SPI_CR2_RXNEIE);
+
+	if(temp1 && temp2){  // If the interrupt was caused by the reception AND if user enabled reception interrupt, HANDLE it in the if block below
+
+		// Handle RXNE
+		spi_rxne_interrupt_handler(); // Helper function, not available to the application.
+
+	}
+
+	/*
+	 *  There are several other ERROR flags that can be handled in a similar way -> only implementing OVR error flag for showing how to handle it.
+	 */
+	// Checking for overrun flag and if error interrupt was enabled by the user.
+	temp1 = pHandle->pSPIx_BASEADDR->SR & (1 << SPI_SR_OVR); // Extract status of OVR bit in the SR register. If OVR set, then OVERRUN error has occurred
+	temp2 = pHandle->pSPIx_BASEADDR->CR2 & (1 << SPI_CR2_ERRIE);
+
+	if(temp1 && temp2){  // If the interrupt was caused by OVERRUN flag AND if user enabled error interrupts, HANDLE it in the if block below
+
+		// Handle OVR error interrupt
+		spi_ovr_err_interrupt_handler(); // Helper function, not available to the application.
+
+	}
+
+
+}
