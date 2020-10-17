@@ -16,6 +16,7 @@
  */
 
 #define __vo 		volatile
+#define __weak		__attribute__((weak)) // Use this MACRO to define weak function definitions, which allows application layer definition to overwrite the driver layer definition.
 
 /*
  *  Using C MACROS to define these memories.
@@ -611,6 +612,5 @@ typedef struct
 #define SPI_EVENT_RX_CMPLT 		2
 #define SPI_EVENT_OVR_ERR		3
 #define SPI_EVENT_CRC_ERR 		4
-
 
 #endif /* INC_STM32F40XX_H_ */
