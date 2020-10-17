@@ -171,7 +171,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/gpio_driver.o
- .debug_macro   0x0000000000000000      0x4e8 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000000000      0x4fd drivers/src/gpio_driver.o
  .debug_macro   0x0000000000000000       0xf8 drivers/src/gpio_driver.o
  .group         0x0000000000000000        0xc drivers/src/spi_driver.o
  .group         0x0000000000000000        0xc drivers/src/spi_driver.o
@@ -191,6 +191,12 @@ Discarded input sections
                 0x0000000000000000       0x88 drivers/src/spi_driver.o
  .text.SPI_SSIConfig
                 0x0000000000000000       0x3c drivers/src/spi_driver.o
+ .text.SPI_IRQ_Interrupt_Config
+                0x0000000000000000      0x110 drivers/src/spi_driver.o
+ .text.SPI_IRQ_Priority_Config
+                0x0000000000000000       0x5a drivers/src/spi_driver.o
+ .text.SPI_SendData_UsingInterrupts
+                0x0000000000000000       0x48 drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000      0xa48 drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000       0x22 drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000       0x8e drivers/src/spi_driver.o
@@ -198,7 +204,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/spi_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/spi_driver.o
- .debug_macro   0x0000000000000000      0x4e8 drivers/src/spi_driver.o
+ .debug_macro   0x0000000000000000      0x4fd drivers/src/spi_driver.o
  .text          0x0000000000000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-exit.o)
  .data          0x0000000000000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-exit.o)
  .bss           0x0000000000000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-exit.o)
@@ -1001,19 +1007,19 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x0000000000000613       0x1e /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/crtn.o
 OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000     0x1ad8
- .debug_info    0x0000000000000000      0xe35 Src/006spi_cmd_handling.o
- .debug_info    0x0000000000000e35       0x22 Startup/startup_stm32f407vgtx.o
- .debug_info    0x0000000000000e57      0x723 drivers/src/gpio_driver.o
- .debug_info    0x000000000000157a      0x55e drivers/src/spi_driver.o
+.debug_info     0x0000000000000000     0x1c5c
+ .debug_info    0x0000000000000000      0xe83 Src/006spi_cmd_handling.o
+ .debug_info    0x0000000000000e83       0x22 Startup/startup_stm32f407vgtx.o
+ .debug_info    0x0000000000000ea5      0x723 drivers/src/gpio_driver.o
+ .debug_info    0x00000000000015c8      0x694 drivers/src/spi_driver.o
 
-.debug_abbrev   0x0000000000000000      0x513
+.debug_abbrev   0x0000000000000000      0x558
  .debug_abbrev  0x0000000000000000      0x22b Src/006spi_cmd_handling.o
  .debug_abbrev  0x000000000000022b       0x12 Startup/startup_stm32f407vgtx.o
  .debug_abbrev  0x000000000000023d      0x177 drivers/src/gpio_driver.o
- .debug_abbrev  0x00000000000003b4      0x15f drivers/src/spi_driver.o
+ .debug_abbrev  0x00000000000003b4      0x1a4 drivers/src/spi_driver.o
 
-.debug_aranges  0x0000000000000000      0x140
+.debug_aranges  0x0000000000000000      0x158
  .debug_aranges
                 0x0000000000000000       0x48 Src/006spi_cmd_handling.o
  .debug_aranges
@@ -1021,15 +1027,15 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_aranges
                 0x0000000000000070       0x70 drivers/src/gpio_driver.o
  .debug_aranges
-                0x00000000000000e0       0x60 drivers/src/spi_driver.o
+                0x00000000000000e0       0x78 drivers/src/spi_driver.o
 
-.debug_ranges   0x0000000000000000      0x108
+.debug_ranges   0x0000000000000000      0x120
  .debug_ranges  0x0000000000000000       0x38 Src/006spi_cmd_handling.o
  .debug_ranges  0x0000000000000038       0x20 Startup/startup_stm32f407vgtx.o
  .debug_ranges  0x0000000000000058       0x60 drivers/src/gpio_driver.o
- .debug_ranges  0x00000000000000b8       0x50 drivers/src/spi_driver.o
+ .debug_ranges  0x00000000000000b8       0x68 drivers/src/spi_driver.o
 
-.debug_macro    0x0000000000000000     0x2565
+.debug_macro    0x0000000000000000     0x25aa
  .debug_macro   0x0000000000000000      0x26d Src/006spi_cmd_handling.o
  .debug_macro   0x000000000000026d      0xa48 Src/006spi_cmd_handling.o
  .debug_macro   0x0000000000000cb5       0x22 Src/006spi_cmd_handling.o
@@ -1038,55 +1044,55 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .debug_macro   0x0000000000000db6       0xef Src/006spi_cmd_handling.o
  .debug_macro   0x0000000000000ea5       0x6a Src/006spi_cmd_handling.o
  .debug_macro   0x0000000000000f0f      0x1df Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000010ee      0x4e8 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000015d6       0xf8 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000016ce       0xc4 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001792       0x46 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000017d8       0x18 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000017f0       0x3c Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000182c       0x34 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001860      0x174 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000019d4       0x52 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001a26       0x1f Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001a45       0x43 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001a88       0x20 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001aa8      0x1a3 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001c4b      0x330 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001f7b       0x10 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001f8b       0x35 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001fc0       0x20 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001fe0       0x1c Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000001ffc       0x10 Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000200c       0x10 Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000201c       0x1c Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000002038       0x52 Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000208a       0x40 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000020ca       0x10 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000020da       0x40 Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000211a       0xd7 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000021f1       0x1c Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000220d       0x3d Src/006spi_cmd_handling.o
- .debug_macro   0x000000000000224a       0x16 Src/006spi_cmd_handling.o
- .debug_macro   0x0000000000002260      0x145 Src/006spi_cmd_handling.o
- .debug_macro   0x00000000000023a5       0x81 drivers/src/gpio_driver.o
- .debug_macro   0x0000000000002426       0x81 drivers/src/spi_driver.o
- .debug_macro   0x00000000000024a7       0xbe drivers/src/spi_driver.o
+ .debug_macro   0x00000000000010ee      0x4fd Src/006spi_cmd_handling.o
+ .debug_macro   0x00000000000015eb       0xf8 Src/006spi_cmd_handling.o
+ .debug_macro   0x00000000000016e3       0xdc Src/006spi_cmd_handling.o
+ .debug_macro   0x00000000000017bf       0x46 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001805       0x18 Src/006spi_cmd_handling.o
+ .debug_macro   0x000000000000181d       0x3c Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001859       0x34 Src/006spi_cmd_handling.o
+ .debug_macro   0x000000000000188d      0x174 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001a01       0x52 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001a53       0x1f Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001a72       0x43 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001ab5       0x20 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001ad5      0x1a3 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001c78      0x330 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001fa8       0x10 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001fb8       0x35 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000001fed       0x20 Src/006spi_cmd_handling.o
+ .debug_macro   0x000000000000200d       0x1c Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002029       0x10 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002039       0x10 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002049       0x1c Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002065       0x52 Src/006spi_cmd_handling.o
+ .debug_macro   0x00000000000020b7       0x40 Src/006spi_cmd_handling.o
+ .debug_macro   0x00000000000020f7       0x10 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002107       0x40 Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002147       0xd7 Src/006spi_cmd_handling.o
+ .debug_macro   0x000000000000221e       0x1c Src/006spi_cmd_handling.o
+ .debug_macro   0x000000000000223a       0x3d Src/006spi_cmd_handling.o
+ .debug_macro   0x0000000000002277       0x16 Src/006spi_cmd_handling.o
+ .debug_macro   0x000000000000228d      0x145 Src/006spi_cmd_handling.o
+ .debug_macro   0x00000000000023d2       0x81 drivers/src/gpio_driver.o
+ .debug_macro   0x0000000000002453       0x81 drivers/src/spi_driver.o
+ .debug_macro   0x00000000000024d4       0xd6 drivers/src/spi_driver.o
 
-.debug_line     0x0000000000000000     0x136a
- .debug_line    0x0000000000000000      0x76d Src/006spi_cmd_handling.o
- .debug_line    0x000000000000076d       0x84 Startup/startup_stm32f407vgtx.o
- .debug_line    0x00000000000007f1      0x65b drivers/src/gpio_driver.o
- .debug_line    0x0000000000000e4c      0x51e drivers/src/spi_driver.o
+.debug_line     0x0000000000000000     0x13ea
+ .debug_line    0x0000000000000000      0x76f Src/006spi_cmd_handling.o
+ .debug_line    0x000000000000076f       0x84 Startup/startup_stm32f407vgtx.o
+ .debug_line    0x00000000000007f3      0x65d drivers/src/gpio_driver.o
+ .debug_line    0x0000000000000e50      0x59a drivers/src/spi_driver.o
 
-.debug_str      0x0000000000000000     0xa93f
- .debug_str     0x0000000000000000     0xa648 Src/006spi_cmd_handling.o
-                                       0xa8aa (size before relaxing)
- .debug_str     0x000000000000a648       0x31 Startup/startup_stm32f407vgtx.o
-                                         0x6d (size before relaxing)
- .debug_str     0x000000000000a679      0x1d3 drivers/src/gpio_driver.o
-                                       0x5ff1 (size before relaxing)
- .debug_str     0x000000000000a84c       0xf3 drivers/src/spi_driver.o
-                                       0x5f4c (size before relaxing)
+.debug_str      0x0000000000000000     0xaa06
+ .debug_str     0x0000000000000000     0xa6d5 Src/006spi_cmd_handling.o
+                                       0xa937 (size before relaxing)
+ .debug_str     0x000000000000a6d5       0x31 Startup/startup_stm32f407vgtx.o
+                                         0x6f (size before relaxing)
+ .debug_str     0x000000000000a706      0x1d3 drivers/src/gpio_driver.o
+                                       0x6020 (size before relaxing)
+ .debug_str     0x000000000000a8d9      0x12d drivers/src/spi_driver.o
+                                       0x604e (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
  .comment       0x0000000000000000       0x7b Src/006spi_cmd_handling.o
@@ -1094,33 +1100,33 @@ OUTPUT(stm32f4xx-drivers.elf elf32-littlearm)
  .comment       0x000000000000007b       0x7c drivers/src/gpio_driver.o
  .comment       0x000000000000007b       0x7c drivers/src/spi_driver.o
 
-.debug_frame    0x0000000000000000      0xf44
+.debug_frame    0x0000000000000000      0xfbc
  .debug_frame   0x0000000000000000       0xf0 Src/006spi_cmd_handling.o
  .debug_frame   0x00000000000000f0      0x1c8 drivers/src/gpio_driver.o
- .debug_frame   0x00000000000002b8      0x170 drivers/src/spi_driver.o
- .debug_frame   0x0000000000000428       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-init.o)
- .debug_frame   0x0000000000000454       0x20 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-memset.o)
- .debug_frame   0x0000000000000474       0x74 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-printf.o)
- .debug_frame   0x00000000000004e8       0x3c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-puts.o)
- .debug_frame   0x0000000000000524       0x40 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-wbuf.o)
- .debug_frame   0x0000000000000564       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-wsetup.o)
- .debug_frame   0x0000000000000590       0x68 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-fflush.o)
- .debug_frame   0x00000000000005f8      0x11c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-findfp.o)
- .debug_frame   0x0000000000000714       0x54 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-fwalk.o)
- .debug_frame   0x0000000000000768       0x58 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-makebuf.o)
- .debug_frame   0x00000000000007c0       0x38 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x00000000000007f8       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x0000000000000824       0xac /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-vfprintf.o)
- .debug_frame   0x00000000000008d0       0x60 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-vfprintf_i.o)
- .debug_frame   0x0000000000000930       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x000000000000095c       0x88 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-stdio.o)
- .debug_frame   0x00000000000009e4       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-writer.o)
- .debug_frame   0x0000000000000a10       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-closer.o)
- .debug_frame   0x0000000000000a3c       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-fstatr.o)
- .debug_frame   0x0000000000000a68       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-isattyr.o)
- .debug_frame   0x0000000000000a94       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-lseekr.o)
- .debug_frame   0x0000000000000ac0       0x30 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-mlock.o)
- .debug_frame   0x0000000000000af0       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-readr.o)
- .debug_frame   0x0000000000000b1c       0x5c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-reent.o)
- .debug_frame   0x0000000000000b78      0x3ac /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/librdimon_nano.a(rdimon-syscalls.o)
- .debug_frame   0x0000000000000f24       0x20 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-errno.o)
+ .debug_frame   0x00000000000002b8      0x1e8 drivers/src/spi_driver.o
+ .debug_frame   0x00000000000004a0       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-init.o)
+ .debug_frame   0x00000000000004cc       0x20 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-memset.o)
+ .debug_frame   0x00000000000004ec       0x74 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-printf.o)
+ .debug_frame   0x0000000000000560       0x3c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-puts.o)
+ .debug_frame   0x000000000000059c       0x40 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-wbuf.o)
+ .debug_frame   0x00000000000005dc       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-wsetup.o)
+ .debug_frame   0x0000000000000608       0x68 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-fflush.o)
+ .debug_frame   0x0000000000000670      0x11c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-findfp.o)
+ .debug_frame   0x000000000000078c       0x54 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-fwalk.o)
+ .debug_frame   0x00000000000007e0       0x58 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-makebuf.o)
+ .debug_frame   0x0000000000000838       0x38 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x0000000000000870       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x000000000000089c       0xac /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-vfprintf.o)
+ .debug_frame   0x0000000000000948       0x60 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x00000000000009a8       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x00000000000009d4       0x88 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-stdio.o)
+ .debug_frame   0x0000000000000a5c       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-writer.o)
+ .debug_frame   0x0000000000000a88       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-closer.o)
+ .debug_frame   0x0000000000000ab4       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-fstatr.o)
+ .debug_frame   0x0000000000000ae0       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-isattyr.o)
+ .debug_frame   0x0000000000000b0c       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-lseekr.o)
+ .debug_frame   0x0000000000000b38       0x30 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-mlock.o)
+ .debug_frame   0x0000000000000b68       0x2c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-readr.o)
+ .debug_frame   0x0000000000000b94       0x5c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-reent.o)
+ .debug_frame   0x0000000000000bf0      0x3ac /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/librdimon_nano.a(rdimon-syscalls.o)
+ .debug_frame   0x0000000000000f9c       0x20 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.macos64_1.0.0.201904181610/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc_nano.a(lib_a-errno.o)

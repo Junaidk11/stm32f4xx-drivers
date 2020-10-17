@@ -1,4 +1,4 @@
-006spi_cmd_handling.c:68:6:SPI2_Inits	24	static
+006spi_cmd_handling.c:68:6:SPI2_Inits	32	static
 006spi_cmd_handling.c:93:6:SPI2_GPIOInits	24	static
 006spi_cmd_handling.c:130:6:GPIO_ButtonInits	24	static
 006spi_cmd_handling.c:153:6:Delay	16	static

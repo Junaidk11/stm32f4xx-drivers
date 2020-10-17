@@ -7,3 +7,6 @@ spi_driver.c:209:6:SPI_SSOEConfig	16	static
 spi_driver.c:230:9:SPI_GetFlagStatus	16	static
 spi_driver.c:255:6:SPI_SendData	24	static
 spi_driver.c:303:6:SPI_ReceiveData	24	static
+spi_driver.c:352:6:SPI_IRQ_Interrupt_Config	16	static
+spi_driver.c:408:6:SPI_IRQ_Priority_Config	24	static
+spi_driver.c:456:9:SPI_SendData_UsingInterrupts	32	static
