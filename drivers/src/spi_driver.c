@@ -470,7 +470,7 @@ uint8_t SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuff
 			pSPIHandle->txState = SPI_BUSY_IN_TX; // This will block any other part of the application trying to use this SPI for transmission.
 
 			// 3. Enable the TX Interrupt (TXEIE) -> this will allow interrupts to occur whenever the TX flag in the Status Register is set.
-					// From Reference manual -> TXEIE field is 7th bit the CR2 register ->
+					// From Reference manual -> TXEIE field is 7th bit the CR2 register.
 			pSPIHandle->pSPIx_BASEADDR->CR2 |= (1 << SPI_CR2_TXEIE);
 
 			// 4. Data Transmission will be handled by the ISR handler.
@@ -480,20 +480,51 @@ uint8_t SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuff
 
 
 /*********************************************************************
- * @fn      		  - SPI_ReceiveDataIT
+ * @fn      		  - SPI_ReceiveData_UsingInterrupt
  *
- * @brief             -
+ * @brief             - Data receive function using Interrupts  (IT = Interrupt
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - Pointer to the SPI Handler of the SPI module to use for receiving data
+ * @param[in]         - Pointer to buffer that will stored received data
+ * @param[in]         - Length of the buffer
  *
- * @return            - None
+ * @return            - State of the SPI module:
+ * 							If SPI already in RX state, the new receive request will not be registered and you will return SPI_BUSY_RX.
+ * 								i.e. Can't request the SPI module to receive when it hasn't received the data from the previous request.
  *
- * @Note              - None
-
+ *
+ * @Note              - This API is a non-blocking implementation of the SPI_ReceiveData function.
+ * 						This API DOES not transmit the data, it does the following:
+ * 							1) Stores the receive buffer location and its length in some global variables
+ * 							2) Marks the SPI module in the given handle as BUSY -> to avoid other parts of the application code trying to use this SPI module until its completed receiving the data.
+ * 						  	3) Enable the RXEIE(Transmit Interrupt Enable) control bit to get interrupts whenever the RXE flag is set in Status Register of the SPI.
+ *
+ * 						The ACTUAL Data receiving is handled by the ISR Handler.
+ *
 */
-uint8_t SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t DataLength);
+uint8_t SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t DataLength){
+
+    // First check if the SPI has not already been registered for receiving data -> i.e. if SPI already in RX state, do not register another receive request.
+
+	uint8_t state = pSPIHandle->rxState;
+
+	if(state != SPI_BUSY_IN_RX){
+
+		// 1. Save the RxBuffer location and size information in the SPI Handler.
+		pSPIHandle->pRxBuffer = pRxBuffer;
+		pSPIHandle->rxLen = DataLength;
+
+		// 2. Set the state of the SPI module to busy with RX.
+		pSPIHandle->rxState = SPI_BUSY_IN_RX; // This will block any other part of the application trying to use this SPI for receiving.
+
+		// 3. Enable the RX Interrupt (RXNEIE) -> this will allow interrupts to occur whenever the RX flag in the Status Register is set.
+				// From Reference manual -> RXNEIE field is 6th bit the CR2 register.
+		pSPIHandle->pSPIx_BASEADDR->CR2 |= (1 << SPI_CR2_RXNEIE);
+
+		// 4. Data Receiving will be handled by the ISR handler.
+	}
+	return state;
+}
 
 
 
