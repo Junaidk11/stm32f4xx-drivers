@@ -14,9 +14,9 @@
  *
  */
 
-static void spi_txe_interrupt_handler();
-static void spi_rxne_interrupt_handler();
-static void spi_ovr_err_interrupt_handler();
+static void spi_txe_interrupt_handler(SPI_Handle_t *pHandle);
+static void spi_rxne_interrupt_handler(SPI_Handle_t *pHandle);
+static void spi_ovr_err_interrupt_handler(SPI_Handle_t *pHandle);
 
 /*********************************************************************
  * @fn      		  - SPI_ClockControl
@@ -327,7 +327,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t DataLengt
             //                  |
             *((uint16_t *)pRxBuffer) = pSPIx->DR;
              
-            // Pushed 2 bytes of Data into Tx Buffer, so reduced length by 2 bytes.
+            // Pushed 2 bytes of Data into Rx Buffer, so reduced length by 2 bytes.
             DataLength--; 
             DataLength--; 
             // Move pointer 2 bytes ahead
@@ -567,7 +567,7 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle){
 	if(temp1 && temp2){  // If the interrupt was caused by the transmission AND if user enabled transmission interrupt, HANDLE it in the if block below
 
 		// Handle TXE
-		spi_txe_interrupt_handler(); // Helper function, not available to the application.
+		spi_txe_interrupt_handler(pHandle); // Helper function, not available to the application.
 
 	}
 
@@ -578,7 +578,7 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle){
 	if(temp1 && temp2){  // If the interrupt was caused by the reception AND if user enabled reception interrupt, HANDLE it in the if block below
 
 		// Handle RXNE
-		spi_rxne_interrupt_handler(); // Helper function, not available to the application.
+		spi_rxne_interrupt_handler(pHandle); // Helper function, not available to the application.
 
 	}
 
@@ -592,9 +592,164 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle){
 	if(temp1 && temp2){  // If the interrupt was caused by OVERRUN flag AND if user enabled error interrupts, HANDLE it in the if block below
 
 		// Handle OVR error interrupt
-		spi_ovr_err_interrupt_handler(); // Helper function, not available to the application.
+		spi_ovr_err_interrupt_handler(pHandle); // Helper function, not available to the application.
+	}
+}
 
+/*
+ *  Helper functions for  SPI_IRQHandling
+ */
+
+
+/*********************************************************************
+ * @fn      		  - spi_txe_interrupt_handler
+ *
+ * @brief             - Application ISR handler calls this API function to service the interrupt caused by transmission flag.
+ *
+ * @param[in]         - SPIx Handle structure, it has the baseAddress and the Registers of the SPIx that needs servicing
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - The operations in this helper function are similar to the SPI_SendData blocking API. The only
+ * 						 	difference is that the TXBuffer and length are accessed using the SPI Handler.
+ *
+ * 						In this helper function, each time it is called it does the following:
+ * 							Sends the number of data bytes based on the configuration (i.e. 2 bytes or 1 byte)
+ * 							Decrease the length of the data by the number of bytes it transmits.
+ * 							Checks if the new length is 0 -> which indicates all data bytes sent.
+ * 								In this case, the helper function closes the SPI transmission (disabling tx interrupts).
+ * 										resets txBuffer and length in the handler,
+ * 											and informs the application layer.
+*/
+static void spi_txe_interrupt_handler(SPI_Handle_t *pHandle){
+
+
+		 // Check DFF bit CR1 to determine how many bytes to upload in the DR, which will push the data bytes to the Tx Buffer
+		if(pHandle->pSPIx_BASEADDR->CR1 & (1 << SPI_CR1_DFF)){
+
+			// If bit is set, then DFF = 16-bit. You need to upload 2 bytes of data into the DR register.
+			//             The type casting here will convert the 8-bit pointer to a 16-bit pointer, allowing to dereference 2-bytes of consecutive data. Without the uint16_t* typecast, you would be dereferencing a byte of data.
+			//                  |
+			pHandle->pSPIx_BASEADDR->DR = *((uint16_t *)pHandle->pTxBuffer);
+
+			// Pushed 2 bytes of Data into Tx Buffer, so reduced length by 2 bytes.
+			pHandle->txLen--;
+			pHandle->txLen--;
+			// Move pointer 2 bytes ahead
+			(uint16_t *)pHandle->pTxBuffer++; // This will make the pointer point to the start of the 16-bits to send.
+
+		}else
+		{
+			// DFF = 8-bit, you need to upload a byte at a time.
+			pHandle->pSPIx_BASEADDR->DR = *(pHandle->pTxBuffer); // Don't need type-casting as pointer is of 8-bit type.
+			pHandle->txLen--;
+			pHandle->pTxBuffer++;
+		}
+
+		// After transmitting data, check if length of is 0, which would indicate that we've sent all the bytes in the txBuffer. Now, we close the SPI transmission and inform the application layer about this.
+			// In that case, you first disable TX interrupts first, which would stop TX interrupts from occurring. Followed by clearing txBuffer pointer. Finally, tell the application that SPI is ready for next transmission request.
+		if(!pHandle->txLen){
+
+			// Disable TX interrupts from being occurring as you don't have any more bytes to send.
+			pHandle->pSPIx_BASEADDR->CR2 &= ~(1 << SPI_CR2_TXEIE);
+
+			// Clear the TX buffers and set length to 0
+			pHandle->pTxBuffer = NULL;
+			pHandle->txLen =0;
+
+			// Set SPI as ready for next Transmission request.
+			pHandle->txState = SPI_READY;
+
+			// Let the application know that you've sent the data that was given for transmission
+				// SPI_ApplicationEventCallBack() can be implemented in the application layer to respond to when the SPI assigned task has been completed by the SPI module.
+			SPI_ApplicationEventCallBack(pHandle, SPI_EVENT_TX_CMPLT);
+		}
+
+}
+
+/*********************************************************************
+ * @fn      		  - spi_rxne_interrupt_handler
+ *
+ * @brief             - Application ISR handler calls this API function to service the interrupt caused reception flag. (RX flag)
+ *
+ * @param[in]         - SPIx Handle structure, it has the baseAddress and the Registers of the SPIx that needs servicing
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - The operations in this helper function are similar to the SPI_ReceiveData blocking API. The only
+ * 						 	difference is that the TXBuffer and length are accessed using the SPI Handler.
+ *
+ * 						In this helper function, each time it is called it does the following:
+ * 							Receives the number of data bytes based on the configuration (i.e. 2 bytes or 1 byte)
+ * 							Decrease the length of the buffer by the number of bytes it receives.
+ * 							Checks if the new length is 0 -> which indicates all data bytes received.
+ * 								In this case, the helper function closes the SPI reception (disabling rx interrupts).
+ * 										resets rxBuffer and length in the handler,
+ * 											and informs the application layer.
+
+
+*/
+static void spi_rxne_interrupt_handler(SPI_Handle_t *pHandle){
+
+	//Check DFF bit CR1 to determine how many bytes to Download/grab/read from the DR, which will push the data bytes from the SPI RX buffer to the RX buffer of the program
+	if(pHandle->pSPIx_BASEADDR->CR1 & (1 << SPI_CR1_DFF)){
+
+		// If bit is set, then DFF = 16-bit. You need to upload 2 bytes of data into the DR register.
+		//             The type casting here will convert the 8-bit pointer to a 16-bit pointer, allowing to dereference 2-bytes of consecutive data - in this case you will download/read 16-bits of data from SPI's RX buffer. Without the uint16_t* typecast, you would be storing a byte of data.
+		//                  |
+		*((uint16_t *)pHandle->pRxBuffer) = pHandle->pSPIx_BASEADDR->DR;
+
+		// Pushed 2 bytes of Data into Rx Buffer, so reduced length by 2 bytes.
+		pHandle->rxLen--;
+		pHandle->rxLen--;
+		// Move pointer 2 bytes ahead
+		(uint16_t *)pHandle->pRxBuffer++; // This will make the pointer point to the start of the 16-bits to send.
+
+	}else
+	{
+		// DFF = 8-bit, you need to read a byte at a time from the SPI's RX buffer
+		*(pHandle->pRxBuffer) = pHandle->pSPIx_BASEADDR->DR; // Don't need type-casting as pointer is of 8-bit type.
+		pHandle->rxLen--;
+		pHandle->pRxBuffer++;
 	}
 
 
+	// After receiving data, check if length of is 0, which would indicate that we've received all the bytes in the rxBuffer. Now, we close the SPI reception and inform the application layer about this.
+		// In that case, you first disable RX interrupts first, which would stop RX interrupts from occurring. Followed by clearing rxBuffer pointer. Finally, tell the application that SPI is ready for next reception request.
+	if(!pHandle->rxLen){
+
+		// Disable RX interrupts from being occurring as you don't have any more bytes to send.
+		pHandle->pSPIx_BASEADDR->CR2 &= ~(1 << SPI_CR2_RXNEIE);
+
+		// Clear the TX buffers and set length to 0
+		pHandle->pRxBuffer = NULL;
+		pHandle->rxLen =0;
+
+		// Set SPI as ready for next reception request.
+		pHandle->rxState = SPI_READY;
+
+		// Let the application know that you've received all the data that was expected from the reception
+			// SPI_ApplicationEventCallBack() can be implemented in the application layer to respond to when the SPI assigned task has been completed by the SPI module.
+		SPI_ApplicationEventCallBack(pHandle, SPI_EVENT_RX_CMPLT);
+	}
 }
+
+/*********************************************************************
+ * @fn      		  - spi_ovr_err_interrupt_handler
+ *
+ * @brief             - Application ISR handler calls this API function to service the interrupt caused RX overrun flag.
+ *
+ * @param[in]         - SPIx Handle structure, it has the baseAddress and the Registers of the SPIx that needs servicing
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - None
+
+*/
+static void spi_ovr_err_interrupt_handler(SPI_Handle_t *pHandle);

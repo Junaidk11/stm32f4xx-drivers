@@ -8,7 +8,7 @@
 #ifndef INC_STM32F40XX_H_
 #define INC_STM32F40XX_H_
 
-
+#include <stddef.h>  /* Need this library to get access to NULL definition. */
 #include <stdint.h>  /* The short hand data type 'uint32_t' is defined in this file, which is why you need to include it. */
 /*
  *  The registers of the peripheral's are volatile in nature, their values can change at any time.
@@ -603,7 +603,14 @@ typedef struct
 #define IRQ_NO_SPI3			51
 
 
+/*
+ *  Possible SPI Application Events -> Used in SPI ISR handling to call application when SPI has completed its assigned task (Transmission or reception of data).
+ */
 
+#define SPI_EVENT_TX_CMPLT  	1
+#define SPI_EVENT_RX_CMPLT 		2
+#define SPI_EVENT_OVR_ERR		3
+#define SPI_EVENT_CRC_ERR 		4
 
 
 #endif /* INC_STM32F40XX_H_ */
