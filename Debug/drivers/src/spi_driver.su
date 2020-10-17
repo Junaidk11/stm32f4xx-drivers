@@ -12,5 +12,10 @@ spi_driver.c:419:6:SPI_IRQ_Priority_Config	24	static
 spi_driver.c:467:9:SPI_SendData_UsingInterrupts	32	static
 spi_driver.c:516:9:SPI_ReceiveData_UsingInterrupt	32	static
 spi_driver.c:555:6:SPI_IRQHandling	24	static
-spi_driver.c:626:13:spi_txe_interrupt_handler	16	static
-spi_driver.c:696:13:spi_rxne_interrupt_handler	16	static
+spi_driver.c:612:6:SPI_ClearOVRFlag	24	static
+spi_driver.c:637:6:SPI_CloseTransmission	16	static
+spi_driver.c:665:6:SPI_CloseReception	16	static
+spi_driver.c:697:13:SPI_ApplicationEventCallBack	16	static
+spi_driver.c:733:13:spi_txe_interrupt_handler	16	static
+spi_driver.c:795:13:spi_rxne_interrupt_handler	16	static
+spi_driver.c:846:13:spi_ovr_err_interrupt_handler	24	static
