@@ -440,18 +440,43 @@ void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority){
  * @param[in]         - Pointer to buffer that contains data to be transmitted
  * @param[in]         - Length of the buffer
  *
- * @return            - None
+ * @return            - State of the SPI module:
+ * 							If SPI already in TX state, the new transmission request will not be registered and you will return SPI_BUSY_TX.
+ *
  *
  * @Note              - This API is a non-blocking implementation of the SPI_SendData function.
  * 						This API DOES not transmit the data, it does the following:
  * 							1) Stores the data buffer location and its length in some global variables
  * 							2) Marks the SPI module in the given handle as BUSY -> to avoid other parts of the application code trying to access this SPI module until its completed its transmission
- * 						  	3) Enable the TXIE(Transmit Interrupt Enable) control bit to get interrupts whenever the TXE flag is set in Status Register of the SPI.
+ * 						  	3) Enable the TXEIE(Transmit Interrupt Enable) control bit to get interrupts whenever the TXE flag is set in Status Register of the SPI.
  *
  * 						The ACTUAL Data transmission is handled by the ISR Handler.
  *
 */
-void SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuffer, uint32_t DataLength);
+uint8_t SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuffer, uint32_t DataLength){
+
+
+	    // First check if the SPI has not been registered for a transmission -> i.e. if SPI already in TX state, do not register another transmission request.
+
+		uint8_t state = pSPIHandle->txState;
+
+		if(state != SPI_BUSY_IN_TX){
+
+			// 1. Save the TxBuffer location and size information in the SPI Handler.
+			pSPIHandle->pTxBuffer = pTxBuffer;
+			pSPIHandle->txLen = DataLength;
+
+			// 2. Set the state of the SPI module to busy with TX.
+			pSPIHandle->txState = SPI_BUSY_IN_TX; // This will block any other part of the application trying to use this SPI for transmission.
+
+			// 3. Enable the TX Interrupt (TXEIE) -> this will allow interrupts to occur whenever the TX flag in the Status Register is set.
+					// From Reference manual -> TXEIE field is 7th bit the CR2 register ->
+			pSPIHandle->pSPIx_BASEADDR->CR2 |= (1 << SPI_CR2_TXEIE);
+
+			// 4. Data Transmission will be handled by the ISR handler.
+		}
+		return state;
+}
 
 
 /*********************************************************************
@@ -468,7 +493,7 @@ void SPI_SendData_UsingInterrupts(SPI_Handle_t  *pSPIHandle, uint8_t *pTxBuffer,
  * @Note              - None
 
 */
-void SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t DataLength);
+uint8_t SPI_ReceiveData_UsingInterrupt(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t DataLength);
 
 
 
