@@ -596,6 +596,113 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle){
 	}
 }
 
+/*********************************************************************
+ * @fn      		  - SPI_ClearOVRFlag
+ *
+ * @brief             - An API that can be called by the Application layer to clear overrun error flag.
+ *
+ * @param[in]         - SPIx Register
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - This API is used by the application layer to clear the overrun flag.
+*/
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx){
+
+	// If an OVERRUN error happens, the handler shouldn't clear the flag, instead it should store the flag and call the application layer to handle this error.
+	uint8_t temp;
+	temp = pSPIx->DR; // Reading the Data register, the OVR flag was set because the data received previously wasn't read by the application, which resulted in new data not being received -> which sets the OVR flag.
+	temp = pSPIx->SR; // read status register just to acknowledge the interrupt
+	(void)temp; // Assign void to the temp variable to get rid of the error  " temp declared but not used.'
+
+
+}
+/*********************************************************************
+ * @fn      		  - SPI_CloseTransmission
+ *
+ * @brief             -  An API that can be called by the Application layer to abruptly close the SPI transmission.
+ *
+ * @param[in]         - SPIx Handle structure, it has the baseAddress and the Registers of the SPIx
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - > The function closes the SPI transmission (disabling tx interrupts).
+ * 								resets txBuffer and length in the handler,
+ * 									and informs the application layer.
+*/
+void SPI_CloseTransmission(SPI_Handle_t *pHandle){
+		// Disable TX interrupts from being occurring as you don't have any more bytes to send.
+		pHandle->pSPIx_BASEADDR->CR2 &= ~(1 << SPI_CR2_TXEIE);
+
+		// Clear the TX buffers and set length to 0
+		pHandle->pTxBuffer = NULL;
+		pHandle->txLen =0;
+
+		// Set SPI as ready for next Transmission request.
+		pHandle->txState = SPI_READY;
+
+}
+
+/*********************************************************************
+ * @fn      		  - SPI_CloseReception
+ *
+ * @brief             - An API that can be called by the Application layer to abruptly close the SPI reception.
+ *
+ * @param[in]         - SPIx Handle structure, it has the baseAddress and the Registers of the SPIx
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - The function closes the SPI reception (disabling RX interrupts).
+ * 							resets rxBuffer and length in the handler,
+ * 								and informs the application layer.
+*/
+void SPI_CloseReception(SPI_Handle_t *pHandle){
+
+	// Disable RX interrupts from being occurring as you don't have any more bytes to send.
+	pHandle->pSPIx_BASEADDR->CR2 &= ~(1 << SPI_CR2_RXNEIE);
+
+	// Clear the TX buffers and set length to 0
+	pHandle->pRxBuffer = NULL;
+	pHandle->rxLen =0;
+
+	// Set SPI as ready for next reception request.
+	pHandle->rxState = SPI_READY;
+}
+
+/*********************************************************************
+ * @fn      		  - SPI_CloseReception
+ *
+ * @brief             - An API that can be called by SPI to inform the application layer about an event.
+ *
+ * @param[in]         - SPIx Handle structure, it has the baseAddress and the Registers of the SPIx
+ * @param[in]         - Application Event -> Possible values:
+ * 									SPI_EVENT_TX_CMPLT = 1
+ * 									SPI_EVENT_RX_CMPLT = 2
+ * 									SPI_EVENT_OVR_ERR  = 3
+ * 									SPI_EVENT_CRC_ERR  = 4
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - The application should implement this function. The definition below is defined to bypass/avoid compiler error.
+ * 						If the application doesn't define this api, then the compiler will execute the definition below whenever this function is called.
+ * 						For this function to be overwritten by the application layer implementation, this function is defined as "weak" implementation with the attribute weak as shown.
+*/
+__weak void SPI_ApplicationEventCallBack(SPI_Handle_t *pHandle, uint8_t ApplicationEvent){
+
+	// This is a weak implementation. The user application may override this function.
+
+}
+
+
+
+
 /*
  *  Helper functions for  SPI_IRQHandling
  */
@@ -652,15 +759,7 @@ static void spi_txe_interrupt_handler(SPI_Handle_t *pHandle){
 			// In that case, you first disable TX interrupts first, which would stop TX interrupts from occurring. Followed by clearing txBuffer pointer. Finally, tell the application that SPI is ready for next transmission request.
 		if(!pHandle->txLen){
 
-			// Disable TX interrupts from being occurring as you don't have any more bytes to send.
-			pHandle->pSPIx_BASEADDR->CR2 &= ~(1 << SPI_CR2_TXEIE);
-
-			// Clear the TX buffers and set length to 0
-			pHandle->pTxBuffer = NULL;
-			pHandle->txLen =0;
-
-			// Set SPI as ready for next Transmission request.
-			pHandle->txState = SPI_READY;
+			SPI_CloseTransmission(pHandle);
 
 			// Let the application know that you've sent the data that was given for transmission
 				// SPI_ApplicationEventCallBack() can be implemented in the application layer to respond to when the SPI assigned task has been completed by the SPI module.
@@ -722,15 +821,7 @@ static void spi_rxne_interrupt_handler(SPI_Handle_t *pHandle){
 		// In that case, you first disable RX interrupts first, which would stop RX interrupts from occurring. Followed by clearing rxBuffer pointer. Finally, tell the application that SPI is ready for next reception request.
 	if(!pHandle->rxLen){
 
-		// Disable RX interrupts from being occurring as you don't have any more bytes to send.
-		pHandle->pSPIx_BASEADDR->CR2 &= ~(1 << SPI_CR2_RXNEIE);
-
-		// Clear the TX buffers and set length to 0
-		pHandle->pRxBuffer = NULL;
-		pHandle->rxLen =0;
-
-		// Set SPI as ready for next reception request.
-		pHandle->rxState = SPI_READY;
+		SPI_CloseReception(pHandle);
 
 		// Let the application know that you've received all the data that was expected from the reception
 			// SPI_ApplicationEventCallBack() can be implemented in the application layer to respond to when the SPI assigned task has been completed by the SPI module.
@@ -752,4 +843,18 @@ static void spi_rxne_interrupt_handler(SPI_Handle_t *pHandle){
  * @Note              - None
 
 */
-static void spi_ovr_err_interrupt_handler(SPI_Handle_t *pHandle);
+static void spi_ovr_err_interrupt_handler(SPI_Handle_t *pHandle){
+
+	// If an OVERRUN error happens, the handler shouldn't clear the flag, instead it should store the flag and call the application layer to handle this error.
+	uint8_t temp;
+	if(pHandle->txState != SPI_BUSY_IN_TX){
+		temp = pHandle->pSPIx_BASEADDR -> DR; // Reading the Data register, the OVR flag was set because the data received previously wasn't read by the application, which resulted in new data not being received -> which sets the OVR flag.
+		temp = pHandle->pSPIx_BASEADDR -> SR; // read status register just to acknowledge the interrupt
+	}
+	(void)temp; // Assign void to the temp variable to get rid of the error  " temp declared but not used.'
+	// Call the application error to handle this OVR error flag.
+
+	SPI_ApplicationEventCallBack(pHandle, SPI_EVENT_OVR_ERR); // Inform the application layer to handle the OVR error.
+}
+
+

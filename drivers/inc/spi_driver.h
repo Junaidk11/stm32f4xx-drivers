@@ -201,6 +201,17 @@ void SPI_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
 void SPI_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
 
+/*
+ *  SPI APIs that can be used by the Application layer to abruptly close the transmission or reception of SPI, and also handle certain errors themselves instead of the SPI ISR Handler.
+ */
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
+void SPI_CloseTransmission(SPI_Handle_t *pHandle);
+void SPI_CloseReception(SPI_Handle_t *pHandle);
+
+/*
+ *  Application Call back API to be used when SPI wants to inform the application layer about an event.
+ */
+void SPI_ApplicationEventCallBack(SPI_Handle_t *pHandle, uint8_t ApplicationEvent);
 
 
 
