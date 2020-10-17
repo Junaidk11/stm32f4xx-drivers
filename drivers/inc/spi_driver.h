@@ -39,7 +39,14 @@ typedef struct{
     SPI_RegDef_t *pSPIx_BASEADDR;  /* Holds the Base address of the desired SPI peripheral (SPI1/SPI2/SPI3), the Base addresses defined in device header as MACROS, SPI1, SPI2, and SPI3 */
     SPI_Config_t SPIConfig; /* Holds the SPI configuration information - filled out by the user before calling using any of the API functions defined in this file. */
 
-    /* The following additions were made to the Data Handle DS for Non-blocking implementation of Sending and Receiving Data
+    /* The following additions were made to the Data Handle DS for Non-blocking implementation of Sending and Receiving Data */
+
+	uint8_t *pTxBuffer;  /* Points to the Data buffer to send over SPI -> Pointer will be used by the SPI ISR code. */
+	uint8_t *pRxBuffer;  /* Points to a buffer to use when receiving data over SPI -> Pointer will be used by the SPI ISR code. */
+	uint8_t txLen; 	     /* Store length of Transmit buffer here. */
+	uint8_t rxLen; 		 /* Store length of Receive buffer here. */
+	uint8_t txState;     /* Store TX state here. */
+	uint8_t rxState; 	 /* Store RX state here. */
 
 }SPI_Handle_t;
 
@@ -123,6 +130,14 @@ typedef struct{
 #define SPI_FRE_FLAG        (1 << SPI_SR_FRE)
 
 
+
+/*
+ *  Possible SPI Application States
+ *		An SPI module can be in any one of these states.
+ */
+#define SPI_READY 			  0
+#define SPI_BUSY_IN_RX		  1
+#define SPI_BUSY_IN_TX		  2
 
 /*
  * 					APIs supported by this SPI driver.
