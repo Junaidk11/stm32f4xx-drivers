@@ -667,6 +667,7 @@ typedef struct
  */
 
 /*  I2C Control Register 1 */
+
 #define I2C_CR1_PE 				0 			// Peripheral Enable
 #define I2C_CR1_SMBUS 			1 			// SMBUS Mode
 #define I2C_CR1_SMBTYPE 		3			// SMBUS Type
@@ -684,6 +685,14 @@ typedef struct
 
 
 /*  I2C Control Register 2 */
+
+#define I2C_CR2_FREQ		    	0 			// Peripheral Clock Frequency - Bits 0:5
+#define I2C_CR2_ITERREN 			8 			// Error Interrupt Enable
+#define I2C_CR2_ITEVTEN 			9			// Event Interrupt Enable
+#define I2C_CR2_ITBUFEN 			10			// Buffer Interrupt Enable
+#define I2C_CR2_DMAEN		    	11			// DMA Requests Enable
+#define I2C_CR2_LAST				12			// DMA Last Transfer
+
 /* 	Status Register 1 */
 /* 	Status Register 2 */
 
