@@ -694,6 +694,23 @@ typedef struct
 #define I2C_CR2_LAST				12			// DMA Last Transfer
 
 /* 	Status Register 1 */
+
+#define I2C_SR1_SB 				0 			// Start bit (Master Mode)
+#define I2C_SR1_ADDR 			1 			// Address Sent (master mode)/Address Matched(Slave mode)
+#define I2C_SR1_BTF 			2			// Byte Transfer Finished
+#define I2C_SR1_ADD10 			3			// 10-bit header sent (master mode)
+#define I2C_SR1_STOPF			4			// Stop detection (master mode)
+#define I2C_SR1_RxNE			6			// Data register not empty (receivers)
+#define I2C_SR1_TxE				7			// Data register empty (transmitters)
+#define I2C_SR1_BERR			8			// Bus Error
+#define I2C_SR1_ARLO			9			// Arbitration Lost (master mode)
+#define I2C_SR1_AF				10          // Acknowledge failure
+#define I2C_SR1_OVR				11			// Overrun/underrun
+#define I2C_SR1_PECERR			12			// PEC Error in reception
+#define I2C_SR1_TIMEOUT			14			// Timeout or Tlow error
+#define I2C_SR1_SMBALERT		15			// SMBus alert
+
+
 /* 	Status Register 2 */
 
 #endif /* INC_STM32F40XX_H_ */
