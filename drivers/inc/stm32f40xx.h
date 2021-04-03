@@ -713,4 +713,14 @@ typedef struct
 
 /* 	Status Register 2 */
 
+#define I2C_SR2_MSL 				0 			// Master/Slave
+#define I2C_SR2_BUSY 				1 			// Bus busy
+#define I2C_SR2_TRA					2			// Transmitter/receiver
+#define I2C_SR2_GENCALL 			4			// General call address (slave mode)
+#define I2C_SR2_SMBDEFAULT			5			// SMBus Device default address (slave mode)
+#define I2C_SR2_SMBHOST				6			// SMBus host header (slave mode)
+#define I2C_SR2_DUALF				7			// Dual Flag (slave mode)
+#define I2C_SR2_PEC					8			// Packet error checking register
+
+
 #endif /* INC_STM32F40XX_H_ */
