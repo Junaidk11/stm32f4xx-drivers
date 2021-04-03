@@ -723,4 +723,9 @@ typedef struct
 #define I2C_SR2_PEC					8			// Packet error checking register
 
 
+/* TRISE Register */
+
+#define I2C_TRISE_TRISE			    0 			// Maximum Rise time in Fast Mode(fm) or Standard Mode(sm); anything [100-400]KHz is Fast Mode I2C, Anything below 100KHz is Standard mode
+
+
 #endif /* INC_STM32F40XX_H_ */
