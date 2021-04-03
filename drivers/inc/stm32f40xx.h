@@ -23,7 +23,7 @@
  *
  *  By default, the compiler treats all numbers as Signed. But, we know addresses can't be
  *  negative, which is why we place 'U' after the value, to tell the compiler to treat that number
- *  as unsigned. Also, you can tell the compiler that the number is unsigned by typecasting the number
+ *  as unsigned. Also, you can tell the compiler that the number is unsigned by type-casting the number
  *  with (uint32_t)0x08000000 == 0x08000000U
  */
 
@@ -612,5 +612,79 @@ typedef struct
 #define SPI_EVENT_RX_CMPLT 		2
 #define SPI_EVENT_OVR_ERR		3
 #define SPI_EVENT_CRC_ERR 		4
+
+/*
+ *  				PERIPHERAL REGISTER DEFINITION STRUCTURE - For I2C
+ *  				I2C = inter-integrated circuit
+ *
+ *  				General Steps followed for I2C (or any module) Driver Development:
+ *  					   1 -Add Base address of Bus that has I2C Peripherals connected to them - Done above
+ *  					   2 -Create a structure to Hold I2C register definition - Done below
+ *  					   3 -Create MACROS to define I2C1, I2C2, I2C3 peripheral registers. - Done below
+ *  					   4 -Create MACROS to enable/Disable clock access to I2C1, I2C2 and I2C3 peripherals -  Done above
+ *  					   5 -Create MACROS to define bit position fields for I2C Peripheral Registers - Done below
+ */
+
+/*
+ * Note: Registers of a Peripheral are specific to the MCU. Refer to the Reference Manual of Device.
+ *
+ */
+
+/*
+ * 			A C Structure for I2C Register Definitions
+ *
+ * 	Note: Create a pointer of type I2C_RegDef_t and assign it the address of the I2C module you want to configure, I2C1, I2C2, or I2C3
+ * 		e.g. I2C_RegDef_t *pI2C1 = (I2C_RegDef_t *)0x40005400 ; where 0x4000500 is the base address of I2C1; Type cast is used to convert 0x4000500 from a VALUE to a MEMORY ADDRESS.
+ */
+
+typedef struct
+{
+	__vo uint32_t CR1; 			/* Control Register 1 */     			/* Offset: 0x00 */
+	__vo uint32_t CR2; 			/* Control Register 2 */     			/* Offset: 0x04 */
+	__vo uint32_t OAR1;  	    /* Own Address Register 1 */     		/* Offset: 0x08 */
+	__vo uint32_t OAR2;  	    /* Own Address Register 2 */     		/* Offset: 0x0C */
+	__vo uint32_t DR; 			/* Data Register */      				/* Offset: 0x10 */
+	__vo uint32_t SR1; 			/* Status Register 1 */      			/* Offset: 0x14 */
+	__vo uint32_t SR2; 			/* Status Register 2 */      			/* Offset: 0x18 */
+	__vo uint32_t CCR; 			/* Clock Control Register */      		/* Offset: 0x1C */
+	__vo uint32_t TRISE; 		/* TRISE Register */      				/* Offset: 0x20 */
+	__vo uint32_t FLTR; 		/* FLTR Register */      				/* Offset: 0x24 */
+
+}I2C_RegDef_t;
+
+
+/*
+ *  			Peripheral Definitions Type casted to their C Structure holding their register definitions.
+ */
+
+#define I2C1 	((I2C_RegDef_t *)I2C1_BASEADDR)
+#define I2C2    ((I2C_RegDef_t *)I2C2_BASEADDR)
+#define I2C3 	((I2C_RegDef_t *)I2C3_BASEADDR)
+
+/**
+ * 	 I2C Peripheral Register Bit Position Definition
+ *   	SYNTAX -->  PERIPHERALNAME_REGISTERNAME_BITFIELDNAME
+ */
+
+/*  I2C Control Register 1 */
+#define I2C_CR1_PE 				0 			// Peripheral Enable
+#define I2C_CR1_SMBUS 			1 			// SMBUS Mode
+#define I2C_CR1_SMBTYPE 		3			// SMBUS Type
+#define I2C_CR1_ENARP 			4
+#define I2C_CR1_ENPEC			5
+#define I2C_CR1_ENGC			6
+#define I2C_CR1_NOSTRETCH 		7
+#define I2C_CR1_START			8
+#define I2C_CR1_STOP			9
+#define I2C_CR1_ACK				10          // Acknowledge Enable
+#define I2C_CR1_POS				11
+#define I2C_CR1_PEC				12
+#define I2C_CR1_ALERT			13
+#define I2C_CR1_SWRST			15
+
+
+/*  I2C Control Register 2 */
+/* 	Status Register 1 */
+/* 	Status Register 2 */
 
 #endif /* INC_STM32F40XX_H_ */
