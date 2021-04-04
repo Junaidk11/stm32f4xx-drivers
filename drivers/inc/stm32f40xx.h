@@ -428,7 +428,7 @@ typedef struct{
 #define 	NVIC_ICER6			((__vo uint32_t*)0xE000E198)
 #define 	NVIC_ICER7			((__vo uint32_t*)0xE000E19C)
 
-// Interrutp Priorty Registers Base address - NVIC_IPR0
+// Interrupt Priority Registers Base address - NVIC_IPR0
 
 #define NVIC_IPR_BASEADDR   	((__vo uint32_t*)0xE000E400)    // Address of NVIC_IPR0 register.
 
@@ -743,5 +743,20 @@ typedef struct
 #define I2C2_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 22)); (RCC->RCC_APB1RSTR &= ~(1 << 22)); }while(0)
 #define I2C3_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 23)); (RCC->RCC_APB1RSTR &= ~(1 << 23)); }while(0)
 
+/**
+ *
+ * 		Interrupt Request Numbers(IRQs)
+ * 			These numbers are MCU specific - refer to Reference Manual -> page 373
+ * 				For STM32f407-Discovery - Interrupt & Exception Vector Table is under section Interrupts & Events  @IRQNumbers
+ */
+
+#define IRQ_NO_I2C1_EV	    31		// I2C1 Event Interrupt
+#define IRQ_NO_I2C1_ER	    32 		// I2C1 Error Interrupt
+
+#define IRQ_NO_I2C2_EV	    33		// I2C2 Event Interrupt
+#define IRQ_NO_I2C2_ER	    34 		// I2C2 Error Interrupt
+
+#define IRQ_NO_I2C3_EV	    72		// I2C3 Event Interrupt
+#define IRQ_NO_I2C3_ER	    73 		// I2C3 Error Interrupt
 
 #endif /* INC_STM32F40XX_H_ */
