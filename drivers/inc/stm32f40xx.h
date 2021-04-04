@@ -735,4 +735,13 @@ typedef struct
 #define I2C_TRISE_TRISE			    0 			// Maximum Rise time in Fast Mode(fm) or Standard Mode(sm); anything [100-400]KHz is Fast Mode I2C, Anything below 100KHz is Standard mode
 
 
+/*   I2Cx Register Reset MACROS */
+
+//			1) Setting the bit in the RCC Peripheral Reset Register first    2) Clearing the bit in the RCC Peripheral Reset Register
+//										|											|
+#define I2C1_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 21)); (RCC->RCC_APB1RSTR &= ~(1 << 21)); }while(0)
+#define I2C2_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 22)); (RCC->RCC_APB1RSTR &= ~(1 << 22)); }while(0)
+#define I2C3_REG_RESET()      do{  (RCC->RCC_APB1RSTR |= (1 << 23)); (RCC->RCC_APB1RSTR &= ~(1 << 23)); }while(0)
+
+
 #endif /* INC_STM32F40XX_H_ */
