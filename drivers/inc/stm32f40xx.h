@@ -723,6 +723,11 @@ typedef struct
 #define I2C_SR2_PEC					8			// Packet error checking register
 
 
+/* Clock Control Register */
+#define I2C_CCR_CCR				0   // Clock control register in Fast/Standard mode (Master mode) - its 0-11 bit value that controls the Serial Clock value in master mode
+#define I2C_CCR_DUTY 			14	// Fast Mode I2C Duty Cycle
+#define I2C_CCR_F_S				15  // Master mode selection - F = Fast Mode, S- Standard mode
+
 /* TRISE Register */
 
 #define I2C_TRISE_TRISE			    0 			// Maximum Rise time in Fast Mode(fm) or Standard Mode(sm); anything [100-400]KHz is Fast Mode I2C, Anything below 100KHz is Standard mode
