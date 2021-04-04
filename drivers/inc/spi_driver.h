@@ -52,7 +52,7 @@ typedef struct{
 
 /*
  *     SPI driver specific MACROs  - 
- *          these macros are only relevant to SPI driver
+ *          these macros are only relevant to SPI driver and are to be used when configuring an SPI Module parameter shown in SPI_Config_t struct above.
  *
  */
 
