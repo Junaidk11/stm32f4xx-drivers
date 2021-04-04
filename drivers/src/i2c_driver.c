@@ -255,11 +255,47 @@ void I2C_Init(I2C_Handle_t *pI2CHandle){
 
 	uint32_t tempreg =0;  // A place holder for the all the bits that need to be configured for the 32-bit registers.
 
-	// Configure the Automatic ACK bit in the CR1 Register based on the configurations given by the Application layer in I2C_Handle_t *pI2CHandle.
-
+	// ++ CR1 Register Programming
+		// Configure the Automatic ACK bit in the CR1 Register based on the configurations given by the Application layer in I2C_Handle_t *pI2CHandle.
 	tempreg |= (pI2CHandle->I2C_Config.I2C_ACKControl) << 10;  // The 10th-bit of the CR1 register is programmed for ACKing
 
+		// Program the CR1 register of the I2C Peripheral desired by the application layer
+	pI2CHandle->pI2Cx_BASEADDR->CR1 = tempreg;
+	// -- CR1 Register Programming
 
+	// ++ CR2 Register Programming
+		// Configure the FREQ field of the CR2 register -> this field holds the APB1 Clock Frequency, which is used by the I2C hardware to derive I2C timing
+	tempreg = 0; // Clear tempreg
+
+	tempreg |= RCC_GetPClK1Value()/1000000U; // RCC_GetPClk1Value will return a value in MHz, we need the value in Hz. so, APB1 is going to 16MHz, we need to store value '16' in FREQ field
+
+	if(tempreg<2){
+		// FREQ minimum value is 2MHz, can't be lower.
+		tempreg = 2U;
+		(pI2CHandle->pI2Cx_BASEADDR->CR2) = (tempreg & 0x3F); //(tempreg & 0x3F) is basically making sure tempreg only has bits 0-5 representing info, the rest are cleared -> Size of FREQ field.
+	}else if(tempreg>50){
+		// FREQ maximum value is 50MHz, can't be higher.
+		tempreg = 50U;
+		(pI2CHandle->pI2Cx_BASEADDR->CR2) = (tempreg & 0x3F); //(tempreg & 0x3F) is basically making sure tempreg only has bits 0-5 representing info, the rest are cleared -> Size of FREQ field.
+	}else{
+		// tempreg is in the acceptable range, so program CR2's FREQ field
+		(pI2CHandle->pI2Cx_BASEADDR->CR2) = (tempreg & 0x3F); //(tempreg & 0x3F) is basically making sure tempreg only has bits 0-5 representing info, the rest are cleared -> Size of FREQ field.
+	}
+	// -- CR2 Register Programming
+
+	// ++ OAR1 Register Programming
+		// Program the Device's own address in the OAR1 Register, note bit  0 of this register is set if we're using 10-bit device addressing (which is not common)
+
+	tempreg = 0;
+	tempreg |= (pI2CHandle->I2C_Config.I2C_DeviceAddress) << 1; // Left Shift device address by 1 bit to avoid using bit 0 because we're using 7-bit device addressing, not 10-bit
+	tempreg |= (1<<14); // According to reference manual, the bit 14 of OAR1 register must be set by software to 1 -> check pg 864
+	pI2CHandle->pI2Cx_BASEADDR->OAR1 |= tempreg; //(tempreg & 0xFE) is basically making sure tempreg only has bits 1-7 representing info, the rest are cleared -> Size of ADD[7:1] field.
+
+	// -- OAR1 Register Programming
+
+	// ++ CCR Register Programming
+
+	// -- CCR Register Programming
 
 
 
