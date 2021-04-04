@@ -74,3 +74,26 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx){
         I2C3_REG_RESET();
     }
 }
+
+/*********************************************************************
+ * @fn      		  - I2C_PeripheralControl
+ *
+ * @brief             - I2C Peripheral Enable/Disable API
+ *
+ * @param[in]         - Base address of the I2Cx
+ * @param[in]         - ENABLE or DISABLE
+ * @param[in]         -
+ *
+ * @return            -  None
+ *
+ * @Note              - None
+ */
+
+void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t Enable_Disable){
+
+    if(Enable_Disable == ENABLE){
+        pI2Cx->CR1 |= (1 << I2C_CR1_PE);
+    }else if(Enable_Disable == DISABLE){
+        pI2Cx->CR1 &= ~(1 << I2C_CR1_PE);
+    }
+}
