@@ -41,4 +41,50 @@ typedef struct{
 
 }I2C_Handle_t;
 
+
+/*
+ *     I2C driver specific MACROs.
+ *
+ *          These macros are only relevant to I2C driver &
+ *          	they are to be used when configuring an I2C Module parameter shown in I2C_Config_t struct above.
+ *
+ */
+
+
+/*
+ * @I2C_SCLSpeed
+ *   // Possible I2C Device Speeds
+ *   	SM = Standard/Normal Mode: <=100KHz
+ *   	FM = Fast Mode:  (100KHz, 400KHz]
+ */
+#define I2C_SCL_SPEED_SM_HZ			100000
+#define I2C_SCL_SPEED_FM_4K_HZ		400000
+#define I2C_SCL_SPEED_FM_2K_HZ		200000
+
+/*
+ * @I2C_DeviceAddress -> There are no values for this. This is initialized by the user and has to be a 7-bit value.
+ */
+
+/*
+ * @I2C_ACKControl
+ * 			By Default the automatic Acknowledgment is disabled -> ACK bit field defined in CR1 register of I2C is '0' by default
+ *
+ */
+
+#define I2C_ACK_ENABLE 		1
+#define I2C_ACK_DISABLE		0
+
+
+/*
+ * @I2C_FMDutyCycle
+ * 	The Fast Mode I2C can have a Duty Cycle, there are only two possible values for this according to user manual in the CCR register DUTY field
+ * 		DUTY could be either '2' or '16/9'
+ * 			For a Duty of 2 = Clear DUTY Field, i.e. DUTY = 0
+ * 			For a Duty of 16/9 = Set DUTY Field, i.e. DUTY = 1
+ */
+
+#define I2C_FM_DUTY_2		0
+#define I2C_Fm_DUTY_16_9	1
+
+
 #endif /* DRIVERS_INC_I2C_DRIVER_H_ */
