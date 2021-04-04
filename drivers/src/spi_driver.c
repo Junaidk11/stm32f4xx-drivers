@@ -36,7 +36,7 @@ static void spi_ovr_err_interrupt_handler(SPI_Handle_t *pHandle);
 void SPI_ClockControl(SPI_RegDef_t *pSPIx,uint8_t enable_disable ){
     
     /*
-	 *  Check if the enable_disable arugment is enable or disable, and then use the
+	 *  Check if the enable_disable argument is enable or disable, and then use the
 	 *  clock enable macros that we have written in the MCU specific file.
 	 */
 	if(enable_disable == ENABLE){
