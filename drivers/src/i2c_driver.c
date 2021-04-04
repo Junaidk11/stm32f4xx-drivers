@@ -48,6 +48,120 @@ void I2C_ClockControl(I2C_RegDef_t *pI2Cx,uint8_t enable_disable ){
 		}
 }
 
+/*********************************************************************
+ * @fn      		  - RCC_GetPLLOutputClock
+ *
+ * @brief             - This function will be used to calculate PLL Clock Frequency
+ *
+ * @param[in]         -  None
+ *
+ * @return            -  uint32_t PLL Clock Frequency
+ *
+ * @Note              -
+ *
+ */
+uint32_t RCC_GetPLLOutputClock(void){
+	// Add body if using a PLL as clock source
+	return 0;
+}
+/*********************************************************************
+ * @fn      		  - RCC_GetPClK1Value
+ *
+ * @brief             - This function will be used to return the APB1 Peripheral Clock Val
+ *
+ * @param[in]         -  None
+ *
+ * @return            -  uint32_t APB1 Clock Frequency
+ *
+ * @Note              -  This function is used in the I2C_Init to configure the 'FREQ' field of CR2 register.
+ * 							The function refers to RCC module in the Reference manual - Page 216 -> The clock tree.
+ * 							Follow the trace from the APBx Peripheral Clocks to the source. Thats how you calculate it.
+ * 								Step 1: Determine system clock source:  HSI? HSE? PLL? -> Check Bits 2 and 3 of CFGR Register of RCC Module
+ * 								Step 2: Determine the AHB prescaler value (check clock tree) -> the value can be found from HPRE field of CFGR register of RCC
+ * 								Step 3: Determine the APB1 Prescaler value(check clock tree) -> Value can be from the PPRE1 field of the CFGR register of RCC
+ *
+ */
+
+uint32_t RCC_GetPClK1Value(void){
+
+	uint32_t peripheral_clock1, systemClk_Hz;
+
+	uint8_t clockSource, prescaler_AHB, prescaler_APB1;
+
+	// ++ Step 1
+	// Left shift CFGR register by 2 bits to get bit 2 to bit 0 position -> masking the result with 0x3, will clear all bits except bit 0 and bit 1, the bits you want.
+	clockSource = ((RCC->RCC_CFGR >> 2) & 0x3);
+
+	if(clockSource==0){
+		// System Clock source is HSI Oscillator
+		systemClk_Hz = 16000000;
+
+	}else if(clockSource == 1){
+		// System Clock source is HSE Oscillator
+		systemClk_Hz = 8000000;
+
+	}else if(clockSource == 2){
+		// System Clock source is PLL
+		systemClk_Hz = RCC_GetPLLOutputClock(); // Need to calculate this if you're using a PLL as clock source
+	}
+
+	// -- Step 1
+
+	// ++ Step 2
+
+	// Left shift CFGR register by 4 bits to get bit 4 to bit 0 position -> masking the result with 0xF (1111), will clear all bits except bit 0-3, the bits you want(the HPRE Field)
+	prescaler_AHB =(RCC->RCC_CFGR>>4) & 0xF;
+
+	// According to Reference manual, the HPRE Field, if < 8; system clock not divided, if >8; system clock divided based on information on pg 230 of Reference manual
+	if(prescaler_AHB < 8){
+
+		// System clock not divided, so systemClk_Hz remains as determined previously
+		prescaler_AHB = 1; // I.e. systemClk_Hz is not divided.
+
+	}else if(prescaler_AHB >= 8){
+
+		// Create an Array that holds the AHB Prescalar possible values based on the value retrieved in prescaler_AHB
+		uint16_t AHB_Prescalar[8] = {2,4,8,16,64,128,256,512};
+
+		prescaler_AHB = AHB_Prescaler[prescaler_AHB-8]; // If prescaler_AHB = 8, then we get value 2 from index 0; if it is 9, then we get value 4 from index 1 etc. (from pg 230 of reference manual
+
+	}
+
+	// Updated systemClk_Hz based on determined AHB Prescaler
+	systemClk_Hz /= prescaler_AHB;
+
+	// -- Step 2
+
+	// ++ Step 3
+
+	// Left shift CFGR register by 10 bits to get bit 10 to bit 0 position -> masking the result with 0x7 (111), will clear all bits except bit 0-2, the bits you want(the PPRE1 Field)
+	prescaler_APB1 = ((RCC->RCC_CFGR>>10) & 0x7);
+
+	// According to Reference manual, the PPRE1 Field, if < 4; system clock is not divided, if >4; system clock divided based on information on pg 229 of Reference manual
+
+	if(prescaler_APB1 < 4){
+		// System clock not divided, so systemClk_Hz remains as updated in Step 2
+		prescaler_APB1 = 1;
+
+	}else if(prescaler_APB1>=4){
+		// Create an Array that holds the APB1 Prescalar possible values based on the value retrieved in prescaler_APB1
+		 uint16_t APB1_Prescalar[8] = {2,4,8,16};
+
+		 prescaler_APB1 = APB1_Prescalar[prescaler_APB1-4]; // If prescaler_APB1 = 4, then we get value 2 from index 0; if it is 9, then we get value 4 from index 1 etc. (from pg 229 of reference manual
+	}
+
+	// Updated systemClk_Hz based on determined APB1 Prescaler
+	systemClk_Hz /= prescaler_APB1;
+
+
+
+	// Now, based on the clock tree in pg 216, we have calculated the Clock frequency of peripherals connected to APB1 bus.
+	peripheral_clock1 = systemClk_Hz;
+
+	return peripheral_clock1;
+
+}
+
 
 /*********************************************************************
  * @fn      		  -  I2C_Init
@@ -138,6 +252,15 @@ void I2C_ClockControl(I2C_RegDef_t *pI2Cx,uint8_t enable_disable ){
  *
  */
 void I2C_Init(I2C_Handle_t *pI2CHandle){
+
+	uint32_t tempreg =0;  // A place holder for the all the bits that need to be configured for the 32-bit registers.
+
+	// Configure the Automatic ACK bit in the CR1 Register based on the configurations given by the Application layer in I2C_Handle_t *pI2CHandle.
+
+	tempreg |= (pI2CHandle->I2C_Config.I2C_ACKControl) << 10;  // The 10th-bit of the CR1 register is programmed for ACKing
+
+
+
 
 
 }
