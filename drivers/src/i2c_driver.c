@@ -50,6 +50,99 @@ void I2C_ClockControl(I2C_RegDef_t *pI2Cx,uint8_t enable_disable ){
 
 
 /*********************************************************************
+ * @fn      		  -  I2C_Init
+ *
+ * @brief             -  Initializes I2Cx registers
+ *
+ * @param[in]         -  Pointer to the I2C handle; I2C_Handle_t *
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -  none
+ *
+ * @Note              -
+ * 						Generic Steps for Initializing any I2C Module; The following configurations steps are to be done when the Peripheral is DISABLED in the Control Register
+ * 								step1: Configure the Mode of the I2C -> Standard Mode or Fast Mode? Pick one
+ * 								step2: Configure the speed of the serial clock (SCL); Remember the faster Serial Clock, the short the I2C bus length should be;
+ * 								step3: Configure the device address (this is only applicable if the I2C module is being used on a slave device)
+ * 								step4: Enable the Automatic Acknowledgment (ACKing) - ST has this disabled by default, maybe not be the case for other MCUs - just check
+ * 								step5: Configure the rise time for the I2C pins; i.e. the slew rate has to be configured according to I2C specification, the slew rate is the time take
+ * 									   the i2c pins (SDA and SCL) to go from ground to VCC. You need to configure this according to the I2C specification.
+ *								Step6: Enable the peripheral iff you have configured all the steps above. Enable the peripheral from the CR1 register's 'PE' bit field.
+ *
+ *					   Expanding on 'Step 2: Configuring the Speed of the Serial Clock(SCL)'
+ *					 	The Serial Clock to be generated for the I2C module is configured using the Bus frequency. The APB bus supplies clock to the
+ *					 		  I2C modules of STM32F40x as they're all connected to the APB bus. The APB frequency is used by the I2C Hardware to derive
+ *					 		  the various timings according to i2c specification.
+ *
+ *					 		  The APB bus frequency is stored in FREQ field of CR2 register. In STM32F4xx, the APB frequency and Clock Control Register Settings (CCR)
+ *					 		  are used to generate the various frequencies of the I2C serial clock, i.e. in Standard mode up to 100kHz of SCL and in Fast Mode up to 400kHz of SCL
+ *
+ *						The CCR Register settings are different depending on the desired Serial Clock frequency (SCL). E.g. given below.
+ *
+ *						E.g. 1)
+ *
+ *								In Standard Mode, generate a 100 kHz SCL frequency, given that APB1 clock (Peripheral clock) is 16MHz.
+ *									Steps:
+ *										1) Configure the mode in CCR Register - the 'F_S' bit field of CCR Register (15th bit will be cleared to indicate Standard Mode I2C)
+ *										2) Write peripheral clock value into FREQ field of CR2 register of I2C
+ *										3) Calculate and program CCR value in the CCR Field of the CCR register based on the following equations (provided in the reference manual in
+ *											CCR Register description):
+ *
+ *											t_high_SCL_seconds = CCR * t_peripheral_clock_seconds,
+ *											t_low_SCL_seconds = CCR * t_peripheral_clock_Seconds,
+ *
+ *											SCL_pulse_seconds = t_high_SCL_seconds + t_low_SCL_seconds;
+ *
+ *											In step 1,program 'F_S' field of CCR register with '0' because we're running I2C in standard mode, as given in the information. In Step 2,
+ *											you program FREQ field of CR2 with '16' in binary because we're given APB bus frequency is 16MHz. Step 3 is: So, for a desired 100kHz SCL,
+ *											the pulse is 10 microseconds. With a 50% Duty cycle(i.e. t_high_scl will equal t_low_scl), the high-time of the pulse is 5 microseconds.
+ *											Given that the APB bus (to which the I2C peripheral is hanging to) has a frequency of 16Mhz - this is 62.5 nanoseconds. Therefore, using
+ *											t_high_SCL_seconds equation above, the CCR is (5/62.5)*1000 = 80, which is 0x50 in HEX, this is the value you program into CCR field of
+ *											the CCR register in step 3.
+ *
+ *											In I2C, the 'Duty Cycle' is used to define the t_high_SCL_seconds and t_low_SCL_seconds of the SCL pulse. I.e. the duty cycle is used
+ *											to define SCL pulse's high and low times. For a SM mode I2C, according to the I2C specifications the high time of SCL has to be minimum 4.7
+ *											microseconds and low time of SCL has to be minimum of 4.0 microseconds. There are minimums for FM of I2C as well, check the I2C specification doc.
+ *
+ *											Main point is, the I2C SCL clock in Fast Mode can have 2 possible configurations of SCL pulse, 1) t_low_SCL_seconds = 2*t_high_SCL_seconds or
+ *											2) t_low_SCL_seconds = 1.8*t_high_SCL_seconds -> the desired can be set by programming the 'DUTY' field of the CCR register of I2C. With the DUTY field
+ *											set to '1', the I2C SCL of STM32F4xx can achieve SCL clock frequencies of 400KHz. With DUTY field not set, the t_low_SCL_seconds will be twice that
+ *											of the t_high_SCL_seconds.
+ *
+*					E.g. 2)
+*
+*							In Fast Mode, generate a 200KHz SCL frequency, given that APB1 clock (peripheral clock) is 16MHz.
+*								Steps:
+ *										1) Configure the mode in CCR Register - the 'F_S' bit field of CCR Register (15th bit will be cleared to indicate Standard Mode I2C)
+ *										2) Select the DUTY cycle of the Fast Mode SCL in CCR Register
+ *										2) Write peripheral clock value into FREQ field of CR2 register of I2C
+ *										3) Calculate and program CCR value in the CCR Field of the CCR register based on the following equations (provided in the reference manual in
+ *											CCR Register description):
+ *
+ *											if DUTY = 0:
+ *												t_high_SCL_seconds = CCR * t_peripheral_clock_seconds,
+ *										 		t_low_SCL_seconds = 2*CCR * t_peripheral_clock_Seconds
+ *										 	if DUTy = 1: (to reach 400 KHz SCL frequency)
+ *										 		t_high_SCL_seconds = 9*CCR * t_peripheral_clock_seconds,
+ *										 		t_low_SCL_seconds = 16*CCR * t_peripheral_clock_Seconds
+ *
+ *										So, for Step 3 in example above, we select DUTY = 0:
+ *
+ *											t_high_SCL_seconds + t_low_SCL_seconds = 5 microseconds
+ *											5 microseconds  = 3*CCR * t_peripheral_clock_seconds,
+ *											5 microseconds  = 3*CCR * 62.5 nanoseconds,
+ *											Therefore,
+ *												CCR = (5/3*62.5) * 1000 = 26 -> this is the value you program in CCR register in step 3.
+ *
+ *
+ */
+void I2C_Init(I2C_Handle_t *pI2CHandle){
+
+
+}
+
+/*********************************************************************
  * @fn      		  - I2C_DeInit
  *
  * @brief             - Resets the I2Cx registers
