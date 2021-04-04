@@ -623,6 +623,8 @@ typedef struct
  *  					   3 -Create MACROS to define I2C1, I2C2, I2C3 peripheral registers. - Done below
  *  					   4 -Create MACROS to enable/Disable clock access to I2C1, I2C2 and I2C3 peripherals -  Done above
  *  					   5 -Create MACROS to define bit position fields for I2C Peripheral Registers - Done below
+ *  					   6 -Create Configuration Structure for I2C - done in i2c_driver.h file
+ *  					   7 -Create a handle structure for I2C that holds the I2C configuration structure (defined in i2c_driver.h file) and a pointer to the I2C Register structure (defined below)
  */
 
 /*
