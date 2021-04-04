@@ -21,12 +21,10 @@ typedef struct{
 
 	/* I2C User Configurable Items are listed below - minimum  required for achieving an I2C communication protocol */
 
-
-
-
-
-
-
+	uint32_t I2C_SCLSpeed;  	 // I2C Serial Clock Speed
+	uint8_t  I2C_DeviceAddress;  //	The device address  (7-bit address, hence uint8_t used) is only needed if the I2C peripheral is in slave mode.
+	uint8_t  I2C_ACKControl;     // Enable the automatic Acknowledgment (for every byte sent/received) for the module -> By default it is not enabled.
+	uint8_t  I2C_FMDutyCylce; 	 // The Duty Cycle if the I2C is in master mode and is in Fast Mode I2C - i.e. Communication speed can be set between (100-400] KHz by specifying a duty cycle
 
 }I2C_Config_t;
 
