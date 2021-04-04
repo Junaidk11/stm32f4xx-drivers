@@ -87,4 +87,66 @@ typedef struct{
 #define I2C_Fm_DUTY_16_9	1
 
 
+
+/*******************************************************************************************************************************************************************************************
+ *
+ * 							APIs Supported by this I2C Driver
+ *
+ ********************************************************************************************************************************************************************************************/
+
+
+
+/*
+ *  I2C Peripheral Clock Setup
+ */
+void I2C_ClockControl(I2C_RegDef_t *pI2Cx,uint8_t enable_disable );
+
+/*
+ *  Init and DeInit of I2C Module
+ */
+void I2C_Init(I2C_Handle_t *pI2CHandle);
+void I2C_DeInit(I2C_RegDef_t *pI2Cx);
+
+
+/*
+ *  Other Peripheral Control APIs
+ */
+
+ 	/* I2C Peripheral Enable/Disable API */
+void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t Enable_Disable);
+
+ 	/*  Get I2C Flag Status */
+uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName);
+
+
+/*
+ *   Data Read & Write
+ *
+ *      	For Communication protocols, there are two types of Data Read & Write APIs:
+ *              Non-blocking & Blocking APIs.
+ *          Blocking -> Polling method for Data Read and Write
+ *          Non-Blocking -> Interrupt Method for Data Read and Write
+ *
+ */
+
+        /* Blocking Method APIs */
+
+
+		/* Non-Blocking Method APIs */
+
+
+
+/*
+ *
+ *  I2C Interrupt Based APIs.
+ */
+
+ 		/* I2C Interrupt Configuration & Handling */
+void I2C_IRQ_Interrupt_Config(uint8_t IRQNumber, uint8_t enable_disable);
+void I2C_IRQ_Priority_Config (uint8_t IRQNumber, uint8_t IRQPriority);
+
+ 	  /*  Application Call back API to be used when I2C wants to inform the application layer about an event - When using Interrupt based I2C APIs */
+void I2C_ApplicationEventCallBack(I2C_Handle_t *pHandle, uint8_t ApplicationEvent);
+
+
 #endif /* DRIVERS_INC_I2C_DRIVER_H_ */
